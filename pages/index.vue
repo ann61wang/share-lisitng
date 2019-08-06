@@ -19,5 +19,5 @@ export default {
 <style lang="stylus" scoped>
   .content
     background: green
-    height: 100rem
+    height: 40rem
 </style>

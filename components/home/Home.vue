@@ -56,6 +56,8 @@ export default {
       background: #232a34
       .navbar_container_div
         margin: 0 1.6rem 0 -1.6rem
+        button
+          background: #232a34
         @media (min-width: 47.99rem)
           .search_md
             width: calc(100vw - 39rem) !important
@@ -92,7 +94,7 @@ export default {
               font-size: 1.4rem
               font-weight: 600
               color: #fff
-          @media (max-width: 12rem)
+          @media (max-width: 13rem)
             .search_none
               display: none
               input
