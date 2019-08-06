@@ -19,9 +19,5 @@ export default {
 <style lang="stylus" scoped>
   .content
     background: green
-<<<<<<< HEAD
-    height: 100rem
-=======
     height: 40rem
->>>>>>> home-header
 </style>
