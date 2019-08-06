@@ -56,11 +56,8 @@ export default {
       background: #232a34
       .navbar_container_div
         margin: 0 1.6rem 0 -1.6rem
-<<<<<<< HEAD
-=======
         button
           background: #232a34
->>>>>>> home-header
         @media (min-width: 47.99rem)
           .search_md
             width: calc(100vw - 39rem) !important
