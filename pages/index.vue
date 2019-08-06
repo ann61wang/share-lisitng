@@ -1,6 +1,7 @@
 <template>
   <div class="">
     <home-header></home-header>
+    <div class="content"></div>
   </div>
 </template>
 
@@ -8,12 +9,15 @@
 import HomeHeader from '~/components/home/Home'
 
 export default {
+  name: 'Home',
   components: {
     HomeHeader
   }
 }
 </script>
 
-<style scoped>
-
+<style lang="stylus" scoped>
+  .content
+    background: green
+    height: 100rem
 </style>

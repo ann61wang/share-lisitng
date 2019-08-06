@@ -1,4 +1,4 @@
-
+const webpack = require('webpack')
 module.exports = {
   mode: 'universal',
   /*
@@ -12,7 +12,8 @@ module.exports = {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'http://fonts.googleapis.com/css?family=Lobster' }
     ]
   },
   /*
@@ -23,11 +24,15 @@ module.exports = {
   ** Global CSS
   */
   css: [
+    'bootstrap/dist/css/bootstrap.css',
+    '@/assets/styles/common.css',
+    '@/assets/styles/iconfont.css'
   ],
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '~plugins/bootstrap.js'
   ],
   /*
   ** Nuxt.js modules
@@ -43,6 +48,15 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
+    vendor: ['jquery', 'bootstrap'],
+    plugins: [
+      // set shortcuts as global for bootstrap
+      new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery',
+        'window.jQuery': 'jquery'
+      })
+    ],
     extend(config, ctx) {
     }
   }
