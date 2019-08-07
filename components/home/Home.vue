@@ -85,7 +85,7 @@ export default {
             @media (min-width: 50rem)
               .logo_name_mobile
                 margin: 0 4rem 0 2rem
-            @media (max-width: 41.5rem)
+            @media (max-width: 33rem)
               .logo_icon_mobile
                 margin-right: 2rem
               .logo_name_mobile
