@@ -1,9 +1,9 @@
 <template lang="html">
-  <header class="container-fluid navbar_container">
-    <nav class="navbar navbar-default navbar-fixed-top navbar_container_nav nav_md nav_mobile" role="navigation">
+  <header class="container-fluid navbar-fixed-top navbar_container">
+    <nav class="navbar navbar-default navbar_container_nav nav_md nav_mobile" role="navigation">
       <div class="navbar_container_div">
-        <div class="navbar-header">
-          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-menu">
+        <div class="navbar-header nav_header">
+          <button class="navbar-toggle" type="button" data-toggle="collapse">
             <span class="sr-only">Toggle Navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -15,13 +15,13 @@
               <div class="logo_name logo_name_mobile">ShareL</div>
             </nuxt-link>
             <div class="navbar_search search_none">
-              <input type="text" placeholder="Search keyword">
+              <input type="search" placeholder="Search keyword">
               <!-- <span class="iconfont">&#xe60e;</span> -->
               <nuxt-link tag="div" to="#" class="glyphicon glyphicon-search search_icon"></nuxt-link>
             </div>
           </div>
         </div>
-        <div class="collapse navbar-collapse navbar_container_item" id="navbar-menu">
+        <div class="collapse navbar-collapse navbar_container_item">
           <ul class="nav navbar-nav navbar-right">
             <li><nuxt-link to="#" class="navbar_item_content">SomeL</nuxt-link></li>
             <li><nuxt-link to="#" class="navbar_item_content">SomeL</nuxt-link></li>
@@ -43,9 +43,9 @@ export default {
 
 <style lang="stylus" scoped>
   .navbar_container
-    z-index: 30
     min-height: 5.8rem
-    min-width: 32rem
+    padding: 0
+    z-index: 30
     @media (max-width: 47.99rem)
       .nav_mobile
         padding: .4rem 1.6rem
@@ -53,17 +53,17 @@ export default {
       .nav_md
         padding: .4rem 2.4rem
     .navbar_container_nav
-      background: #232a34
+      background: transparent
       .navbar_container_div
-        margin: 0 1.6rem 0 -1.6rem
+        margin-left: -1.6rem
         button
-          background: #232a34
+          background: transparent
         @media (min-width: 47.99rem)
           .search_md
             width: calc(100vw - 39rem) !important
         @media (max-width: 47.99rem)
           .search_mobile
-            width: calc(100vw - 7rem) !important
+            width: calc(100vw - 5rem) !important
         .navbar_container_search
           display: flex
           align-items: center
@@ -111,7 +111,8 @@ export default {
             max-width: 55rem
             font-size: 1.4rem
             color: #fff
-            display: inline-block
+            // display: inline-block
+            display: none
             input
               background: #5F6269
               box-sizing: border-box
@@ -125,14 +126,16 @@ export default {
               line-height: 4.2rem
             .search_icon
               cursor: pointer
-        .navbar_item_content
-          color: #d3d3d3
-          font-size: 1.4rem
-          font-weight: 600
-        .navbar_item_btn
-          margin-left: 1rem
-          background: #05a081
-          border-radius: .2rem
-          color: #fff
+        .navbar_container_item
+          margin-right: 1.4rem
+          .navbar_item_content
+            color: #d3d3d3
+            font-size: 1.4rem
+            font-weight: 600
+          .navbar_item_btn
+            margin-left: 1rem
+            background: #05a081
+            border-radius: .2rem
+            color: #fff
 
 </style>

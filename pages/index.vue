@@ -1,23 +1,23 @@
 <template>
   <div class="">
     <home-header></home-header>
-    <div class="content"></div>
+    <home-search></home-search>
   </div>
 </template>
 
 <script>
 import HomeHeader from '~/components/home/Home'
+import HomeSearch from '~/components/home/Search'
 
 export default {
   name: 'Home',
   components: {
-    HomeHeader
+    HomeHeader,
+    HomeSearch
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-  .content
-    background: green
-    height: 40rem
+
 </style>
