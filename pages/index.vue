@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import HomeHeader from '~/components/home/Home'
+import HomeHeader from '~/components/home/Header'
 import HomeSearch from '~/components/home/Search'
 import HomeSwiper from '~/components/home/Swiper'
 

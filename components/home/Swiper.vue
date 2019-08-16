@@ -22,8 +22,6 @@ export default {
     return {
       isMounted: false,
       swiperOption: {
-        prevButton: '.swiper-button-prev',
-        nextButton: '.swiper-button-next',
         mousewheelControl: true,
         mousewheelSensitivity: .7,
         freeMode: true,
@@ -49,16 +47,25 @@ export default {
       ]
     }
   },
+  updated(){
+    this.isMounted = true
+  },
   computed: {
-    pages() {
+    swiper() {
       if(!this.isMounted)
         return
 
-      let swiper = this.$refs.mySwiper.swiper
-      let w = (swiper.width < 536) ? 112 : 187
+      return this.$refs.mySwiper.swiper
+    },
+    pages() {
+      if(!this.isMounted)
+        return
+      //计算 slide 的个数
+      let w = (this.swiper.width < 536) ? 112 : 187
       const pages = []
       this.imgs.forEach((item, index) => {
-        let num = swiper.width / w - 1
+        //总是让 slide 装下 swiper 宽度减去一个图片区域的宽度，这样就可以点击箭头时，最后一个图片就是打头的图片
+        let num = this.swiper.width / w - 1
         const page = Math.floor(index / num)
         if(!pages[page]) {
           pages[page] = []
@@ -68,30 +75,13 @@ export default {
       return pages
     }
   },
-  updated(){
-    this.isMounted = true
-  },
   methods: {
     handleMouseLeave() {
-      let swiper = this.$refs.mySwiper.swiper
-      let w = swiper.slides[0].firstChild.clientWidth
-      // console.log(swiper.slides[0].firstChild.clientWidth)
-      if(swiper.isBeginning){
-        swiper.prevButton.addClass('hide')
-        this.$refs.left.style.display = 'none'
-      }else {
-        swiper.prevButton.removeClass('hide')
-        this.$refs.left.style.display = 'block'
-      }
-      if(swiper.isEnd) {
-        swiper.nextButton.addClass('hide')
-        this.$refs.right.style.display = 'none'
-      }else {
-        swiper.nextButton.removeClass('hide')
-        this.$refs.right.style.display = 'block'
-      }
-
-      let num = swiper.translate
+      //获取不同屏宽的图片区域宽度
+      let w = this.swiper.slides[0].firstChild.clientWidth
+      //获取 wrapper 的位移
+      let num = this.swiper.translate
+      //在鼠标移出 swiper 区域时，使图片与 wrapper 贴合
       if(num != 0) {
         num = Math.abs(num)
         num = Math.round(num)
@@ -101,34 +91,30 @@ export default {
             let diff = w - rem
             let number = (diff > w/2) ? (num - rem) : (num + diff)
             setTimeout(() => {
-              swiper.setWrapperTranslate(-number+1)
-              if(swiper.isEnd) {
-                swiper.nextButton.addClass('hide')
-                this.$refs.right.style.display = 'none'
-              }
+              this.swiper.setWrapperTranslate(-number+1)
+              if(this.swiper.isEnd) this.$refs.right.style.display = 'none'
             }, 100)
           }
           if(num < w) {
             if(w - num > w/2) {
-              setTimeout(() => swiper.setWrapperTranslate(0), 100)
-              swiper.prevButton.addClass('hide')
+              setTimeout(() => this.swiper.setWrapperTranslate(0), 100)
               this.$refs.left.style.display = 'none'
             }else {
-              setTimeout(() => swiper.setWrapperTranslate(-w), 100)
-              swiper.prevButton.removeClass('hide')
+              setTimeout(() => this.swiper.setWrapperTranslate(-w), 100)
               this.$refs.left.style.display = 'block'
             }
           }
         }
       }
+      //让箭头在最左和左右隐藏
+      this.$refs.left.style.display = (this.swiper.isBeginning) ? 'none' : 'block'
+      this.$refs.right.style.display = (this.swiper.isEnd) ? 'none' : 'block'
     },
     handleLeftClick() {
-      let swiper = this.$refs.mySwiper.swiper
-      swiper.slidePrev(false,300)
+      this.swiper.slidePrev(false,300)
     },
     handleRightClick() {
-      let swiper = this.$refs.mySwiper.swiper
-      swiper.slideNext(false,300)
+      this.swiper.slideNext(false,300)
     }
   }
 }
@@ -163,8 +149,6 @@ export default {
         display: inline-block
         background: red
         border-radius: .5rem
-    .hide
-      display: none
     @media (max-width: 37.5rem)
       .icon_none
         display: none !important
