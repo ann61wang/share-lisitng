@@ -1,18 +1,17 @@
 <template lang="html">
-  <div class="swiper_area" @mouseleave="handleMouseLeave" ref="myWidth">
+  <div class="swiper_area adaptive" @mouseleave="handleMouseLeave" ref="myWidth" @mousewheel.prevent @touchmove.prevent>
     <no-ssr>
       <swiper :options="swiperOption" ref="mySwiper">
         <swiper-slide v-for="(page, index) of pages" :key="index">
-          <div class="category" v-for="(item, index) of page" :key="index">
-            <img class="category-img" :src="item">
+          <div class="category" v-for="(item, index) of page" :key="index" style="position: relative;">
+            <img class="category-img adaptive_img" :src="item">
+            <!-- <span style="position: absolute; bottom: 0; left: 0;">{{index}}</span> -->
           </div>
         </swiper-slide>
-        <div class="swiper-button-prev swiper-button-black hide" slot="button-prev"></div>
-        <div class="swiper-button-next swiper-button-black" slot="button-next"></div>
       </swiper>
     </no-ssr>
-    <div ref="left" class="iconfont icon_left">&#xeb8e;</div>
-    <div ref="right" class="iconfont icon_right">&#xeb8a;</div>
+    <div ref="left" class="iconfont icon_left icon_none" @click="handleLeftClick">&#xeb8e;</div>
+    <div ref="right" class="iconfont icon_right icon_none" @click="handleRightClick">&#xeb8a;</div>
   </div>
 </template>
 
@@ -56,9 +55,10 @@ export default {
         return
 
       let swiper = this.$refs.mySwiper.swiper
+      let w = (swiper.width < 536) ? 112 : 187
       const pages = []
       this.imgs.forEach((item, index) => {
-        let num = swiper.width / 187 - 1
+        let num = swiper.width / w - 1
         const page = Math.floor(index / num)
         if(!pages[page]) {
           pages[page] = []
@@ -74,6 +74,8 @@ export default {
   methods: {
     handleMouseLeave() {
       let swiper = this.$refs.mySwiper.swiper
+      let w = swiper.slides[0].firstChild.clientWidth
+      // console.log(swiper.slides[0].firstChild.clientWidth)
       if(swiper.isBeginning){
         swiper.prevButton.addClass('hide')
         this.$refs.left.style.display = 'none'
@@ -93,11 +95,11 @@ export default {
       if(num != 0) {
         num = Math.abs(num)
         num = Math.round(num)
-        let rem = num % 187
+        let rem = num % w
         if(rem != 0) {
-          if(num > 187) {
-            let diff = 187 - rem
-            let number = (diff > 63) ? (num - rem) : (num + diff)
+          if(num > w) {
+            let diff = w - rem
+            let number = (diff > w/2) ? (num - rem) : (num + diff)
             setTimeout(() => {
               swiper.setWrapperTranslate(-number+1)
               if(swiper.isEnd) {
@@ -106,19 +108,27 @@ export default {
               }
             }, 100)
           }
-          if(num < 187) {
-            if(187 - num > 63) {
+          if(num < w) {
+            if(w - num > w/2) {
               setTimeout(() => swiper.setWrapperTranslate(0), 100)
               swiper.prevButton.addClass('hide')
               this.$refs.left.style.display = 'none'
             }else {
-              setTimeout(() => swiper.setWrapperTranslate(-186), 100)
+              setTimeout(() => swiper.setWrapperTranslate(-w), 100)
               swiper.prevButton.removeClass('hide')
               this.$refs.left.style.display = 'block'
             }
           }
         }
       }
+    },
+    handleLeftClick() {
+      let swiper = this.$refs.mySwiper.swiper
+      swiper.slidePrev(false,300)
+    },
+    handleRightClick() {
+      let swiper = this.$refs.mySwiper.swiper
+      swiper.slideNext(false,300)
     }
   }
 }
@@ -127,49 +137,58 @@ export default {
 <style lang="stylus" scoped>
   .swiper_area >>> .swiper-slide
     width: auto !important
-
-  .swiper_area >>> .swiper-button-prev
-    height: 1.8rem !important
-    margin-left: -3rem
-    background: #fff
-    padding: 2rem
-    border-radius: 5rem
-
-  .swiper_area >>> .swiper-button-next
-    height: 1.8rem !important
-    margin-right: -3rem
-    padding: 2rem
-    background: #fff
-    border-radius: 5rem
-
+  @media (max-width: 90rem)
+    .adaptive
+      margin: 3rem 3.2rem
+      height: 5rem
+  @media (min-width: 90rem)
+    .adaptive
+      margin: 3rem 6.4rem
+      height: 8rem
   .swiper_area
     position: relative
-    margin: 3rem 6.4rem
-    height: 9vh
     .category
       display: inline-block
+      @media (max-width: 37.5rem)
+        .adaptive_img
+          height: 4.8rem
+          width: 10.4rem
+          margin: 0 .4rem
+      @media (min-width: 37.5rem)
+        .adaptive_img
+          height: 7.2rem
+          width: 17.6rem
+          margin: 0 .55rem
       .category-img
         display: inline-block
-        height: 7.2rem
-        width: 17.6rem
         background: red
         border-radius: .5rem
-        margin: 0 .55rem
     .hide
       display: none
+    @media (max-width: 37.5rem)
+      .icon_none
+        display: none !important
     .icon_left
       display: none
-      color: #aaa
+      color: #888
       font-size: 2.8rem
       position: absolute
       top: 1.8rem
-      left: -1.2rem
+      left: -2.2rem
+      cursor: pointer
+      background: #fff
+      padding: 0 .6rem
+      border-radius: 5rem
       z-index: 2
     .icon_right
-      color: #aaa
+      color: #888
       font-size: 2.8rem
       position: absolute
       top: 1.8rem
-      right: -1.2rem
+      right: -2.2rem
+      padding: 0 .8rem
+      cursor: pointer
+      background: #fff
+      border-radius: 5rem
       z-index: 2
 </style>

@@ -27,5 +27,6 @@ export default {
     // background: #eee
     .haha
       margin-left: 50rem
+      height: 60rem
 
 </style>
