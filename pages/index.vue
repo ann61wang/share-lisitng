@@ -3,6 +3,7 @@
     <home-header></home-header>
     <home-search></home-search>
     <home-swiper></home-swiper>
+    <home-trending></home-trending>
     <div class="haha">test</div>
   </div>
 </template>
@@ -11,13 +12,15 @@
 import HomeHeader from '~/components/home/Header'
 import HomeSearch from '~/components/home/Search'
 import HomeSwiper from '~/components/home/Swiper'
+import HomeTrending from '~/components/home/Trending'
 
 export default {
   name: 'Home',
   components: {
     HomeHeader,
     HomeSearch,
-    HomeSwiper
+    HomeSwiper,
+    HomeTrending
   }
 }
 </script>

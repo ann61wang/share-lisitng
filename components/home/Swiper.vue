@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="swiper_area adaptive" @mouseleave="handleMouseLeave" ref="myWidth" @mousewheel.prevent @touchmove.prevent>
+  <div class="swiper_area adaptive" @mouseleave="handleMouseLeave" @touchend="handleMouseLeave" ref="myWidth" @mousewheel="handleMouseWheel($event)" @touchmove="handleMouseWheel($event)">
     <no-ssr>
       <swiper :options="swiperOption" ref="mySwiper">
         <swiper-slide v-for="(page, index) of pages" :key="index">
@@ -24,6 +24,8 @@ export default {
       swiperOption: {
         mousewheelControl: true,
         mousewheelSensitivity: .7,
+        mousewheelForceToAxis: true,
+        mousewheelInvert: true,
         freeMode: true,
         observer: true,
         observeParents: true,
@@ -115,6 +117,10 @@ export default {
     },
     handleRightClick() {
       this.swiper.slideNext(false,300)
+    },
+    handleMouseWheel(event) {
+      if(this.swiper.isBeginning || this.swiper.isEnd)
+        if (event) event.preventDefault()
     }
   }
 }
@@ -148,7 +154,7 @@ export default {
       .category-img
         display: inline-block
         background: red
-        border-radius: .5rem
+        border-radius: .2rem
     @media (max-width: 37.5rem)
       .icon_none
         display: none !important
