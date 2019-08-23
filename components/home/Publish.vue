@@ -41,7 +41,7 @@ export default {
 
 <style lang="stylus" scoped>
   .margin_medium
-    margin: 2rem 6.4rem 0 6.4rem
+    margin: 4rem 5.8rem 0 5.8rem
     .container_wrapper
       margin: 0 auto
       width: 100%
