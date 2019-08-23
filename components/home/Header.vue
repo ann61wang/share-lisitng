@@ -1,6 +1,6 @@
 <template lang="html">
   <header class="container-fluid navbar-fixed-top navbar_container">
-    <nav class="navbar navbar-default navbar_container_nav nav_md nav_mobile" role="navigation">
+    <nav class="navbar navbar-default navbar_container_nav nav_md nav_mobile" role="navigation" ref="nav">
       <div class="navbar_container_div">
         <div class="navbar-header nav_header">
           <button class="navbar-toggle" type="button" data-toggle="collapse">
@@ -14,7 +14,7 @@
               <div class="iconfont logo_icon logo_icon_mobile">🧾</div>
               <div class="logo_name logo_name_mobile">ShareL</div>
             </nuxt-link>
-            <div class="navbar_search search_none">
+            <div class="navbar_search search_none" ref="search">
               <input type="search" placeholder="Search keyword">
               <!-- <span class="iconfont">&#xe60e;</span> -->
               <nuxt-link tag="div" to="#" class="glyphicon glyphicon-search search_icon"></nuxt-link>
@@ -37,7 +37,24 @@
 
 <script>
 export default {
-  name: 'HomeHeader'
+  name: 'HomeHeader',
+  data() {
+    return {
+      scrollTop: 0
+    }
+  },
+  methods: {
+    scrollChange() {
+      this.scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
+      if(this.scrollTop > 270) {
+        this.$refs.nav.style.background = "#232a34"
+        this.$refs.search.style.display = "block"
+      }else {
+        this.$refs.nav.style.background = "transparent"
+        this.$refs.search.style.display = "none"
+      }
+    }
+  }
 }
 </script>
 
@@ -54,6 +71,7 @@ export default {
         padding: .4rem 2.4rem
     .navbar_container_nav
       background: transparent
+      transition: background .15s ease-in-out
       .navbar_container_div
         margin-left: -1.6rem
         button

@@ -155,6 +155,7 @@ export default {
         display: inline-block
         background: red
         border-radius: .2rem
+        object-fit: cover 
     @media (max-width: 37.5rem)
       .icon_none
         display: none !important

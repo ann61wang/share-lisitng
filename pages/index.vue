@@ -1,12 +1,12 @@
 <template>
   <div class="body_color">
-    <home-header></home-header>
+    <home-header ref="nav"></home-header>
     <home-search></home-search>
     <home-swiper></home-swiper>
     <home-trending></home-trending>
     <home-publish></home-publish>
     <home-topPub></home-topPub>
-    <div class="haha">test</div>
+    <home-footer></home-footer>
   </div>
 </template>
 
@@ -17,6 +17,7 @@ import HomeSwiper from '~/components/home/Swiper'
 import HomeTrending from '~/components/home/Trending'
 import HomePublish from '~/components/home/Publish'
 import HomeTopPub from '~/components/home/TopPub'
+import HomeFooter from '~/components/home/Footer'
 
 export default {
   name: 'Home',
@@ -26,17 +27,21 @@ export default {
     HomeSwiper,
     HomeTrending,
     HomePublish,
-    HomeTopPub
+    HomeTopPub,
+    HomeFooter
+  },
+  mounted() {
+    let _this = this
+    window.addEventListener('scroll', _this.handleScroll, true)
+  },
+  methods: {
+    handleScroll() {
+      this.$refs.nav.scrollChange()
+    }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-  .body_color
-    // background: #eee
-    .haha
-      margin-top: 20rem
-      margin-left: 50rem
-      height: 10rem
 
 </style>
