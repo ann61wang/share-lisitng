@@ -4,6 +4,7 @@
     <home-search></home-search>
     <home-swiper></home-swiper>
     <home-trending></home-trending>
+    <home-publish></home-publish>
     <div class="haha">test</div>
   </div>
 </template>
@@ -13,6 +14,7 @@ import HomeHeader from '~/components/home/Header'
 import HomeSearch from '~/components/home/Search'
 import HomeSwiper from '~/components/home/Swiper'
 import HomeTrending from '~/components/home/Trending'
+import HomePublish from '~/components/home/Publish'
 
 export default {
   name: 'Home',
@@ -20,7 +22,8 @@ export default {
     HomeHeader,
     HomeSearch,
     HomeSwiper,
-    HomeTrending
+    HomeTrending,
+    HomePublish
   }
 }
 </script>
@@ -29,7 +32,8 @@ export default {
   .body_color
     // background: #eee
     .haha
+      margin-top: 20rem
       margin-left: 50rem
-      height: 60rem
+      height: 30rem
 
 </style>

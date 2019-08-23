@@ -141,5 +141,5 @@ export default {
             .icon_list
               font-size: 10rem
               width: 70%
-              color: #ccc
+              color: #d3d3d3
 </style>

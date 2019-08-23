@@ -27,7 +27,7 @@
             <li><nuxt-link to="#" class="navbar_item_content">SomeL</nuxt-link></li>
             <li><nuxt-link to="#" class="navbar_item_content">SomeL</nuxt-link></li>
             <li><nuxt-link to="#" class="navbar_item_content">...</nuxt-link></li>
-            <li><nuxt-link to="#" class="navbar_item_content navbar_item_btn">Button</nuxt-link></li>
+            <li><nuxt-link to="#" class="navbar_item_content navbar_item_btn">Publish</nuxt-link></li>
           </ul>
         </div>
       </div>
@@ -60,7 +60,7 @@ export default {
           background: transparent
         @media (min-width: 47.99rem)
           .search_md
-            width: calc(100vw - 39rem) !important
+            width: calc(100vw - 39.5rem) !important
         @media (max-width: 47.99rem)
           .search_mobile
             width: calc(100vw - 5rem) !important
