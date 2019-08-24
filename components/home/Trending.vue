@@ -3,83 +3,13 @@
     <div class="container_center padding_top_large">
       <div class="container_title"><h2>Share Listing</h2> Trending | New </div>
       <div class="row with_gutter">
-        <div class="column col-xs-12 col-sm-6 col-md-4 col-lg-4">
-          <nuxt-link to="/" class="list_shadow">
-            <img class="column_img" src="https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500" alt="">
+        <div v-for="(item,index) of imgs" :key="item.id"
+          class="column col-xs-12 col-sm-6 col-md-4 col-lg-4"
+        >
+          <nuxt-link :to="'/lists/' + item.id" class="list_shadow">
+            <img :src="item.imgUrl" alt="" class="column_img">
             <div class="list_content">
-              <h4>Live Listing: How to make a checklist on Facebook Go Viral!</h4>
-              <div class="iconfont icon_list">&#xe635;</div>
-            </div>
-          </nuxt-link>
-        </div>
-        <div class="column col-xs-12 col-sm-6 col-md-4 col-lg-4">
-          <nuxt-link to="/" class="list_shadow">
-            <img class="column_img" src="https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500" alt="">
-            <div class="list_content">
-              <h4>Live Listing: How to make a checklist on Facebook Go Viral!</h4>
-              <div class="iconfont icon_list">&#xe635;</div>
-            </div>
-          </nuxt-link>
-        </div>
-        <div class="column col-xs-12 col-sm-6 col-md-4 col-lg-4">
-          <nuxt-link to="/" class="list_shadow">
-            <img class="column_img" src="https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500" alt="">
-            <div class="list_content">
-              <h4>Live Listing: How to make a checklist on Facebook Go Viral!</h4>
-              <div class="iconfont icon_list">&#xe635;</div>
-            </div>
-          </nuxt-link>
-        </div>
-        <div class="column col-xs-12 col-sm-6 col-md-4 col-lg-4">
-          <nuxt-link to="/" class="list_shadow">
-            <img class="column_img" src="https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500" alt="">
-            <div class="list_content">
-              <h4>Live Listing: How to make a checklist on Facebook Go Viral!</h4>
-              <div class="iconfont icon_list">&#xe635;</div>
-            </div>
-          </nuxt-link>
-        </div>
-        <div class="column col-xs-12 col-sm-6 col-md-4 col-lg-4">
-          <nuxt-link to="/" class="list_shadow">
-            <img class="column_img" src="https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500" alt="">
-            <div class="list_content">
-              <h4>Live Listing: How to make a checklist on Facebook Go Viral!</h4>
-              <div class="iconfont icon_list">&#xe635;</div>
-            </div>
-          </nuxt-link>
-        </div>
-        <div class="column col-xs-12 col-sm-6 col-md-4 col-lg-4">
-          <nuxt-link to="/" class="list_shadow">
-            <img class="column_img" src="https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500" alt="">
-            <div class="list_content">
-              <h4>Live Listing: How to make a checklist on Facebook Go Viral!</h4>
-              <div class="iconfont icon_list">&#xe635;</div>
-            </div>
-          </nuxt-link>
-        </div>
-        <div class="column col-xs-12 col-sm-6 col-md-4 col-lg-4">
-          <nuxt-link to="/" class="list_shadow">
-            <img class="column_img" src="https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500" alt="">
-            <div class="list_content">
-              <h4>Live Listing: How to make a checklist on Facebook Go Viral!</h4>
-              <div class="iconfont icon_list">&#xe635;</div>
-            </div>
-          </nuxt-link>
-        </div>
-        <div class="column col-xs-12 col-sm-6 col-md-4 col-lg-4">
-          <nuxt-link to="/" class="list_shadow">
-            <img class="column_img" src="https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500" alt="">
-            <div class="list_content">
-              <h4>Live Listing: How to make a checklist on Facebook Go Viral!</h4>
-              <div class="iconfont icon_list">&#xe635;</div>
-            </div>
-          </nuxt-link>
-        </div>
-        <div class="column col-xs-12 col-sm-6 col-md-4 col-lg-4">
-          <nuxt-link to="/" class="list_shadow">
-            <img class="column_img" src="https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500" alt="">
-            <div class="list_content">
-              <h4>Live Listing: How to make a checklist on Facebook Go Viral!</h4>
+              <h4>{{item.title}}</h4>
               <div class="iconfont icon_list">&#xe635;</div>
             </div>
           </nuxt-link>
@@ -91,7 +21,48 @@
 
 <script>
 export default {
-  name: 'HomeTrending'
+  name: 'HomeTrending',
+  data() {
+    return {
+      imgs: [{
+        id: "0001",
+        title: "travel",
+        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
+      },{
+        id: "0002",
+        title: "education",
+        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
+      },{
+        id: "0003",
+        title: "life",
+        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
+      },{
+        id: "0004",
+        title: "work",
+        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
+      },{
+        id: "0005",
+        title: "study",
+        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
+      },{
+        id: "0006",
+        title: "happy",
+        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
+      },{
+        id: "0007",
+        title: "book",
+        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
+      },{
+        id: "0008",
+        title: "movie",
+        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
+      },{
+        id: "0009",
+        title: "baby",
+        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
+     }]
+    }
+  }
 }
 </script>
 
