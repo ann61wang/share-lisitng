@@ -1,12 +1,12 @@
 <template>
   <div class="body_color">
-    <home-header ref="nav"></home-header>
+    <home-header></home-header>
     <home-search></home-search>
     <home-swiper></home-swiper>
     <home-trending></home-trending>
     <home-publish></home-publish>
     <home-topPub></home-topPub>
-    <home-footer></home-footer>
+    <common-footer></common-footer>
   </div>
 </template>
 
@@ -17,7 +17,7 @@ import HomeSwiper from '~/components/home/Swiper'
 import HomeTrending from '~/components/home/Trending'
 import HomePublish from '~/components/home/Publish'
 import HomeTopPub from '~/components/home/TopPub'
-import HomeFooter from '~/components/home/Footer'
+import CommonFooter from '~/components/common/Footer'
 
 export default {
   name: 'Home',
@@ -28,16 +28,7 @@ export default {
     HomeTrending,
     HomePublish,
     HomeTopPub,
-    HomeFooter
-  },
-  mounted() {
-    let _this = this
-    window.addEventListener('scroll', _this.handleScroll, true)
-  },
-  methods: {
-    handleScroll() {
-      this.$refs.nav.scrollChange()
-    }
+    CommonFooter
   }
 }
 </script>

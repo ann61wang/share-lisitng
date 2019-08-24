@@ -3,10 +3,9 @@
     <no-ssr>
       <swiper :options="swiperOption" ref="mySwiper">
         <swiper-slide v-for="(page, index) of pages" :key="index">
-          <div class="category" v-for="(item, index) of page" :key="index" style="position: relative;">
-            <img class="category-img adaptive_img" :src="item">
-            <!-- <span style="position: absolute; bottom: 0; left: 0;">{{index}}</span> -->
-          </div>
+          <nuxt-link tag="div" class="category" v-for="(item, index) of page" :key="item.id" :to="'/collections/' + item.id">
+            <img class="category-img adaptive_img" :src="item.imgUrl">
+          </nuxt-link>
         </swiper-slide>
       </swiper>
     </no-ssr>
@@ -28,25 +27,47 @@ export default {
         mousewheelInvert: true,
         freeMode: true,
         observer: true,
-        observeParents: true,
+        // observeParents: true,
         spaceBetween: -2,
         slidesPerView: 'auto'
       },
-      imgs: [
-        "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500",
-        "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500",
-        "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500",
-        "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500",
-        "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500",
-        "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500",
-        "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500",
-        "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500",
-        "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500",
-        "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500",
-        "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500",
-        "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500",
-        "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
-      ]
+      imgs: [{
+        id: "0001",
+        title: "travel",
+        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
+      },{
+        id: "0002",
+        title: "education",
+        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
+      },{
+        id: "0003",
+        title: "life",
+        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
+      },{
+        id: "0004",
+        title: "work",
+        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
+      },{
+        id: "0005",
+        title: "study",
+        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
+      },{
+        id: "0006",
+        title: "happy",
+        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
+      },{
+        id: "0007",
+        title: "book",
+        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
+      },{
+        id: "0008",
+        title: "movie",
+        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
+      },{
+        id: "0009",
+        title: "baby",
+        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
+     }]
     }
   },
   updated(){
@@ -108,7 +129,7 @@ export default {
           }
         }
       }
-      //让箭头在最左和左右隐藏
+      //让箭头在最左和最右隐藏
       this.$refs.left.style.display = (this.swiper.isBeginning) ? 'none' : 'block'
       this.$refs.right.style.display = (this.swiper.isEnd) ? 'none' : 'block'
     },
@@ -141,6 +162,7 @@ export default {
     position: relative
     .category
       display: inline-block
+      cursor: pointer
       @media (max-width: 37.5rem)
         .adaptive_img
           height: 4.8rem
@@ -155,7 +177,7 @@ export default {
         display: inline-block
         background: red
         border-radius: .2rem
-        object-fit: cover 
+        object-fit: cover
     @media (max-width: 37.5rem)
       .icon_none
         display: none !important

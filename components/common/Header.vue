@@ -1,6 +1,6 @@
 <template lang="html">
   <header class="container-fluid navbar-fixed-top navbar_container">
-    <nav class="navbar navbar-default navbar_container_nav nav_md nav_mobile" role="navigation" :style="backgroundStyle">
+    <nav class="navbar navbar-default navbar_container_nav nav_md nav_mobile" role="navigation">
       <div class="navbar_container_div">
         <div class="navbar-header nav_header">
           <button class="navbar-toggle" type="button" data-toggle="collapse">
@@ -14,7 +14,7 @@
               <div class="iconfont logo_icon logo_icon_mobile">🧾</div>
               <div class="logo_name logo_name_mobile">ShareL</div>
             </nuxt-link>
-            <div class="navbar_search search_none" :style="displayStyle">
+            <div class="navbar_search search_none" ref="search">
               <input type="search" placeholder="Search keyword">
               <!-- <span class="iconfont">&#xe60e;</span> -->
               <nuxt-link tag="div" to="#" class="glyphicon glyphicon-search search_icon"></nuxt-link>
@@ -37,36 +37,7 @@
 
 <script>
 export default {
-  name: 'CommonHeader',
-  data() {
-    return {
-      scrollTop: 0,
-      backgroundStyle: {
-        background: 'transparent'
-      },
-      displayStyle: {
-        display: 'none'
-      }
-    }
-  },
-  methods: {
-    handleScroll() {
-      this.scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
-      if(this.scrollTop > 270) {
-        this.backgroundStyle.background = '#232a34'
-        this.displayStyle.display = 'block'
-      }else {
-        this.backgroundStyle.background = 'transparent'
-        this.displayStyle.display = 'none'
-      }
-    }
-  },
-  activated() {
-    window.addEventListener('scroll', this.handleScroll)
-  },
-  deactivated() {
-    window.removeEventListener('scroll', this.handleScroll)
-  }
+  name: 'CommonHeader'
 }
 </script>
 
@@ -82,7 +53,7 @@ export default {
       .nav_md
         padding: .4rem 2.4rem
     .navbar_container_nav
-      background: transparent
+      background: #232a34
       transition: background .15s ease-in-out
       .navbar_container_div
         margin-left: -1.6rem
@@ -141,7 +112,7 @@ export default {
             max-width: 55rem
             font-size: 1.4rem
             color: #fff
-            display: none
+            display: inline-block
             input
               background: #5F6269
               box-sizing: border-box

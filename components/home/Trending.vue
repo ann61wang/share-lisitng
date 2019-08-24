@@ -84,7 +84,6 @@
             </div>
           </nuxt-link>
         </div>
-
       </div>
     </div>
   </div>
@@ -117,10 +116,8 @@ export default {
           font-weight: 600
           font-size: 2rem
       .column
-        display: inline-block
         margin: 1rem 0
         height: 41.8rem
-        // background: yellow
         border-radius: .2rem
         .list_shadow
           display: block
