@@ -4,7 +4,7 @@
     <div class="container-fluid list_page">
       <list-follow></list-follow>
       <list-main></list-main>
-      <div style="height: 60rem;">Related Checklists</div>
+      <list-relate></list-relate>
     </div>
   </div>
 </template>
@@ -13,12 +13,14 @@
 import CommonHeader from '~/components/common/Header'
 import ListFollow from '~/components/lists/Follow'
 import ListMain from '~/components/lists/Main'
+import ListRelate from '~/components/lists/Relate'
 export default {
   name: 'Lists',
   components: {
     CommonHeader,
     ListFollow,
-    ListMain
+    ListMain,
+    ListRelate
   }
 }
 </script>
