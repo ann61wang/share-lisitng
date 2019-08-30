@@ -1,5 +1,5 @@
 <template lang="html">
-  <div>
+  <div class="body_min_width">
     <common-header></common-header>
     <div class="container-fluid margin_medium">
       <div class="container_max_width">
@@ -63,39 +63,41 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  @media (min-width: 89.9rem)
-    .margin_medium
-      margin: 10rem 8rem 0 8rem
-  @media (max-width: 89.9rem)
-    .margin_medium
-      margin: 10rem 3.2rem 0 3.2rem
-  .container_max_width
-    max-width: 130rem
-    margin: 0 auto
-    .with_gutter
-      margin-top: 4rem
-      .column
-        height: 41.8rem
-        border-radius: .2rem
-        margin: 1rem 0
-        .list_shadow
-          display: block
-          box-shadow: 0 .2rem .6rem rgba(112,112,112,0.2)
-          box-sizing: border-box
-          text-decoration: none
-          color: #333
-        .column_img
-          display: block
-          width: 100%
-          min-height: 16.8rem
-          object-fit: cover
-        .list_content
-          padding: 2rem
-          min-height: 25rem
-          h4
-            font-weight: 500
-          .icon_list
-            font-size: 10rem
-            width: 70%
-            color: #d3d3d3
+  .body_min_width
+    min-width: 30rem
+    @media (min-width: 89.9rem)
+      .margin_medium
+        margin: 10rem 8rem 0 8rem
+    @media (max-width: 89.9rem)
+      .margin_medium
+        margin: 10rem 3.2rem 0 3.2rem
+    .container_max_width
+      max-width: 130rem
+      margin: 0 auto
+      .with_gutter
+        margin-top: 4rem
+        .column
+          height: 41.8rem
+          border-radius: .2rem
+          margin: 1rem 0
+          .list_shadow
+            display: block
+            box-shadow: 0 .2rem .6rem rgba(112,112,112,0.2)
+            box-sizing: border-box
+            text-decoration: none
+            color: #333
+          .column_img
+            display: block
+            width: 100%
+            min-height: 16.8rem
+            object-fit: cover
+          .list_content
+            padding: 2rem
+            min-height: 25rem
+            h4
+              font-weight: 500
+            .icon_list
+              font-size: 10rem
+              width: 70%
+              color: #d3d3d3
 </style>

@@ -1,5 +1,5 @@
 <template lang="html">
-  <div>
+  <div class="body_min_width">
     <common-header></common-header>
     <div class="container-fluid list_page">
       <list-follow></list-follow>
@@ -29,12 +29,12 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  @media (min-width: 53.2rem)
-    .list_page
-      margin: 5.8rem 6rem 0 6rem
-  @media (max-width: 53.2rem)
-    .list_page
-      margin: 5.8rem 1.6rem 0 1.6rem
-  .list_page
+  .body_min_width
     min-width: 30rem
+    @media (min-width: 53.2rem)
+      .list_page
+        margin: 5.8rem 6rem 0 6rem
+    @media (max-width: 53.2rem)
+      .list_page
+        margin: 5.8rem 1.6rem 0 1.6rem
 </style>

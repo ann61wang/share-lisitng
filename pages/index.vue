@@ -1,5 +1,5 @@
 <template>
-  <div class="body_color">
+  <div class="body_min_width">
     <home-header></home-header>
     <home-search></home-search>
     <home-swiper></home-swiper>
@@ -34,5 +34,6 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-
+  .body_min_width
+    min-width: 30rem
 </style>

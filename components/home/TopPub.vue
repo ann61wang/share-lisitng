@@ -30,7 +30,7 @@
 
     </div>
     <p style="text-align: center;">Make simple lists for more people to use</p>
-    <button class="my_btn">Become a publisher</button>
+    <button class="btn btn-default btn-block my_btn">Become a publisher</button>
   </div>
 </template>
 
@@ -75,11 +75,9 @@ export default {
         .column_name
           text-align: center
     .my_btn
-      display: block
       margin: 2rem auto
-      width: 20rem
+      max-width: 20rem
       background: #05a081
-      border-radius: .2rem
-      color: #fff
+      color: #1a1a1a
       padding: 1.2rem 0
 </style>
