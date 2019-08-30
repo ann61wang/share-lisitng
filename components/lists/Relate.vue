@@ -41,10 +41,12 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+  @media (min-width: 53.2rem)
+    .section
+      padding: 0 3rem
   .section
     margin: 0 auto
     margin-top: 5rem
-    padding: 0 3rem
     h4
       font-weight: 600
     .column
@@ -64,7 +66,7 @@ export default {
           object-fit: cover
         .list_content
           padding: 2rem
-          min-height: 10rem
+          min-height: 12rem
           h4
             font-weight: 500
           .icon_list
