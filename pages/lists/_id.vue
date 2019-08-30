@@ -6,6 +6,7 @@
       <list-main></list-main>
       <list-relate></list-relate>
     </div>
+    <common-footer></common-footer>
   </div>
 </template>
 
@@ -14,13 +15,15 @@ import CommonHeader from '~/components/common/Header'
 import ListFollow from '~/components/lists/Follow'
 import ListMain from '~/components/lists/Main'
 import ListRelate from '~/components/lists/Relate'
+import CommonFooter from '~/components/common/Footer'
 export default {
   name: 'Lists',
   components: {
     CommonHeader,
     ListFollow,
     ListMain,
-    ListRelate
+    ListRelate,
+    CommonFooter
   }
 }
 </script>
