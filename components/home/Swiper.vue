@@ -38,11 +38,11 @@ export default {
       },{
         id: "0002",
         title: "education",
-        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
+        imgUrl: "https://images.pexels.com/photos/2531709/pexels-photo-2531709.jpeg?auto=compress&crop=focalpoint&cs=tinysrgb&fit=crop&h=350.0&sharp=10&w=1400"
       },{
         id: "0003",
         title: "life",
-        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
+        imgUrl: "https://images.pexels.com/photos/2064357/pexels-photo-2064357.jpeg?cs=srgb&dl=fruit-milk-splash-2064357.jpg&fm=jpg"
       },{
         id: "0004",
         title: "work",

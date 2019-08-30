@@ -7,7 +7,7 @@
         <div v-for="(item,index) of collection" :key="item.id"
           class="column col-xs-12 col-sm-6 col-md-4 col-lg-4"
         >
-          <nuxt-link to="/" class="list_shadow">
+          <nuxt-link :to="'/lists/' + item.id" class="list_shadow">
             <img :src="item.imgUrl" alt="" class="column_img">
             <div class="list_content">
               <h4>{{item.title}}</h4>
@@ -63,7 +63,7 @@ export default {
 <style lang="stylus" scoped>
   @media (min-width: 89.9rem)
     .margin_medium
-      margin: 10rem 6.4rem 0 6.4rem
+      margin: 10rem 8rem 0 8rem
   @media (max-width: 89.9rem)
     .margin_medium
       margin: 10rem 3.2rem 0 3.2rem
