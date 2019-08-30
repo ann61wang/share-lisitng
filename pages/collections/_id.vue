@@ -2,18 +2,20 @@
   <div>
     <common-header></common-header>
     <div class="container-fluid margin_medium">
-      <h2>{{title}}</h2>
-      <div class="row with_gutter">
-        <div v-for="(item,index) of collection" :key="item.id"
-          class="column col-xs-12 col-sm-6 col-md-4 col-lg-4"
-        >
-          <nuxt-link :to="'/lists/' + item.id" class="list_shadow">
-            <img :src="item.imgUrl" alt="" class="column_img">
-            <div class="list_content">
-              <h4>{{item.title}}</h4>
-              <div class="iconfont icon_list">&#xe635;</div>
-            </div>
-          </nuxt-link>
+      <div class="container_max_width">
+        <h2>{{title}}</h2>
+        <div class="row with_gutter">
+          <div v-for="(item,index) of collection" :key="item.id"
+            class="column col-xs-12 col-sm-6 col-md-4 col-lg-4"
+          >
+            <nuxt-link :to="'/lists/' + item.id" class="list_shadow">
+              <img :src="item.imgUrl" alt="" class="column_img">
+              <div class="list_content">
+                <h4>{{item.title}}</h4>
+                <div class="iconfont icon_list">&#xe635;</div>
+              </div>
+            </nuxt-link>
+          </div>
         </div>
       </div>
     </div>
@@ -67,8 +69,9 @@ export default {
   @media (max-width: 89.9rem)
     .margin_medium
       margin: 10rem 3.2rem 0 3.2rem
-  .margin_medium
-    background: transparent
+  .container_max_width
+    max-width: 130rem
+    margin: 0 auto
     .with_gutter
       margin-top: 4rem
       .column

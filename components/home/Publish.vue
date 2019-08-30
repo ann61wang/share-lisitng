@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="container-fluid margin_medium">
+  <div class="container-fluid margin_medium container_max_width">
     <div class="container_wrapper">
       <h3 style="text-align: center;">Publisher benefits</h3>
       <p style="text-align: center;">Besides becoming a total rockstar, there are so many benefits to being a publisher.</p>
@@ -28,7 +28,6 @@
             <img class="img-responsive" src="https://as.ftcdn.net/r/v1/pics/a6bbebc616533491f17aff232d4f13856d164870/home/in-app.jpg" alt="">
         </div>
       </div>
-      <!-- <button>Become a publisher</button> -->
     </div>
   </div>
 </template>
@@ -40,31 +39,23 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .margin_medium
-    margin: 4rem 5.8rem 0 5.8rem
+  .container_max_width
+    max-width: 110rem
+    margin: 4rem auto
     .container_wrapper
       margin: 0 auto
       width: 100%
       padding: 0 2rem
       .prev_desc
         margin: 0 auto
-        width: 80%
         padding: 2rem 0
         img
           object-fit: cover
           max-height: 40rem
       .next_desc
         margin: 0 auto
-        width: 80%
+        width: 100%
         img
           object-fit: cover
           max-height: 40rem
-      // button
-      //   display: block
-      //   margin: 2rem auto
-      //   width: 20rem
-      //   background: #05a081
-      //   border-radius: .2rem
-      //   color: #fff
-      //   padding: 1.2rem 0
 </style>

@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="container-fluid wrapper padding_size">
+  <div class="container-fluid padding_size wrapper">
     <h3 style="text-align: center;">Top Pulisher</h3>
     <p style="text-align: center;">Take inspiration from their work</p>
     <div class="columns row">
@@ -48,7 +48,8 @@ export default {
     .padding_size
       padding: 0 2.6rem
   .wrapper
-    margin-top: 4rem
+    margin: 0 auto
+    max-width: 1300rem
     .columns
       margin: 4rem 0
       .column

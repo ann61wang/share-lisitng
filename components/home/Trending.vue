@@ -76,7 +76,7 @@ export default {
   .margin_medium
     background: transparent
     .container_center
-      width: 100%
+      max-width: 130rem
       margin: 0 auto
     .padding_top_large
       padding-top: 1rem

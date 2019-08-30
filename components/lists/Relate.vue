@@ -47,6 +47,7 @@ export default {
   .section
     margin: 0 auto
     margin-top: 5rem
+    max-width: 130rem
     h4
       font-weight: 600
     .column
