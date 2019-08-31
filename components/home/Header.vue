@@ -103,9 +103,9 @@ export default {
             align-items: center
             cursor: pointer
             .logo_icon
-              background: #05a081
+              background: $bgBtnColor
               padding: 0 .8rem
-              color: #fff
+              color: $whiteTextColor
               width: 3.2rem
               height: 3.2rem
               line-height: 3.2rem
@@ -121,9 +121,9 @@ export default {
               .logo_name_mobile
                 display: none
             .logo_name
-              font-size: 1.4rem
-              font-weight: 600
-              color: #fff
+              font-size: $fontSize
+              font-weight: $fontWeight
+              color: $whiteTextColor
           @media (max-width: 13rem)
             .search_none
               display: none
@@ -132,23 +132,23 @@ export default {
               .search_icon
                 display: none
           .navbar_search
-            background: #5F6269
-            border-radius: .2rem
+            background: $bgInputColor
+            border-radius: $borderRadius
             height: 4.2rem
             display: flex
             flex: 1 1 100%
             width: 100%
             max-width: 55rem
-            font-size: 1.4rem
-            color: #fff
+            font-size: $fontSize
+            color: $whiteTextColor
             display: none
             input
-              background: #5F6269
+              background: $bgInputColor
               box-sizing: border-box
-              border-radius: .2rem
+              border-radius: $borderRadius
               border: none
               outline: none
-              color: #fff
+              color: $whiteTextColor
               padding: 0 1.6rem
               width: calc(100% - 4.6rem) !important
               height: 4.2rem
@@ -158,12 +158,12 @@ export default {
         .navbar_container_item
           margin-right: 1.4rem
           .navbar_item_content
-            color: #d3d3d3
-            font-size: 1.4rem
-            font-weight: 600
+            color: $grayTextColor
+            font-size: $fontSize
+            font-weight: $fontWeight
           .navbar_item_btn
             margin-left: 1rem
-            background: #05a081
-            border-radius: .2rem
-            color: #fff
+            background: $bgBtnColor
+            border-radius: $borderRadius
+            color: $whiteTextColor
 </style>

@@ -34,8 +34,7 @@ export default {
     padding: 1.6rem
     padding-top: 6.6rem
     padding-bottom: 6.6rem
-    color: #fff
-    background-color: #d3d3d3
+    color: $whiteTextColor
     text-decoration: none
     height: 100%
     max-height: 50rem
@@ -72,17 +71,17 @@ export default {
       margin: 7.5rem 0
       .hero_title
         display: block
-        font-size: 36px
-        line-height: 48px
+        font-size: 3.6rem
+        line-height: 4.8rem
         margin-top: 0;
-        margin-bottom: 15px
+        margin-bottom: 1.5rem
         font-weight: 700
       .hero_search
         margin-top: 4rem
         display: flex
         flex: 1 1 100%
         max-width: 100%
-        background: #fff
+        background: $bgWhiteColor
         input
           width: calc(100% - 4.6rem) !important
           border-top-right-radius: 0
@@ -98,11 +97,10 @@ export default {
           margin-bottom: 0
           text-decoration: none
           border: none
-          border-radius: .2rem
+          border-radius: $borderRadius
           outline: none
           -webkit-appearance: none
-          background: #fff
-          color: #1a1a1a
+          color: $darkTextColor
         .search_icon
           cursor: pointer
           color: #666
@@ -111,19 +109,19 @@ export default {
       .search_tags
         margin: .8rem 0
     .hero_footer
-      font-size: 12px
-      line-height: 19px
+      font-size: 1.2rem
+      line-height: 1.9rem
       margin-top: 0
-      font-weight: 600
+      font-weight: $fontWeight
       margin-bottom: 0
       position: absolute
-      height: 50px
+      height: 5rem
       left: 0
       right: 0
       bottom: 0
       display: flex
       align-items: center
       justify-content: space-between
-      padding: 0 16px
+      padding: 0 1.6rem
       z-index: 2
 </style>

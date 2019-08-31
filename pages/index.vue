@@ -35,5 +35,5 @@ export default {
 
 <style lang="stylus" scoped>
   .body_min_width
-    min-width: 30rem
+    min-width: $minWidth
 </style>

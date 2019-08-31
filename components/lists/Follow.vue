@@ -45,17 +45,15 @@ export default {
         display: inline-block
         max-width: 15rem
         text-decoration: none
-        color: #1a1a1a
+        color: $darkTextColor
         vertical-align: 40%
         h3
           display: block
           line-height: 2.5rem
           font-size: 1.6rem
-          font-weight: 600
-          white-space: nowrap
-          overflow: hidden
-          text-overflow: ellipsis
+          font-weight: $fontWeight
           margin-bottom: 0
+          ellipsis()
         .follower_count
           font-size: 1.6rem
           line-height: 2.5rem
@@ -63,18 +61,18 @@ export default {
     .follow_btn
       display: inline-block
       padding: .6rem 1.3rem
-      font-size: 1.4rem
-      font-weight: 600
+      font-size: $fontSize
+      font-weight: $fontWeight
       min-height: 3.2rem
-      color: #1a1a1a
+      color: $darkTextColor
     .right_btn
       display: inline-block
       margin-right: .8rem
       margin-top: .5rem
       padding: .5rem 2rem
-      color: #1a1a1a
+      color: $darkTextColor
       font-size: 1.6rem
-      font-weight: 600
+      font-weight: $fontWeight
       white-space: nowrap
       .icon_style
         font-size: 2rem

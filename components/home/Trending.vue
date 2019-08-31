@@ -76,15 +76,15 @@ export default {
   .margin_medium
     background: transparent
     .container_center
-      max-width: 130rem
+      max-width: $maxWidth
       margin: 0 auto
     .padding_top_large
       padding-top: 1rem
       .container_title
-        color: #333
+        color: $darkTextColor
         h2
           display: inline-block
-          font-weight: 600
+          font-weight: $fontWeight
           font-size: 2rem
       .column
         margin: 1rem 0
@@ -95,7 +95,7 @@ export default {
           box-shadow: 0 .2rem .6rem rgba(112,112,112,0.2)
           box-sizing: border-box
           text-decoration: none
-          color: #333
+          color: $darkTextColor
           .column_img
             display: block
             width: 100%
@@ -109,5 +109,5 @@ export default {
             .icon_list
               font-size: 10rem
               width: 70%
-              color: #d3d3d3
+              color: $grayTextColor
 </style>

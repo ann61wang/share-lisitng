@@ -49,7 +49,7 @@ export default {
       padding: 0 2.6rem
   .wrapper
     margin: 0 auto
-    max-width: 1300rem
+    max-width: $maxWidth
     .columns
       margin: 4rem 0
       .column
@@ -77,7 +77,7 @@ export default {
     .my_btn
       margin: 2rem auto
       max-width: 20rem
-      background: #05a081
-      color: #1a1a1a
+      background: $bgBtnColor
+      color: $whiteTextColor
       padding: 1.2rem 0
 </style>

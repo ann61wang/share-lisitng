@@ -64,7 +64,7 @@ export default {
 
 <style lang="stylus" scoped>
   .body_min_width
-    min-width: 30rem
+    min-width: $minWidth
     @media (min-width: 89.9rem)
       .margin_medium
         margin: 10rem 8rem 0 8rem
@@ -72,20 +72,20 @@ export default {
       .margin_medium
         margin: 10rem 3.2rem 0 3.2rem
     .container_max_width
-      max-width: 130rem
+      max-width: $maxWidth
       margin: 0 auto
       .with_gutter
         margin-top: 4rem
         .column
           height: 41.8rem
-          border-radius: .2rem
+          border-radius: $borderRadius
           margin: 1rem 0
           .list_shadow
             display: block
             box-shadow: 0 .2rem .6rem rgba(112,112,112,0.2)
             box-sizing: border-box
             text-decoration: none
-            color: #333
+            color: $darkTextColor
           .column_img
             display: block
             width: 100%
@@ -99,5 +99,5 @@ export default {
             .icon_list
               font-size: 10rem
               width: 70%
-              color: #d3d3d3
+              color: $grayTextColor
 </style>

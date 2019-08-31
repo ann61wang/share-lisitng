@@ -64,10 +64,10 @@ export default {
       margin-top: 10rem
       margin-bottom: 1.6rem
       padding: 1rem 4rem
-      background: #05a081
-      color: #fff
-      font-size: 1.4rem
-      font-weight: 600
+      background: $bgBtnColor
+      color: $whiteTextColor
+      font-size: $fontSize
+      font-weight: $fontWeight
     .level
       margin: 0 auto
       width: 24rem

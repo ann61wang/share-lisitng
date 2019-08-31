@@ -43,8 +43,12 @@ module.exports = {
     // Doc: https://bootstrap-vue.js.org/docs/
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios',
-    '@nuxtjs/proxy'
+    '@nuxtjs/proxy',
+    '@nuxtjs/style-resources'
   ],
+  styleResources: {
+    stylus: ['./assets/styles/varibles.styl', './assets/styles/mixins.styl']
+  },
   axios: {
     proxy: true
   },

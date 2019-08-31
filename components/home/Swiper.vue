@@ -9,8 +9,8 @@
         </swiper-slide>
       </swiper>
     </no-ssr>
-    <div ref="left" class="iconfont icon_left icon_none" @click="handleLeftClick">&#xeb8e;</div>
-    <div ref="right" class="iconfont icon_right icon_none" @click="handleRightClick">&#xeb8a;</div>
+    <div ref="left" class="iconfont icon_left icon_none icon_common" @click="handleLeftClick">&#xeb8e;</div>
+    <div ref="right" class="iconfont icon_right icon_none icon_common" @click="handleRightClick">&#xeb8a;</div>
   </div>
 </template>
 
@@ -175,33 +175,27 @@ export default {
           margin: 0 .55rem
       .category-img
         display: inline-block
-        background: red
-        border-radius: .2rem
+        border-radius: $borderRadius
         object-fit: cover
     @media (max-width: 37.5rem)
       .icon_none
         display: none !important
-    .icon_left
-      display: none
+    .icon_common
       color: #888
       font-size: 2.8rem
+      cursor: pointer
+      background: $bgWhiteColor
+      border-radius: 50%
+      z-index: 2
+    .icon_left
+      display: none
       position: absolute
       top: 1.8rem
       left: -2.2rem
-      cursor: pointer
-      background: #fff
       padding: 0 .6rem
-      border-radius: 5rem
-      z-index: 2
     .icon_right
-      color: #888
-      font-size: 2.8rem
       position: absolute
       top: 1.8rem
       right: -2.2rem
       padding: 0 .8rem
-      cursor: pointer
-      background: #fff
-      border-radius: 5rem
-      z-index: 2
 </style>
