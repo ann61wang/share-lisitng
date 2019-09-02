@@ -27,7 +27,7 @@
             <li><nuxt-link to="#" class="navbar_item_content">SomeL</nuxt-link></li>
             <li><nuxt-link to="#" class="navbar_item_content">SomeL</nuxt-link></li>
             <li><nuxt-link to="#" class="navbar_item_content">...</nuxt-link></li>
-            <li><nuxt-link to="#" class="navbar_item_content navbar_item_btn">Publish</nuxt-link></li>
+            <li><nuxt-link to="/write" class="navbar_item_content navbar_item_btn">Publish</nuxt-link></li>
           </ul>
         </div>
       </div>

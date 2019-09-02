@@ -6,13 +6,13 @@ body {
   font-family: ubuntu,sans-serif;
 }
 
-input::-moz-placeholder {
+input::-moz-placeholder, textarea::-moz-placeholder {
   color: #A6A8AB;
   opacity: 1;
 }
-input:-ms-input-placeholder {
+input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   color: #A6A8AB;
 }
-input::-webkit-input-placeholder {
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
   color: #A6A8AB;
 }
