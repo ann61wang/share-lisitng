@@ -13,7 +13,7 @@
       <textarea rows="1" spellcheck="false" placeholder="请输入标题（最多输入30字）" class="input_title"></textarea>
     </div>
     <div class="input_wrapper">
-      <textarea rows="2" spellcheck="false" placeholder="描述你的清单（最多输入100字)" class="input_description"></textarea>
+      <textarea rows="1" spellcheck="false" placeholder="描述你的清单（最多输入100字)" class="input_description"></textarea>
     </div>
     <div class="editable_toolbar">
       <div class="editable_toolbar_controls">
@@ -83,7 +83,6 @@ export default {
         line-height: 1
         color: grey
   .input_wrapper
-    margin: 1.6rem 0
     padding: 0
     height: auto
     width: 100%
@@ -92,6 +91,7 @@ export default {
     background: #fff
     .input_title
       display: block
+      margin: 1.6rem 0
       flex: 1 1
       padding: 0
       resize: none
@@ -106,6 +106,7 @@ export default {
       color: $darkTextColor
     .input_description
       display: block
+      margin-bottom: .8rem
       flex: 1 1
       padding: 0
       resize: none

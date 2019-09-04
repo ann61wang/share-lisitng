@@ -27,14 +27,17 @@ module.exports = {
     'bootstrap/dist/css/bootstrap.css',
     '@/assets/styles/common.css',
     '@/assets/styles/iconfont.css',
-    'swiper/dist/css/swiper.css'
+    'swiper/dist/css/swiper.css',
+    'jquery-ui-dist/jquery-ui.css'
+
   ],
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
     '~plugins/bootstrap.js',
-    { src: '~plugins/vue-swiper.js', ssr: false }
+    { src: '~plugins/vue-swiper.js', ssr: false },
+    { src: '~plugins/jquery-ui.js', ssr: false }
   ],
   /*
   ** Nuxt.js modules
@@ -73,6 +76,7 @@ module.exports = {
       new webpack.ProvidePlugin({
         $: 'jquery',
         jQuery: 'jquery',
+        jquery: 'jquery',
         'window.jQuery': 'jquery'
       })
     ],
