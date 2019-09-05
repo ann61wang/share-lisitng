@@ -27,8 +27,7 @@ module.exports = {
     'bootstrap/dist/css/bootstrap.css',
     '@/assets/styles/common.css',
     '@/assets/styles/iconfont.css',
-    'swiper/dist/css/swiper.css',
-    'jquery-ui-dist/jquery-ui.css'
+    'swiper/dist/css/swiper.css'
 
   ],
   /*
@@ -37,7 +36,7 @@ module.exports = {
   plugins: [
     '~plugins/bootstrap.js',
     { src: '~plugins/vue-swiper.js', ssr: false },
-    { src: '~plugins/jquery-ui.js', ssr: false }
+    { src: '~plugins/vue-draggable.js', ssr: false }
   ],
   /*
   ** Nuxt.js modules
@@ -70,7 +69,7 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
-    vendor: ['jquery', 'bootstrap'],
+    vendor: ['jquery', 'bootstrap', 'vuedraggable'],
     plugins: [
       // set shortcuts as global for bootstrap
       new webpack.ProvidePlugin({
