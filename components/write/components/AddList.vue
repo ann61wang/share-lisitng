@@ -1,5 +1,6 @@
 <template lang="html">
-  <li :class="liShow ? 'draggable' : 'draggable li_background'"
+  <li ref="list"
+    :class="liShow ? 'draggable' : 'draggable li_background'"
     @mouseover="handleLiMouseOver"
     @mouseleave="handleLiMouseOut"
     @keydown.13.prevent="handleAddLi"
@@ -8,13 +9,14 @@
       <span class="iconfont icon_drag" v-show="show">&#xe655;</span>
     </transition>
     <input type="checkbox" class="input_checkbox" :id="this.index">
-    <label :for="this.index"><span></span></label>
-    <div contenteditable="true" :class="inputText ? 'input_list' : 'input_list input_text'"></div>
+    <label :for="this.index" v-show="subTitle"><span></span></label>
+    <div contenteditable="true" :class="inputText ? 'input_list' : 'input_list input_text'" v-if="subTitle"></div>
+    <div contenteditable="true" :class="subTitle ? 'input_list' : 'input_list input_subtitle'" v-else></div>
     <transition-group name="fade">
       <span class="iconfont icon_more" v-show="show" @click="isShow=true" key="nowIndex">&#xe73a;</span>
       <div v-show="isShow" class="choice_wrapper" @mouseleave="isShow=false" key="nowIndex+1">
         <div :class="iconOne ? 'choice_btn' : 'choice_btn choice_background'" @mouseenter="iconOne=false" @mouseleave="iconOne=true" @click="inputText = !inputText">重要<span class="iconfont">&#xe61f;</span></div>
-        <div :class="iconTwo ? 'choice_btn' : 'choice_btn choice_background'" @mouseenter="iconTwo=false"  @mouseleave="iconTwo=true">副标题<span class="iconfont">&#xe60a;</span></div>
+        <div :class="iconTwo ? 'choice_btn' : 'choice_btn choice_background'" @mouseenter="iconTwo=false"  @mouseleave="iconTwo=true" @click="handleSubtitle">副标题<span class="iconfont">&#xe60a;</span></div>
         <div :class="iconThree ? 'choice_btn' : 'choice_btn choice_background'" @mouseenter="iconThree=false"  @mouseleave="iconThree=true" @click="handleRemoveLi">删除<span class="iconfont" style="color: red;">&#xe612;</span></div>
       </div>
     </transition-group>
@@ -31,6 +33,7 @@ export default {
       show: false,
       isShow: false,
       liShow: true,
+      subTitle: true,
       iconOne: true,
       iconTwo: true,
       iconThree: true,
@@ -51,6 +54,11 @@ export default {
     },
     handleRemoveLi() {
       this.$emit('handle-remove')
+    },
+    handleSubtitle() {
+      this.subTitle = !this.subTitle
+      if(this.index != 0)
+        this.$refs.list.style.marginTop = '3rem'
     }
   }
 }
@@ -77,6 +85,7 @@ export default {
       position: absolute
       cursor: move
       left: -2rem
+      top: .2rem
     .fade-enter, .fade-leave-to
       opacity: 0
     .fade-enter-active, .fade-leave-active
@@ -85,9 +94,10 @@ export default {
       display: none
     label
       display: inline-block
-      width: 20px
-      height: 20px
-      margin-right: 5px
+      width: 2rem
+      height: 2rem
+      margin-right: .5rem
+      margin-top: .3rem
       vertical-align: middle
       border: .1rem solid #999
       border-radius: .2rem
@@ -111,11 +121,22 @@ export default {
       outline: none
       border: none
       padding: 0 .2rem
+    .input_list:empty:before
+      content: '输入正文'
+      color: #A6A8AB
+    .input_list:focus:before
+      content: none
     .input_text
       font-weight: 600
       color: red
+    .input_subtitle
+      font-size: 1.8rem
+      font-weight: 600
     .icon_more
       cursor: pointer
+      position: absolute
+      right: 0
+      top: .2rem
     .choice_wrapper
       min-width: 9rem
       min-height: 9rem
