@@ -15,16 +15,6 @@
     <div class="input_wrapper">
       <textarea rows="1" spellcheck="false" placeholder="描述你的清单（最多输入100字)" class="input_description"></textarea>
     </div>
-    <div class="editable_toolbar">
-      <div class="editable_toolbar_controls">
-        <button class="btn">btn</button>
-        <button class="btn">btn</button>
-        <button class="btn">btn</button>
-        <button class="btn">btn</button>
-        <button class="btn">btn</button>
-        <button class="btn">btn</button>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -119,11 +109,4 @@ export default {
       font-synthesis: style
       outline: none
       color: #555
-  .editable_toolbar
-    border-top: .1rem solid #ebebeb
-    border-bottom: .1rem solid #ebebeb
-    .editable_toolbar_controls
-      display: flex
-      align-items: center
-      padding: .5rem 1.3rem
 </style>

@@ -1,23 +1,29 @@
 <template lang="html">
   <li ref="list"
-    :class="liShow ? 'draggable' : 'draggable li_background'"
-    @mouseover="handleLiMouseOver"
-    @mouseleave="handleLiMouseOut"
+    :class="numMaker ? 'draggable list_maker' : 'draggable'"
+    :style="show ? {backgroundColor: 'rgba(0,225,200,.2)'} : {backgroundColor: ''}"
+    @mouseenter="show = true"
+    @mouseleave="show = false"
     @keydown.13.prevent="handleAddLi"
   >
     <transition name="fade">
       <span class="iconfont icon_drag" v-show="show">&#xe655;</span>
     </transition>
     <input type="checkbox" class="input_checkbox" :id="this.index">
-    <label :for="this.index" v-show="subTitle"><span></span></label>
-    <div contenteditable="true" :class="inputText ? 'input_list' : 'input_list input_text'" v-if="subTitle"></div>
-    <div contenteditable="true" :class="subTitle ? 'input_list' : 'input_list input_subtitle'" v-else></div>
+    <label :for="this.index" v-show="subTitle && !numMaker"><span></span></label>
+    <div contenteditable="true" :class="name"></div>
     <transition-group name="fade">
       <span class="iconfont icon_more" v-show="show" @click="isShow=true" key="nowIndex">&#xe73a;</span>
       <div v-show="isShow" class="choice_wrapper" @mouseleave="isShow=false" key="nowIndex+1">
-        <div :class="iconOne ? 'choice_btn' : 'choice_btn choice_background'" @mouseenter="iconOne=false" @mouseleave="iconOne=true" @click="inputText = !inputText">重要<span class="iconfont">&#xe61f;</span></div>
-        <div :class="iconTwo ? 'choice_btn' : 'choice_btn choice_background'" @mouseenter="iconTwo=false"  @mouseleave="iconTwo=true" @click="handleSubtitle">副标题<span class="iconfont">&#xe60a;</span></div>
-        <div :class="iconThree ? 'choice_btn' : 'choice_btn choice_background'" @mouseenter="iconThree=false"  @mouseleave="iconThree=true" @click="handleRemoveLi">删除<span class="iconfont" style="color: red;">&#xe612;</span></div>
+        <div v-for="(item,index) in items"
+          @mouseenter="item.fixed = true"
+          @mouseleave="item.fixed = false"
+          @click="handleIconClick(index)"
+          :key="item.desc"
+          :class="item.fixed ? 'choice_btn choice_background' : 'choice_btn'"
+        >
+          {{item.desc}}<span class="iconfont" v-html="item.icon"></span>
+        </div>
       </div>
     </transition-group>
   </li>
@@ -32,23 +38,19 @@ export default {
       nowIndex: 0,
       show: false,
       isShow: false,
-      liShow: true,
+      numMaker: false,
       subTitle: true,
-      iconOne: true,
-      iconTwo: true,
-      iconThree: true,
-      inputText: true
+      inputText: true,
+      items: [{
+        desc: '重要', icon: '&#xe61f;', fixed: false
+      },{
+        desc: '副标题', icon: '&#xe60a;', fixed: false
+      },{
+        desc: '删除', icon: '&#xe612;', fixed: false
+      }]
     }
   },
   methods: {
-    handleLiMouseOver() {
-      this.show = true
-      this.liShow = false
-    },
-    handleLiMouseOut() {
-      this.show = false
-      this.liShow = true
-    },
     handleAddLi() {
       this.$emit('handle-add')
     },
@@ -57,30 +59,64 @@ export default {
     },
     handleSubtitle() {
       this.subTitle = !this.subTitle
-      if(this.index != 0)
-        this.$refs.list.style.marginTop = '3rem'
+      if(!this.subTitle) {
+        this.$refs.list.classList.add('break')
+        this.$refs.list.classList.remove('list_maker')
+        if(this.index != 0) this.$refs.list.style.marginTop = '3rem'
+      }else {
+        this.$refs.list.style.marginTop = '0'
+        if(this.numMaker) this.$refs.list.classList.add('list_maker')
+        this.$refs.list.classList.remove('break')
+      }
+    },
+    handleNumMaker() {
+      this.numMaker = !this.numMaker
+    },
+    handleIconClick(index) {
+      switch (index) {
+        case 0:
+          this.inputText = !this.inputText
+          break;
+        case 1:
+          this.handleSubtitle()
+          break;
+        case 2:
+          this.handleRemoveLi()
+          break;
+        default:
+          return
+      }
+    }
+  },
+  computed: {
+    name() {
+      if(this.subTitle) {
+        return this.inputText ? 'input_list' : 'input_list input_text'
+      }else {
+        return this.subTitle ? 'input_list' : 'input_list input_subtitle'
+      }
     }
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-  .li_background
-    background: rgba(0,225,200,.2)
-    transition: background .4s ease-in-out
+  .list_maker::before
+    content: counter(item)
+    padding: .3rem 2rem .3rem .8rem
+    background: linear-gradient(to right, #f36, #f09)
+    font-size: 1.5rem
+    clip-path: polygon(0% 0%, 75% 0, 75% 51%, 100% 52%, 75% 80%, 75% 100%, 0 100%)
+    border-radius: .5rem
+    color: #fff
+    text-shadow: .1rem .1rem .1rem rgba(#09f, .5)
+  .break
+    counter-reset: item -1
   li
     counter-increment: item
     position: relative
     margin-bottom: 1rem
-    // &::before
-    //   content: counter(item)
-    //   padding: .5rem 3rem .5rem 1.2rem
-    //   background: linear-gradient(to right, #f36, #f09)
-    //   font-size: 2rem
-    //   clip-path: polygon(0% 0%, 75% 0, 75% 51%, 100% 52%, 75% 65%, 75% 100%, 0 100%)
-    //   border-radius: .5rem
-    //   color: #fff
-    //   text-shadow: .1rem .1rem .1rem rgba(#09f, .5)
+    transition: background .4s ease-in-out
     .icon_drag
       position: absolute
       cursor: move
@@ -113,7 +149,7 @@ export default {
       margin-top: .1rem
     .input_list
       display: inline-block
-      width: calc(100% - 6rem)
+      width: calc(100% - 5.3rem)
       min-height: 3rem
       line-height: 3rem
       vertical-align: top
@@ -122,7 +158,7 @@ export default {
       border: none
       padding: 0 .2rem
     .input_list:empty:before
-      content: '输入正文'
+      content: '输入文字'
       color: #A6A8AB
     .input_list:focus:before
       content: none
