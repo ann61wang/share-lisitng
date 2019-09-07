@@ -99,6 +99,7 @@ export default {
     .editable_toolbar_controls
       display: flex
       align-items: center
+      justify-content: space-between
       padding: .5rem 1.3rem
   .list_checkboxes
     margin-top: 4rem
