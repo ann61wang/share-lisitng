@@ -10,7 +10,7 @@
       <span class="iconfont icon_drag" v-show="show">&#xe655;</span>
     </transition>
     <input type="checkbox" class="input_checkbox" :id="this.index">
-    <label :for="this.index" v-show="subTitle && !numMaker"><span></span></label>
+    <label :for="this.index" v-show="subTitle && !numMaker && boxShow"><span></span></label>
     <div contenteditable="true" :class="name"></div>
     <transition-group name="fade">
       <span class="iconfont icon_more" v-show="show" @click="isShow=true" key="nowIndex">&#xe73a;</span>
@@ -40,13 +40,14 @@ export default {
       isShow: false,
       numMaker: false,
       subTitle: true,
+      boxShow: true,
       inputText: true,
       items: [{
         desc: '重要', icon: '&#xe61f;', fixed: false
       },{
         desc: '副标题', icon: '&#xe60a;', fixed: false
       },{
-        desc: '删除', icon: '&#xe612;', fixed: false
+        desc: '删除', icon: '&#xe615;', fixed: false
       }]
     }
   },
@@ -71,6 +72,9 @@ export default {
     },
     handleNumMaker() {
       this.numMaker = !this.numMaker
+    },
+    handleBoxShow() {
+      this.boxShow = !this.boxShow
     },
     handleIconClick(index) {
       switch (index) {
