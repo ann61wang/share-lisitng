@@ -2,13 +2,23 @@
   <div>
     <div class="editable_toolbar">
       <div class="editable_toolbar_controls">
-        <button class="btn iconfont" @click.prevent="handleNumClick" title="切换标记符">&#xe62e;</button>
-        <button class="btn">btn</button>
-        <button class="btn">btn</button>
-        <button class="btn">btn</button>
-        <button class="btn">btn</button>
-        <button class="btn">btn</button>
+        <button class="btn iconfont btn-default icon_btn" @click.prevent="handleNumClick" title="切换标记符">&#xe62e;</button>
+        <button class="btn iconfont btn-default icon_btn" @click="handleBoxClear" title="显示隐藏">&#xe696;</button>
+        <button class="btn iconfont btn-default icon_btn" title="字体样式" style="color: #777;">&#xe662;</button>
+        <button class="btn iconfont btn-default icon_btn" title="字体颜色" style="color: #777;">&#xe667;</button>
+        <button class="btn iconfont btn-default icon_btn" @click="handleClearAll" title="全部删除" style="color: #666;">&#xe612;</button>
+        <button class="btn iconfont btn-default icon_btn" @click="isPicName = true" title="添加图名">&#xe6ed;</button>
       </div>
+    </div>
+    <div class="clear_confirm" v-show="isClearAll">
+      <div class="iconfont icon_cancel" @click="isClearAll = false" title="取消">&#xe604;</div>
+      <div class="content_confirm">确认要删除全部清单么？</div>
+      <button class="btn btn-default btn-block icon_clear" @click="clearComfirm">确认</button>
+    </div>
+    <div class="picture_name" v-show="isPicName">
+      <div class="iconfont name_cancel" title="取消" @click="isPicName = false">&#xe604;</div>
+      <input type="text" class="input_name" placeholder="添加适合的图片名称可以提高百度排名" v-model="inputValue">
+      <button class="btn btn-default btn-block name_submit" @click="handleNameSubmit">添加</button>
     </div>
     <draggable tag="ul"
       class="list_checkboxes"
@@ -46,6 +56,9 @@ export default {
       count: 0,
       isDragging: false,
       isNumMaker: false,
+      isClearAll: false,
+      isPicName: false,
+      inputValue: '',
       items: [{component: 'add-list', id: 0}]
     }
   },
@@ -76,6 +89,20 @@ export default {
         item.handleNumMaker()
       })
       this.isNumMaker = !this.isNumMaker
+    },
+    handleBoxClear() {
+      if(!this.isNumMaker) this.$refs.list.forEach((item) => item.handleBoxShow())
+    },
+    handleClearAll() {
+      this.isClearAll = true
+    },
+    clearComfirm() {
+      this.items = [{component: 'add-list', id: 0}]
+      this.isClearAll = false
+    },
+    handleNameSubmit() {
+      this.isPicName = false
+      this.inputValue = ''
     }
   },
   computed: {
@@ -87,6 +114,11 @@ export default {
         ghostClass: "ghostClass",
         animation: 500
       }
+    }
+  },
+  watch: {
+    isPicName() {
+     if(this.isPicName) this.$nextTick(() => $(".input_name").focus())
     }
   }
 }
@@ -101,6 +133,65 @@ export default {
       align-items: center
       justify-content: space-between
       padding: .5rem 1.3rem
+      .icon_btn
+        border: none
+        outline: none
+  .clear_confirm
+    position: fixed
+    top: 35%
+    left: 0
+    z-index: 33
+    background: #ffeeee
+    height: 15rem
+    width: 100%
+    .icon_cancel
+      position: absolute
+      top: .5rem
+      left: 50% + 13rem
+      cursor: pointer
+      font-size: 2.6rem
+      color: red
+    .content_confirm
+      text-align: center
+      font-size: 1.6rem
+      margin-top: 4rem
+      margin-bottom: 2rem
+      color: red
+    .icon_clear
+      margin: 0 auto
+      width: 30%
+      cursor: pointer
+      border: none
+      outline: none
+  .picture_name
+    position: fixed
+    top: 35%
+    left: 0
+    z-index: 32
+    background: #ffeeee
+    height: 15rem
+    width: 100%
+    .name_cancel
+      position: absolute
+      top: .5rem
+      left: 50% + 13rem
+      cursor: pointer
+      font-size: 2.6rem
+      color: red
+    .input_name
+      display: block
+      width: 30%
+      text-decoration: none
+      border: none
+      outline: none
+      height: 3rem
+      margin: 0 auto
+      margin-top: 4rem
+      margin-bottom: 2rem
+      padding: .2rem 1rem
+    .name_submit
+      margin: 0 auto
+      width: 30%
   .list_checkboxes
     margin-top: 4rem
     min-height: 3rem
