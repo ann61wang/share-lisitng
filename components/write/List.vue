@@ -2,12 +2,14 @@
   <div>
     <div class="editable_toolbar">
       <div class="editable_toolbar_controls">
-        <button class="btn iconfont btn-default icon_btn" @click.prevent="handleNumClick" title="切换标记符">&#xe62e;</button>
-        <button class="btn iconfont btn-default icon_btn" @click="handleBoxClear" title="显示隐藏">&#xe696;</button>
-        <button class="btn iconfont btn-default icon_btn" title="字体样式" style="color: #777;">&#xe662;</button>
-        <button class="btn iconfont btn-default icon_btn" title="字体颜色" style="color: #777;">&#xe667;</button>
-        <button class="btn iconfont btn-default icon_btn" @click="handleClearAll" title="全部删除" style="color: #666;">&#xe612;</button>
-        <button class="btn iconfont btn-default icon_btn" @click="isPicName = true" title="添加图名">&#xe6ed;</button>
+        <button class="btn btn-default icon_btn"
+          v-for="(btn, index) in btns"
+          :key="btn.title"
+          :title="btn.icon"
+          @click.prevent="handleBtnClick(index)"
+        >
+          <span class="iconfont" v-html="btn.icon"></span>
+        </button>
       </div>
     </div>
     <div class="clear_confirm" v-show="isClearAll">
@@ -20,6 +22,7 @@
       <input type="text" class="input_name" placeholder="添加适合的图片名称可以提高百度排名" v-model="inputValue">
       <button class="btn btn-default btn-block name_submit" @click="handleNameSubmit">添加</button>
     </div>
+
     <draggable tag="ul"
       class="list_checkboxes"
       v-model="items"
@@ -59,7 +62,20 @@ export default {
       isClearAll: false,
       isPicName: false,
       inputValue: '',
-      items: [{component: 'add-list', id: 0}]
+      items: [{component: 'add-list', id: 0}],
+      btns: [{
+        title: '切换标记符', icon: '&#xe62e;'
+      },{
+        title: '显示隐藏', icon: '&#xe696;'
+      },{
+        title: '字体样式', icon: '&#xe662;'
+      },{
+        title: '字体颜色', icon: '&#xe667;'
+      },{
+        title: '全部删除', icon: '&#xe612;'
+      },{
+        title: '添加图名', icon: '&#xe6ed;'
+      }]
     }
   },
   methods: {
@@ -78,13 +94,29 @@ export default {
         this.items.splice(index,1)
       }
     },
+    handleBtnClick(index) {
+      switch (index) {
+        case 0:
+          this.handleNumClick()
+          break;
+        case 1:
+          this.handleBoxClear()
+          break;
+        case 4:
+          this.handleClearAll()
+          break;
+        case 5:
+          this.isPicName = true
+          break;
+        default:
+          return
+      }
+    },
     handleNumClick() {
       this.$refs.list.forEach(function(item) {
-        if(!item.subTitle) {
-          setTimeout(function() {
-            item.$el.classList.add('break')
-            item.$el.classList.remove('list_maker')
-          }, 1)
+        if(item.subTitle) {
+          item.liClassName.break = true
+          item.liClassName.list_maker = false
         }
         item.handleNumMaker()
       })
@@ -201,15 +233,4 @@ export default {
     .ghostClass
       opacity: .2
       background: red
-    .break
-      counter-reset: item -1
-    .list_maker::before
-      content: counter(item)
-      padding: .3rem 2rem .3rem .8rem
-      background: linear-gradient(to right, #f36, #f09)
-      font-size: 1.5rem
-      clip-path: polygon(0% 0%, 75% 0, 75% 51%, 100% 52%, 75% 80%, 75% 100%, 0 100%)
-      border-radius: .5rem
-      color: #fff
-      text-shadow: .1rem .1rem .1rem rgba(#09f, .5)
 </style>

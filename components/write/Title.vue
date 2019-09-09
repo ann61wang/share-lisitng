@@ -64,6 +64,11 @@ export default {
         this.altName = ''
         this.isUpload = false
         this.upload = 'picture'
+      }else if(!this.$refs.file.files[0] && this.imgSrc) {
+        this.imgSrc = ''
+        this.altName = ''
+        this.isUpload = false
+        this.upload = 'picture'
       }
     }
   }
@@ -78,15 +83,15 @@ export default {
     min-height: 19.2rem
     max-height: 25rem
     position: relative
-    border-radius: .2rem
-    background: #f6f6f6
+    border-radius: $borderRadius
+    background: $bgGrayColor
     box-sizing: border-box
     .img_change
       position: absolute
       right: 0
       bottom: -1rem
       background: #564343
-      border-radius: .2rem
+      border-radius: $borderRadius
       display: flex
       justify-content: space-between
       align-items: center
@@ -99,7 +104,7 @@ export default {
       .icon_clear
         display: inline-block
         margin: .6rem 1.2rem
-        color: #fff
+        color: $whiteTextColor
         font-size: 1.6rem
     .cancel_pointer
       cursor: pointer
@@ -142,7 +147,7 @@ export default {
     width: 100%
     position: relative
     display: flex
-    background: #fff
+    background: $bgWhiteColor
     .input_title
       display: block
       margin: 1.6rem 0

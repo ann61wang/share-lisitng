@@ -1,16 +1,15 @@
 <template lang="html">
   <li ref="list"
-    :class="numMaker ? 'draggable list_maker' : 'draggable'"
-    :style="show ? {backgroundColor: 'rgba(0,225,200,.2)'} : {backgroundColor: ''}"
-    @mouseenter="show = true"
-    @mouseleave="show = false"
+    :class="liClassName"
+    @mouseenter="liMouseEnter"
+    @mouseleave="liMouseLeave"
     @keydown.13.prevent="handleAddLi"
   >
     <transition name="fade">
       <span class="iconfont icon_drag" v-show="show">&#xe655;</span>
     </transition>
     <input type="checkbox" class="input_checkbox" :id="this.index">
-    <label :for="this.index" v-show="subTitle && !numMaker && boxShow"><span></span></label>
+    <label :for="this.index" v-show="!subTitle && !numMaker && boxShow"><span></span></label>
     <div contenteditable="true" :class="name"></div>
     <transition-group name="fade">
       <span class="iconfont icon_more" v-show="show" @click="isShow=true" key="nowIndex">&#xe73a;</span>
@@ -39,7 +38,7 @@ export default {
       show: false,
       isShow: false,
       numMaker: false,
-      subTitle: true,
+      subTitle: false,
       boxShow: true,
       inputText: true,
       items: [{
@@ -48,10 +47,25 @@ export default {
         desc: '副标题', icon: '&#xe60a;', fixed: false
       },{
         desc: '删除', icon: '&#xe615;', fixed: false
-      }]
+      }],
+      liClassName: {
+        draggable: true,
+        list_maker: false,
+        break: false,
+        li_background: false,
+        margin_top: false
+      }
     }
   },
   methods: {
+    liMouseEnter() {
+      this.show = true
+      this.liClassName.li_background = true
+    },
+    liMouseLeave() {
+      this.show = false
+      this.liClassName.li_background = false
+    },
     handleAddLi() {
       this.$emit('handle-add')
     },
@@ -60,18 +74,19 @@ export default {
     },
     handleSubtitle() {
       this.subTitle = !this.subTitle
-      if(!this.subTitle) {
-        this.$refs.list.classList.add('break')
-        this.$refs.list.classList.remove('list_maker')
-        if(this.index != 0) this.$refs.list.style.marginTop = '3rem'
+      if(this.subTitle) {
+        this.liClassName.break = true
+        this.liClassName.list_maker = false
+        if(this.index != 0) this.liClassName.margin_top = true
       }else {
-        this.$refs.list.style.marginTop = '0'
-        if(this.numMaker) this.$refs.list.classList.add('list_maker')
-        this.$refs.list.classList.remove('break')
+        this.liClassName.margin_top = false
+        if(this.numMaker) this.liClassName.list_maker = true
+        this.liClassName.break = false
       }
     },
     handleNumMaker() {
       this.numMaker = !this.numMaker
+      this.liClassName.list_maker = (this.numMaker && !this.subTitle) ? true : false
     },
     handleBoxShow() {
       this.boxShow = !this.boxShow
@@ -94,10 +109,10 @@ export default {
   },
   computed: {
     name() {
-      if(this.subTitle) {
+      if(!this.subTitle) {
         return this.inputText ? 'input_list' : 'input_list input_text'
       }else {
-        return this.subTitle ? 'input_list' : 'input_list input_subtitle'
+        return this.subTitle ? 'input_list input_subtitle' : 'input_list'
       }
     }
   }
@@ -116,6 +131,10 @@ export default {
     text-shadow: .1rem .1rem .1rem rgba(#09f, .5)
   .break
     counter-reset: item -1
+  .li_background
+    background: rgba(0,225,200,.2)
+  .margin_top
+    margin-top: 3rem
   li
     counter-increment: item
     position: relative
@@ -140,7 +159,7 @@ export default {
       margin-top: .3rem
       vertical-align: middle
       border: .1rem solid #999
-      border-radius: .2rem
+      border-radius: $borderRadius
     input[type="checkbox"]:checked+label>span
       display: block
       width: .6rem
@@ -167,11 +186,11 @@ export default {
     .input_list:focus:before
       content: none
     .input_text
-      font-weight: 600
+      font-weight: $fontWeight
       color: red
     .input_subtitle
       font-size: 1.8rem
-      font-weight: 600
+      font-weight: $fontWeight
     .icon_more
       cursor: pointer
       position: absolute
@@ -182,7 +201,7 @@ export default {
       min-height: 9rem
       box-shadow: 0 .2rem .6rem rgba(112,112,112,0.2)
       box-sizing: border-box
-      background: #f6f6f6
+      background: $bgGrayColor
       position: absolute
       right: -3rem
       top: .8rem
