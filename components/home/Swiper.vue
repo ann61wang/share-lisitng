@@ -9,8 +9,8 @@
         </swiper-slide>
       </swiper>
     </no-ssr>
-    <div ref="left" class="iconfont icon_left icon_none icon_common" @click="handleLeftClick">&#xeb8e;</div>
-    <div ref="right" class="iconfont icon_right icon_none icon_common" @click="handleRightClick">&#xeb8a;</div>
+    <div :style="leftObj" class="iconfont icon_left icon_none icon_common" @click="handleLeftClick">&#xeb8e;</div>
+    <div :style="rightObj" class="iconfont icon_right icon_none icon_common" @click="handleRightClick">&#xeb8a;</div>
   </div>
 </template>
 
@@ -30,6 +30,12 @@ export default {
         // observeParents: true,
         spaceBetween: -2,
         slidesPerView: 'auto'
+      },
+      leftObj: {
+        display: 'none'
+      },
+      rightObj: {
+        display: 'block'
       },
       imgs: [{
         id: "0001",
@@ -115,23 +121,23 @@ export default {
             let number = (diff > w/2) ? (num - rem) : (num + diff)
             setTimeout(() => {
               this.swiper.setWrapperTranslate(-number+1)
-              if(this.swiper.isEnd) this.$refs.right.style.display = 'none'
+              if(this.swiper.isEnd) this.rightObj.display = 'none'
             }, 100)
           }
           if(num < w) {
             if(w - num > w/2) {
               setTimeout(() => this.swiper.setWrapperTranslate(0), 100)
-              this.$refs.left.style.display = 'none'
+              this.leftObj.display = 'none'
             }else {
               setTimeout(() => this.swiper.setWrapperTranslate(-w), 100)
-              this.$refs.left.style.display = 'block'
+              this.leftObj.display = 'block'
             }
           }
         }
       }
       //让箭头在最左和最右隐藏
-      this.$refs.left.style.display = (this.swiper.isBeginning) ? 'none' : 'block'
-      this.$refs.right.style.display = (this.swiper.isEnd) ? 'none' : 'block'
+      this.leftObj.display = (this.swiper.isBeginning) ? 'none' : 'block'
+      this.rightObj.display = (this.swiper.isEnd) ? 'none' : 'block'
     },
     handleLeftClick() {
       this.swiper.slidePrev(false,300)
@@ -188,7 +194,6 @@ export default {
       border-radius: 50%
       z-index: 2
     .icon_left
-      display: none
       position: absolute
       top: 1.8rem
       left: -2.2rem
