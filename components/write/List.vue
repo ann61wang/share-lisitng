@@ -38,6 +38,7 @@
           @handle-add="add(index, 'add-list')"
           @handle-remove="remove(index)"
           :index="index"
+          :id="item.id"
         >
         </component>
       </transition-group>
@@ -48,6 +49,8 @@
 <script>
 import AddList from '~/components/write/components/AddList'
 import draggable from 'vuedraggable'
+import { mapState, mapMutations } from 'vuex'
+
 export default {
   name: 'WriteList',
   components: {
@@ -93,6 +96,9 @@ export default {
       if(this.items.length > 1) {
         this.items.splice(index,1)
       }
+      try {
+        localStorage.removeItem(this._id)
+      } catch (e) {}
     },
     handleBtnClick(index) {
       switch (index) {
@@ -106,7 +112,11 @@ export default {
           this.handleClearAll()
           break;
         case 5:
-          this.isPicName = true
+          if(this.imgSrc) {
+            this.isPicName = true
+          }else {
+            alert('请先添加图片，再添加图片名称')
+          }
           break;
         default:
           return
@@ -130,12 +140,30 @@ export default {
     },
     clearComfirm() {
       this.items = [{component: 'add-list', id: 0}]
+      this.count = 0
+      this.clearContent()
+      this.syncList(this.copyItems)
       this.isClearAll = false
+      setTimeout(() => { if(this.$refs.list[0].content) this.$refs.list[0].content = '' }, 500)
+      try {
+        Object.keys(localStorage).forEach((item) => {
+          if(!isNaN(Number(item))) {
+            localStorage.removeItem(item)
+          }
+        })
+      } catch (e) {}
     },
     handleNameSubmit() {
       this.isPicName = false
+      this.changeImgAlt(this.inputValue)
       this.inputValue = ''
-    }
+    },
+    ...mapMutations({
+      changeImgAlt: 'localStorage/changeImgAlt',
+      syncList: 'localStorage/syncList',
+      clearContent: 'localStorage/clearContent',
+      syncContent: 'localStorage/syncContent'
+    })
   },
   computed: {
     dragOptions() {
@@ -146,14 +174,31 @@ export default {
         ghostClass: "ghostClass",
         animation: 500
       }
-    }
+    },
+    //由于数组类型也属于object，将引用赋值给新的变量，修改变量会直接修改引用，为了保证不在 mutations之外修改 state 值，所以创建了一个副本
+    copyItems() {
+      return this.items.slice()
+    },
+    ...mapState({
+      listNum: state => state.localStorage.listNum,
+      imgSrc: state => state.localStorage.test.imgSrc
+    })
   },
   watch: {
     isPicName() {
      if(this.isPicName) this.$nextTick(() => $(".input_name").focus())
+   },
+   items() {
+     this.syncList(this.copyItems)
+   }
+  },
+  mounted() {
+    if(this.listNum.length > 1) {
+      this.items = this.listNum
+      this.count = this.listNum.length - 1
     }
   }
-}
+ }
 </script>
 
 <style lang="stylus" scoped>

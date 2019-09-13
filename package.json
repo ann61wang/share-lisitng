@@ -26,6 +26,7 @@
     "express": "^4.16.4",
     "jquery": "^3.4.1",
     "nuxt": "^2.0.0",
+    "nuxt-vuex-localstorage": "^1.2.6",
     "popper.js": "^1.15.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",

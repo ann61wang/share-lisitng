@@ -46,7 +46,8 @@ module.exports = {
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
-    '@nuxtjs/style-resources'
+    '@nuxtjs/style-resources',
+    'nuxt-vuex-localstorage'
   ],
   styleResources: {
     stylus: ['./assets/styles/varibles.styl', './assets/styles/mixins.styl']

@@ -6,36 +6,43 @@
         <span class="iconfont icon_clear" title="删除" @click.prevent="clearImg">&#xe612;</span>
       </div>
       <label :class="isUpload ? 'uploade_picture' : 'uploade_picture cancel_pointer'" :for="upload">
-        <div class="img_area" v-show="isUpload">
-          <img :src="imgSrc" :alt="altName">
+        <div class="img_area" v-show="imgSrc">
+          <img :src="cacheImgSrc" :alt="imgAlt">
         </div>
         <input type="file" accept="image/png, image/jpeg, image/jpg" class="uploade_picture_input" id="picture" @change="getFile" ref="file">
         <div class="iconfont icon_camera" v-show="!isUpload">&#xe60b;</div>
         <transition name="fade">
+          <div class="img_alt" v-show="isUpload && show">{{this.imgAlt}}</div>
           <div class="text" v-show="show && !isUpload">添加题图</div>
         </transition>
       </label>
     </div>
     <div class="input_wrapper">
-      <textarea rows="1" spellcheck="false" placeholder="请输入标题（最多输入30字）" class="input_title"></textarea>
+      <textarea class="input_title" rows="1" spellcheck="false" placeholder="请输入标题（最多输入30字）" v-model="titleValue">
+        {{this.titleValue}}
+      </textarea>
     </div>
     <div class="input_wrapper">
-      <textarea rows="1" spellcheck="false" placeholder="描述你的清单（最多输入100字)" class="input_description"></textarea>
+      <textarea class="input_description" rows="1" spellcheck="false" placeholder="描述你的清单（最多输入100字)" v-model="descValue">
+        {{this.descValue}}
+      </textarea>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations, mapGetters } from 'vuex'
 export default {
   name: 'WriteTitle',
   data() {
     return {
       show: false,
-      imgSrc: '',
-      altName: '',
       isUpload: false,
       isImgChange: false,
-      upload: 'picture'
+      upload: 'picture',
+      cacheImgSrc: '',
+      titleValue: '',
+      descValue: ''
     }
   },
   methods: {
@@ -50,9 +57,14 @@ export default {
     getFile(e) {
       if(e.target.files[0]) {
         let reader = new FileReader()
+        let obj = {}
+        obj.imgAlt = e.target.files[0].name
         reader.readAsDataURL(e.target.files[0])
-        reader.onload = ((el) => this.imgSrc = el.target.result)
-        this.altName = e.target.files[0].name
+        reader.onload = ((el) => {
+          obj.imgSrc = el.target.result
+          this.insertImg(obj)
+          this.cacheImgSrc  = this.imgSrc
+        })
         this.isUpload = true
         this.upload = ''
       }
@@ -60,16 +72,52 @@ export default {
     clearImg() {
       if(this.$refs.file.files[0]) {
         this.$refs.file.value = ''
-        this.imgSrc = ''
-        this.altName = ''
+        this.clearImgAlt()
+        this.cacheImgSrc  = this.imgSrc
         this.isUpload = false
         this.upload = 'picture'
       }else if(!this.$refs.file.files[0] && this.imgSrc) {
-        this.imgSrc = ''
-        this.altName = ''
+        this.clearImgAlt()
+        this.cacheImgSrc  = this.imgSrc
         this.isUpload = false
         this.upload = 'picture'
       }
+    },
+    ...mapMutations({
+      insertImg: 'localStorage/insertImg',
+      clearImgAlt: 'localStorage/clearImgAlt',
+      loadImg: 'localStorage/load',
+      syncValue: 'localStorage/syncValue'
+    })
+  },
+  computed: {
+    ...mapState({
+      imgAlt: state => state.localStorage.test.imgAlt,
+      imgSrc: state => state.localStorage.test.imgSrc,
+      titleCache: state => state.localStorage.test.titleCache,
+      descCache: state => state.localStorage.test.descCache
+    })
+  },
+  watch: {
+    titleValue() {
+      this.syncValue({
+        title: this.titleValue,
+        desc: this.descValue
+      })
+    },
+    descValue() {
+      this.syncValue({
+        title: this.titleValue,
+        desc: this.descValue
+      })
+    }
+  },
+  mounted() {
+    if(this.imgSrc) this.isUpload = true
+    this.cacheImgSrc  = this.imgSrc
+    if(this.titleCache || this.descCache) {
+      this.titleValue = this.titleCache
+      this.descValue = this.descCache
     }
   }
 }
@@ -141,6 +189,14 @@ export default {
         bottom: 5rem
         line-height: 1
         color: grey
+      .img_alt
+        position: absolute
+        width: 100%
+        text-align: center
+        left: 0
+        bottom: 1rem
+        line-height: 1
+        color: #f6f6f6
   .input_wrapper
     padding: 0
     height: auto

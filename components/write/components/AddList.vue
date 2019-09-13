@@ -10,7 +10,7 @@
     </transition>
     <input type="checkbox" class="input_checkbox" :id="this.index">
     <label :for="this.index" v-show="!subTitle && !numMaker && boxShow"><span></span></label>
-    <div contenteditable="true" :class="name"></div>
+    <div contenteditable="true" :class="name" v-text="content" @blur="content = $event.target.innerText"></div>
     <transition-group name="fade">
       <span class="iconfont icon_more" v-show="show" @click="isShow=true" key="nowIndex">&#xe73a;</span>
       <div v-show="isShow" class="choice_wrapper" @mouseleave="isShow=false" key="nowIndex+1">
@@ -31,7 +31,7 @@
 <script>
 export default {
   name: 'AddList',
-  props: ['index'],
+  props: ['index', 'id'],
   data() {
     return {
       nowIndex: 0,
@@ -41,6 +41,8 @@ export default {
       subTitle: false,
       boxShow: true,
       inputText: true,
+      content: '',
+      cacheTime: '',
       items: [{
         desc: '重要', icon: '&#xe61f;', fixed: false
       },{
@@ -114,7 +116,28 @@ export default {
       }else {
         return this.subTitle ? 'input_list input_subtitle' : 'input_list'
       }
+    },
+    contentObj() {
+      return {
+        id: this.id,
+        content: this.content
+      }
+    },
+    _id() {
+      return String(this.id)
     }
+  },
+  watch: {
+    content() {
+      try {
+        if(this.content != undefined) localStorage[this._id] = this.content
+      } catch (e) {}
+    }
+  },
+  mounted() {
+    try {
+      if(localStorage[this._id]) this.content = localStorage[this._id]
+    } catch (e) {}
   }
 }
 </script>
