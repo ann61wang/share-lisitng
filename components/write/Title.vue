@@ -11,10 +11,10 @@
         </div>
         <input type="file" accept="image/png, image/jpeg, image/jpg" class="uploade_picture_input" id="picture" @change="getFile" ref="file">
         <div class="iconfont icon_camera" v-show="!isUpload">&#xe60b;</div>
-        <transition name="fade">
-          <div class="img_alt" v-show="isUpload && show">{{this.imgAlt}}</div>
-          <div class="text" v-show="show && !isUpload">添加题图</div>
-        </transition>
+        <transition-group name="fade">
+          <div class="img_alt" v-show="isUpload && show" key="1">{{this.imgAlt}}</div>
+          <div class="text" v-show="show && !isUpload" key="2">添加题图</div>
+        </transition-group>
       </label>
     </div>
     <div class="input_wrapper">
