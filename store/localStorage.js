@@ -27,8 +27,5 @@ export const mutations = {
   },
   syncList(state, items) {
     state.listNum = items
-  },
-  clearContent(state) {
-    state.listContent = {}
   }
 }

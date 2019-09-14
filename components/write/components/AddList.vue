@@ -42,7 +42,6 @@ export default {
       boxShow: true,
       inputText: true,
       content: '',
-      cacheTime: '',
       items: [{
         desc: '重要', icon: '&#xe61f;', fixed: false
       },{
@@ -115,12 +114,6 @@ export default {
         return this.inputText ? 'input_list' : 'input_list input_text'
       }else {
         return this.subTitle ? 'input_list input_subtitle' : 'input_list'
-      }
-    },
-    contentObj() {
-      return {
-        id: this.id,
-        content: this.content
       }
     },
     _id() {

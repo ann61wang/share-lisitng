@@ -141,7 +141,6 @@ export default {
     clearComfirm() {
       this.items = [{component: 'add-list', id: 0}]
       this.count = 0
-      this.clearContent()
       this.syncList(this.copyItems)
       this.isClearAll = false
       setTimeout(() => { if(this.$refs.list[0].content) this.$refs.list[0].content = '' }, 500)
@@ -160,9 +159,7 @@ export default {
     },
     ...mapMutations({
       changeImgAlt: 'localStorage/changeImgAlt',
-      syncList: 'localStorage/syncList',
-      clearContent: 'localStorage/clearContent',
-      syncContent: 'localStorage/syncContent'
+      syncList: 'localStorage/syncList'
     })
   },
   computed: {

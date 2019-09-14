@@ -47,7 +47,9 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
     '@nuxtjs/style-resources',
-    'nuxt-vuex-localstorage'
+    ['nuxt-vuex-localstorage', {
+      mode: 'debug'
+    }]
   ],
   styleResources: {
     stylus: ['./assets/styles/varibles.styl', './assets/styles/mixins.styl']
