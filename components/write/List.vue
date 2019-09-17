@@ -5,7 +5,7 @@
         <button class="btn btn-default icon_btn"
           v-for="(btn, index) in btns"
           :key="btn.title"
-          :title="btn.icon"
+          :title="btn.title"
           @click.prevent="handleBtnClick(index)"
         >
           <span class="iconfont" v-html="btn.icon"></span>
@@ -143,7 +143,7 @@ export default {
       this.count = 0
       this.syncList(this.copyItems)
       this.isClearAll = false
-      setTimeout(() => { if(this.$refs.list[0].content) this.$refs.list[0].content = '' }, 500)
+      setTimeout(() => { if(this.$refs.list[0].content) this.$refs.list[0].content = '' }, 450)
       try {
         Object.keys(localStorage).forEach((item) => {
           if(!isNaN(Number(item))) {

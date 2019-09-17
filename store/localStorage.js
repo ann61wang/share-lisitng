@@ -5,8 +5,10 @@ export const state = () => ({
     imgAlt: '',
     imgSrc: '',
     titleCache: '',
-    descCache: ''
+    descCache: '',
+    expire: 2
   },
+  expire: 2
 })
 
 export const mutations = {

@@ -7,7 +7,7 @@
   "config": {
     "nuxt": {
       "host": "0.0.0.0",
-      "port": "3000"
+      "port": "3030"
     }
   },
   "scripts": {
@@ -21,10 +21,11 @@
     "@nuxtjs/style-resources": "^1.0.0",
     "axios": "^0.19.0",
     "bootstrap": "^3.3.7",
-    "bootstrap-vue": "^2.0.0-rc.11",
     "cross-env": "^5.2.0",
-    "express": "^4.16.4",
+    "element-ui": "^2.12.0",
     "jquery": "^3.4.1",
+    "js-base64": "^2.5.1",
+    "js-sha256": "^0.9.0",
     "nuxt": "^2.0.0",
     "nuxt-vuex-localstorage": "^1.2.6",
     "popper.js": "^1.15.0",

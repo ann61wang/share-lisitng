@@ -27,7 +27,8 @@ module.exports = {
     'bootstrap/dist/css/bootstrap.css',
     '@/assets/styles/common.css',
     '@/assets/styles/iconfont.css',
-    'swiper/dist/css/swiper.css'
+    'swiper/dist/css/swiper.css',
+    'element-ui/lib/theme-chalk/index.css'
 
   ],
   /*
@@ -35,6 +36,7 @@ module.exports = {
   */
   plugins: [
     '~plugins/bootstrap.js',
+    '~plugins/element-ui.js',
     { src: '~plugins/vue-swiper.js', ssr: false },
     { src: '~plugins/vue-draggable.js', ssr: false }
   ],
@@ -43,7 +45,6 @@ module.exports = {
   */
   modules: [
     // Doc: https://bootstrap-vue.js.org/docs/
-    'bootstrap-vue/nuxt',
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
     '@nuxtjs/style-resources',
@@ -59,7 +60,7 @@ module.exports = {
   },
   proxy: {
     '/api': {
-      target: 'http://localhost:3000',
+      target: 'http://localhost:3030',
       pathRewrite: {
         '^/api' : '/mock'
       }
@@ -72,7 +73,8 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
-    vendor: ['jquery', 'bootstrap', 'vuedraggable'],
+    //防止被多次打包
+    vendor: ['jquery', 'bootstrap', 'vuedraggable', 'element-ui'],
     plugins: [
       // set shortcuts as global for bootstrap
       new webpack.ProvidePlugin({
