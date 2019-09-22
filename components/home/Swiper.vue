@@ -3,7 +3,8 @@
     <no-ssr>
       <swiper :options="swiperOption" ref="mySwiper">
         <swiper-slide v-for="(page, index) of pages" :key="index">
-          <nuxt-link tag="div" class="category" v-for="(item, index) of page" :key="item.id" :to="'/collections/' + item.id">
+          <nuxt-link tag="div" class="category" v-for="(item, index) of page" :key="item.id" :to="'/collections/' + item.title">
+            <div class="category_title">{{item.title}}</div>
             <img class="category-img adaptive_img" :src="item.imgUrl">
           </nuxt-link>
         </swiper-slide>
@@ -39,39 +40,39 @@ export default {
       },
       imgs: [{
         id: "0001",
-        title: "travel",
+        title: "旅游",
         imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
       },{
         id: "0002",
-        title: "education",
+        title: "教育",
         imgUrl: "https://images.pexels.com/photos/2531709/pexels-photo-2531709.jpeg?auto=compress&crop=focalpoint&cs=tinysrgb&fit=crop&h=350.0&sharp=10&w=1400"
       },{
         id: "0003",
-        title: "life",
+        title: "体育",
         imgUrl: "https://images.pexels.com/photos/2064357/pexels-photo-2064357.jpeg?cs=srgb&dl=fruit-milk-splash-2064357.jpg&fm=jpg"
       },{
         id: "0004",
-        title: "work",
+        title: "工作",
         imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
       },{
         id: "0005",
-        title: "study",
+        title: "梦想",
         imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
       },{
         id: "0006",
-        title: "happy",
+        title: "电影",
         imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
       },{
         id: "0007",
-        title: "book",
+        title: "娱乐",
         imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
       },{
         id: "0008",
-        title: "movie",
+        title: "美食",
         imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
       },{
         id: "0009",
-        title: "baby",
+        title: "其他",
         imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
      }]
     }
@@ -169,6 +170,15 @@ export default {
     .category
       display: inline-block
       cursor: pointer
+      position: relative
+      .category_title
+        position: absolute
+        left: 7.5rem
+        top: 2.4rem
+        z-index: 2
+        font-size: 1.8rem
+        font-weight: 600
+        color: #fff
       @media (max-width: 37.5rem)
         .adaptive_img
           height: 4.8rem

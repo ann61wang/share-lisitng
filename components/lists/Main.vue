@@ -1,21 +1,20 @@
 <template lang="html">
   <section class="section_max_width">
     <div class="wrapper">
-      <h1 class="section_title_large">Live Listing: How to Make a Checklist on Facebook Go Viral!</h1>
-      <p class="description">Get your Facebook followers and friends to engage with you, your brand, or business, by asking for their advice and help completing your checklist.</p>
+      <h1 class="section_title_large" v-text="listData.title"></h1>
+      <p class="description" v-text="listData.desc"></p>
       <div class="section_img">
-        <img src="https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500" alt="">
+        <img :src="listData.imgSrc" :alt="listData.imgAlt">
       </div>
+
       <ul class="list_checkboxes">
-        <li class="panel">Pick an easy checklist topic and title so everyone can share ideas (50 Places to Visit, things to do,etc)</li>
-        <li class="panel">Pick an easy checklist topic and title so everyone can share ideas (50 Places to Visit, things to do,etc)</li>
-        <li class="panel">Pick an easy checklist topic and title so everyone can share ideas (50 Places to Visit, things to do,etc)</li>
-        <li class="panel">Pick an easy checklist topic and title so everyone can share ideas (50 Places to Visit, things to do,etc)</li>
-        <li class="panel">Pick an easy checklist topic and title so everyone can share ideas (50 Places to Visit, things to do,etc)</li>
-        <li class="panel">Pick an easy checklist topic and title so everyone can share ideas (50 Places to Visit, things to do,etc)</li>
-        <li class="panel">Pick an easy checklist topic and title so everyone can share ideas (50 Places to Visit, things to do,etc)</li>
-        <li class="panel">Pick an easy checklist topic and title so everyone can share ideas (50 Places to Visit, things to do,etc)</li>
+        <li :class="item.liClassName" v-for="(item,index) of listData.listMessage" :key="index">
+          <input type="checkbox" class="input_checkbox" :id="index">
+          <label :for="index" v-show="!item.labelShow.subTitle && !item.labelShow.numMaker && item.labelShow.boxShow"><span></span></label>
+          <span :class="item.spanClassName" v-text="item.content"></span>
+        </li>
       </ul>
+
       <button class="btn btn-default collect_btn">Copy this checklist</button>
       <div class="level">
         <nuxt-link class="level_item" to="/"><span class="iconfont">&#xe62c;</span>  174 copies saved<span class="spacer"></span></nuxt-link>
@@ -26,12 +25,52 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import axios from 'axios'
+let Base64 = require("js-base64").Base64
+
 export default {
-  name: 'ListMain'
+  name: 'ListMain',
+  props: {
+    listData: Object
+  },
+  // data() {
+  //   return {
+  //     title: '',
+  //     desc: '',
+  //     imgSrc: '',
+  //     imgAlt: '',
+  //     listMessage: []
+  //   }
+  // },
+  // methods: {
+  //   getListInfo() {
+  //     axios.get('http://localhost:3000/users/' + this.session + '/tasks/' + this.$route.params.id)
+  //       .then(this.handleGetInfo).catch(reason => console.log(reason))
+  //   },
+  //   handleGetInfo(res) {
+  //     let data = res.data
+  //     this.title = data.title
+  //     this.desc = data.desc
+  //     this.imgSrc = Base64.decode(data.imgSrc)
+  //     this.imgAlt = data.imgAlt
+  //     this.listMessage = data.listMessage
+  //   }
+  // },
+  computed: {
+    ...mapState({
+      session: state => state.localStorage.session
+    })
+  },
+  // mounted() {
+  //   this.getListInfo()
+  // }
 }
 </script>
 
 <style lang="stylus" scoped>
+  @import '~assets/styles/list.styl'
+
   .section_max_width
     max-width: 80rem
     margin: 0 auto
@@ -50,14 +89,6 @@ export default {
         height: 100%
         display: block
         object-fit: cover
-    .list_checkboxes
-      background: transparent
-      .panel
-        list-style: none
-        margin-left: -3rem
-        margin-bottom: 3rem
-        font-size: 1.6rem
-        font-weight: 500
     .collect_btn
       display: block
       margin: 0 auto

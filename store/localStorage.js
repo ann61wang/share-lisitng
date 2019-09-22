@@ -1,6 +1,8 @@
 
 export const state = () => ({
   listNum: [],
+  session: '',
+  labelShow: {},
   test: {
     imgAlt: '',
     imgSrc: '',
@@ -29,5 +31,20 @@ export const mutations = {
   },
   syncList(state, items) {
     state.listNum = items
+  },
+  haveSession(state, id) {
+    state.session = id
+  },
+  syncLabelShow(state, obj) {
+    state.labelShow.subTitle = obj.subTitle
+    state.labelShow.numMaker = obj.numMaker
+    state.labelShow.boxShow = obj.boxShow
+  },
+  clearCacheAll(state) {
+    state.labelShow = {}
+    state.test = {}
+  },
+  clearSession(state) {
+    state.session = ''
   }
 }

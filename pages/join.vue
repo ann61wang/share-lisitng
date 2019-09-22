@@ -19,6 +19,7 @@
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button>
       </el-form-item>
+      <div>已有账号？<nuxt-link to="/login">去登陆</nuxt-link></div>
     </el-form>
     <common-footer></common-footer>
   </div>
@@ -109,6 +110,8 @@ export default {
 
 <style lang="stylus" scoped>
   .join_form
-    margin: 18.5rem auto
+    margin: 0 auto
+    margin-top: 10rem
+    margin-bottom: 4rem
     max-width: 50rem
 </style>

@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
+
 export default {
   name: 'AddList',
   props: ['index', 'id'],
@@ -106,7 +108,10 @@ export default {
         default:
           return
       }
-    }
+    },
+    ...mapMutations({
+      syncLabelShow: 'localStorage/syncLabelShow'
+    })
   },
   computed: {
     name() {
@@ -118,6 +123,16 @@ export default {
     },
     _id() {
       return String(this.id)
+    },
+    ...mapState({
+      labelShow: state => state.localStorage.test.labelShow
+    }),
+    labelShowObj() {
+      return {
+        subTitle: this.subTitle,
+        numMaker: this.numMaker,
+        boxShow: this.boxShow
+      }
     }
   },
   watch: {
@@ -125,12 +140,22 @@ export default {
       try {
         if(this.content != undefined) localStorage[this._id] = this.content
       } catch (e) {}
+    },
+    subTitle() {
+      this.syncLabelShow(this.labelShowObj)
+    },
+    numMaker() {
+      this.syncLabelShow(this.labelShowObj)
+    },
+    boxShow() {
+      this.syncLabelShow(this.labelShowObj)
     }
   },
   mounted() {
     try {
       if(localStorage[this._id]) this.content = localStorage[this._id]
     } catch (e) {}
+    this.syncLabelShow(this.labelShowObj)
   }
 }
 </script>

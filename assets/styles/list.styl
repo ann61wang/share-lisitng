@@ -1,0 +1,60 @@
+.list_checkboxes
+  margin-top: 4rem
+  min-height: 3rem
+  list-style-type: none
+  word-wrap: break-word
+  counter-reset: item
+  .list_maker::before
+    content: counter(item)
+    padding: .3rem 2rem .3rem .8rem
+    background: linear-gradient(to right, #f36, #f09)
+    font-size: 1.5rem
+    clip-path: polygon(0% 0%, 75% 0, 75% 51%, 100% 52%, 75% 80%, 75% 100%, 0 100%)
+    border-radius: .5rem
+    color: #fff
+    text-shadow: .1rem .1rem .1rem rgba(#09f, .5)
+  .break
+    counter-reset: item -1
+  .margin_top
+    margin-top: 3rem
+  li
+    counter-increment: item
+    position: relative
+    margin-bottom: 1rem
+    .input_checkbox
+      display: none
+    label
+      display: inline-block
+      width: 2rem
+      height: 2rem
+      margin-right: .5rem
+      margin-top: .3rem
+      vertical-align: middle
+      border: .1rem solid #999
+      border-radius: $borderRadius
+    input[type="checkbox"]:checked+label>span
+      display: block
+      width: .6rem
+      height: 1.2rem
+      border-color: #666
+      border-style: solid
+      border-width: 0 .2rem .3rem 0
+      transform: rotate(45deg)
+      margin-left: .6rem
+      margin-top: .1rem
+    .input_list
+      display: inline-block
+      width: calc(100% - 5.3rem)
+      min-height: 3rem
+      line-height: 3rem
+      vertical-align: top
+      margin-top: -.2rem
+      outline: none
+      border: none
+      padding: 0 .2rem
+    .input_text
+      font-weight: $fontWeight
+      color: red
+    .input_subtitle
+      font-size: 1.8rem
+      font-weight: $fontWeight

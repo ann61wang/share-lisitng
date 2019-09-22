@@ -2,8 +2,8 @@
   <div class="body_min_width">
     <common-header></common-header>
     <div class="container-fluid list_page">
-      <list-follow></list-follow>
-      <list-main></list-main>
+      <list-follow :makerInfo="makerInfo"></list-follow>
+      <list-main :listData="listData"></list-main>
       <list-relate></list-relate>
     </div>
     <common-footer></common-footer>
@@ -16,6 +16,9 @@ import ListFollow from '~/components/lists/Follow'
 import ListMain from '~/components/lists/Main'
 import ListRelate from '~/components/lists/Relate'
 import CommonFooter from '~/components/common/Footer'
+import axios from 'axios'
+import { mapState } from 'vuex'
+
 export default {
   name: 'Lists',
   components: {
@@ -24,6 +27,51 @@ export default {
     ListMain,
     ListRelate,
     CommonFooter
+  },
+  async asyncData ({ store, params, query, error }) {
+    let url = ''
+    if(process.env.VUE_ENV === 'client') {
+      url = 'http://localhost:3000/users/' + store.state.localStorage.session + '/tasks/' + params.id
+    }else {
+      //当刷新时，store 的值为空，所以使用路由传参的方式来获取 vuex 中的值
+      url = 'http://localhost:3000/users/' + query.user +'/tasks/' + params.id
+    }
+    return axios.get(url)
+    .then((res) => {
+      let data = res.data
+      if(data.name === 'CastError') {
+        error({ statusCode: 404, message: '页面没有找到' })
+      }else {
+        return {
+          maker: data.maker,
+          title: data.title,
+          desc: data.desc,
+          imgSrc: data.imgSrc,
+          imgAlt: data.imgAlt,
+          listMessage: data.listMessage
+        }
+      }
+    })
+    .catch((e) => {
+      error({ statusCode: 404, message: '页面没有找到' })
+    })
+  },
+  computed: {
+    listData() {
+      return {
+        title: this.title,
+        desc: this.desc,
+        imgSrc: this.imgSrc,
+        imgAlt: this.imgAlt,
+        listMessage: this.listMessage
+      }
+    },
+    makerInfo() {
+      return this.maker
+    },
+    ...mapState({
+      session: state => state.localStorage.session
+    })
   }
 }
 </script>

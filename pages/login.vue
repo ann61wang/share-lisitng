@@ -16,6 +16,7 @@
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">登陆</el-button>
       </el-form-item>
+      <div>没有账号？<nuxt-link to="/join">去注册</nuxt-link></div>
     </el-form>
     <common-footer></common-footer>
   </div>
@@ -25,6 +26,7 @@
 import CommonHeader from '~/components/common/Header'
 import CommonFooter from '~/components/common/Footer'
 import axios from 'axios'
+import { mapState,mapMutations } from 'vuex'
 
 let Base64 = require("js-base64").Base64
 let sha256 = require("js-sha256").sha256
@@ -69,6 +71,7 @@ export default {
       let data = res.data
       if(data != null) {
         if(data.pass == this.userInfo.pass) {
+          this.haveSession(data._id)
           this.$router.push('/')
         }else {
           this.open2()
@@ -90,7 +93,10 @@ export default {
         message: '密码不正确！',
         type: 'error'
       });
-    }
+    },
+    ...mapMutations({
+      haveSession: "localStorage/haveSession"
+    })
   },
   computed: {
     userInfo() {
@@ -98,13 +104,21 @@ export default {
         name: Base64.encode(this.ruleForm.name),
         pass: sha256(this.ruleForm.pass)
       }
-    }
+    },
+    ...mapState({
+      session: state => state.localStorage.session
+    })
+  },
+  mounted() {
+    console.log(this.session)
   }
 }
 </script>
 
 <style lang="stylus" scoped>
   .login_form
-    margin: 18.5rem auto
+    margin: 0 auto
+    margin-top: 14rem
+    margin-bottom: 11rem
     max-width: 50rem
 </style>

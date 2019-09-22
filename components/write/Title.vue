@@ -5,6 +5,22 @@
         <label class="iconfont icon_change" title="更换" for="picture">&#xe60b;</label>
         <span class="iconfont icon_clear" title="删除" @click.prevent="clearImg">&#xe612;</span>
       </div>
+
+      <!-- <el-upload
+        class="upload-demo"
+        drag
+        :action="actionPath"
+        accept="image/jpeg,image/png"
+        :before-upload="beforeAvatarUpload"
+        :data="postData"
+        :on-success="handleAvatarSuccess"
+      >
+        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+        <i v-else class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip" slot="tip">只能上传 jpg/png 文件，且不超过 5MB</div>
+      </el-upload> -->
+
       <label :class="isUpload ? 'uploade_picture' : 'uploade_picture cancel_pointer'" :for="upload">
         <div class="img_area" v-show="imgSrc">
           <img :src="cacheImgSrc" :alt="imgAlt">
@@ -16,6 +32,8 @@
           <div class="text" v-show="show && !isUpload" key="2">添加题图</div>
         </transition-group>
       </label>
+
+
     </div>
     <div class="input_wrapper">
       <textarea class="input_title" rows="1" spellcheck="false" placeholder="请输入标题（最多输入30字）" v-model="titleValue">
@@ -32,6 +50,8 @@
 
 <script>
 import { mapState, mapMutations, mapGetters } from 'vuex'
+import { genUpToken } from '@/assets/styles/qiniuToken'
+
 export default {
   name: 'WriteTitle',
   data() {
@@ -42,10 +62,32 @@ export default {
       upload: 'picture',
       cacheImgSrc: '',
       titleValue: '',
-      descValue: ''
+      descValue: '',
+
+      actionPath:'https://upload.qiniup.com',
+      postData: {},
+      imageUrl: ''
     }
   },
   methods: {
+    beforeAvatarUpload(file) {
+      const isAllow = true
+      const isLt2M = file.size / 1024 / 1024 < 5
+
+      if(file.type !== 'image/jpeg' || file.type !== 'image/png')
+        isAllow = false
+
+      if (!isAllow)
+        this.$message.error('上传头像图片只能是 JPG/PNG 格式!')
+
+      if (!isLt2M)
+        this.$message.error('上传头像图片大小不能超过 5MB!')
+
+      return isAllow && isLt2M
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw)
+    },
     handleDivMouseEnter() {
       this.show = true
       this.isImgChange = true
@@ -119,11 +161,24 @@ export default {
       this.titleValue = this.titleCache
       this.descValue = this.descCache
     }
-  }
+  },
+  // created() {
+  //   var policy = {}
+  //   var bucketName = 'zhizhuoedu'
+  //   var AK ='你的七牛云AK'
+  //   var SK = '你的七牛云SK'
+  //   var deadline = Math.round(new Date().getTime() / 1000) + 3600
+  //   policy.scope = bucketName
+  //   policy.deadline = deadline
+  //   this.postData.token = genUpToken(AK, SK, policy)
+  // }
 }
 </script>
 
 <style lang="stylus" scoped>
+  .wrapper >>> .el-upload__input
+    display: none
+
   .wrapper
     margin: 10rem auto 0
     cursor: pointer

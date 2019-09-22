@@ -43,6 +43,27 @@
         </component>
       </transition-group>
     </draggable>
+
+
+    <el-button class="save_btn" @click="submitDate">
+      保存
+    </el-button>
+    <el-dropdown @command="handleCommand">
+      <span class="el-dropdown-link">
+        清单类别<i class="el-icon-arrow-down el-icon--right"></i>
+      </span>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item command="旅游">旅游</el-dropdown-item>
+        <el-dropdown-item command="教育">教育</el-dropdown-item>
+        <el-dropdown-item command="电影">电影</el-dropdown-item>
+        <el-dropdown-item command="娱乐">娱乐</el-dropdown-item>
+        <el-dropdown-item command="工作">工作</el-dropdown-item>
+        <el-dropdown-item command="梦想">梦想</el-dropdown-item>
+        <el-dropdown-item command="体育">体育</el-dropdown-item>
+        <el-dropdown-item command="美食">美食</el-dropdown-item>
+        <el-dropdown-item command="其他" divided>其他(默认)</el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
   </div>
 </template>
 
@@ -50,6 +71,8 @@
 import AddList from '~/components/write/components/AddList'
 import draggable from 'vuedraggable'
 import { mapState, mapMutations } from 'vuex'
+import axios from 'axios'
+let Base64 = require("js-base64").Base64
 
 export default {
   name: 'WriteList',
@@ -82,6 +105,48 @@ export default {
     }
   },
   methods: {
+    handleCommand(command) {
+      this.listData.category = command
+    },
+    submitDate() {
+      if(!this.session) {
+        this.$router.push('/login')
+        return
+      }else {
+        if(!this.title) {
+          this.$message.error('标题不能为空')
+          return
+        }else if(!this.$refs.list[0].$el.children[3].innerText){
+          this.$message.error('第一条的内容不能为空')
+          return
+        }else {
+          this.listData.imgSrc = this.imgSrc
+          this.listData.imgAlt = this.imgAlt
+          this.listData.title = this.title
+          this.listData.desc = this.desc
+          this.listData.maker = this.session
+          this.$refs.list.forEach(item => {
+            this.listData.listMessage.push({
+              liClassName: item.$el.className,
+              spanClassName: item.$el.children[3].className,
+              content: item.$el.children[3].innerText,
+              labelShow: this.labelShow
+            })
+          })
+          axios.post('http://localhost:3000/users/' + this.session + '/tasks/', this.listData)
+            .then(this.handlePostInfo).catch(reason => console.log(reason))
+        }
+      }
+    },
+    handlePostInfo(res) {
+      let data = res.data
+      let id = data._id
+      let user = data.maker
+      this.clearCacheAll()
+      this.clearComfirm()
+      setTimeout(() => location.reload(), 50)
+      this.$router.push({name: 'lists-id', params: { id }, query: { user }})
+    },
     add: async function (index,name) {
       this.count++
       this.items.splice(index+1, 0, { component: name, id: this.count })
@@ -159,7 +224,8 @@ export default {
     },
     ...mapMutations({
       changeImgAlt: 'localStorage/changeImgAlt',
-      syncList: 'localStorage/syncList'
+      syncList: 'localStorage/syncList',
+      clearCacheAll: 'localStorage/clearCacheAll'
     })
   },
   computed: {
@@ -178,8 +244,23 @@ export default {
     },
     ...mapState({
       listNum: state => state.localStorage.listNum,
-      imgSrc: state => state.localStorage.test.imgSrc
-    })
+      imgSrc: state => state.localStorage.test.imgSrc,
+      imgAlt: state => state.localStorage.test.imgAlt,
+      title: state => state.localStorage.test.titleCache,
+      desc: state => state.localStorage.test.descCache,
+      labelShow: state => state.localStorage.labelShow,
+      session: state => state.localStorage.session
+    }),
+    listData() {
+      return {
+        img: '',
+        title: '',
+        desc: '',
+        maker: '',
+        category: '其他',
+        listMessage: []
+      }
+    }
   },
   watch: {
     isPicName() {
@@ -275,4 +356,9 @@ export default {
     .ghostClass
       opacity: .2
       background: red
+  .save_btn
+    margin-top: 4rem
+    background: $bgBtnColor
+    color: $whiteTextColor
+    font-weight: $fontWeight
 </style>

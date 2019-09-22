@@ -5,10 +5,10 @@
       <img src="https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500" alt="">
     </div>
     <section class="hero_content">
-      <h1 class="hero_title">Use lists to live the life you want happy happy happy</h1>
+      <h1 class="hero_title">用清单让你的生活变得简单且高效，过上期待的生活</h1>
       <div>
         <div class="hero_search">
-          <input type="search" placeholder="Search keyword">
+          <input type="search" placeholder="输入关键词">
           <nuxt-link tag="div" to="#" class="glyphicon glyphicon-search search_icon"></nuxt-link>
         </div>
         <div class="search_tags">Suggested: notebook  gym  yoga  writing  paper  working  more</div>

@@ -28,8 +28,8 @@ module.exports = {
     '@/assets/styles/common.css',
     '@/assets/styles/iconfont.css',
     'swiper/dist/css/swiper.css',
-    'element-ui/lib/theme-chalk/index.css'
-
+    'element-ui/lib/theme-chalk/index.css',
+    'element-ui/lib/theme-chalk/display.css'
   ],
   /*
   ** Plugins to load before mounting the App
@@ -48,19 +48,20 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
     '@nuxtjs/style-resources',
-    ['nuxt-vuex-localstorage', {
-      mode: 'debug'
-    }]
+    'nuxt-vuex-localstorage'
   ],
   styleResources: {
     stylus: ['./assets/styles/varibles.styl', './assets/styles/mixins.styl']
   },
   axios: {
-    proxy: true
+    proxy: true,
+    prefix: '/api',       // 增加请求标识
+    credentials: true
   },
   proxy: {
     '/api': {
       target: 'http://localhost:3030',
+      changeOrigin: true,
       pathRewrite: {
         '^/api' : '/mock'
       }

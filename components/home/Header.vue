@@ -3,7 +3,7 @@
     <nav class="navbar navbar-default navbar_container_nav nav_md nav_mobile" role="navigation" :style="backgroundStyle">
       <div class="navbar_container_div">
         <div class="navbar-header nav_header">
-          <button class="navbar-toggle" type="button" data-toggle="collapse">
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#menu">
             <span class="sr-only">Toggle Navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -12,22 +12,22 @@
           <div class="navbar-brand navbar_container_search search_md search_mobile">
             <nuxt-link tag="div" to="/" class="navbar_logo">
               <div class="iconfont logo_icon logo_icon_mobile">🧾</div>
-              <div class="logo_name logo_name_mobile">ShareL</div>
+              <div class="logo_name logo_name_mobile">共享清单</div>
             </nuxt-link>
             <div class="navbar_search search_none" :style="displayStyle">
-              <input type="search" placeholder="Search keyword">
+              <input type="search" placeholder="输入关键词">
               <!-- <span class="iconfont">&#xe60e;</span> -->
               <nuxt-link tag="div" to="#" class="glyphicon glyphicon-search search_icon"></nuxt-link>
             </div>
           </div>
         </div>
-        <div class="collapse navbar-collapse navbar_container_item">
+        <div class="collapse navbar-collapse navbar_container_item" id="menu">
           <ul class="nav navbar-nav navbar-right">
-            <li><nuxt-link to="#" class="navbar_item_content">SomeL</nuxt-link></li>
-            <li><nuxt-link to="#" class="navbar_item_content">SomeL</nuxt-link></li>
-            <li><nuxt-link to="#" class="navbar_item_content">SomeL</nuxt-link></li>
-            <li><nuxt-link to="#" class="navbar_item_content">...</nuxt-link></li>
-            <li><nuxt-link to="/write" class="navbar_item_content navbar_item_btn">Publish</nuxt-link></li>
+            <li><nuxt-link to="/login" class="navbar_item_content" v-show="!session">登陆</nuxt-link></li>
+            <li><nuxt-link to="/join" class="navbar_item_content" v-show="!session">注册</nuxt-link></li>
+            <li><nuxt-link :to="`/user/${session}`" class="navbar_item_content" v-show="session">个人中心</nuxt-link></li>
+            <li @click="handleLoginOut"><nuxt-link to="/" class="navbar_item_content" v-show="session">登出</nuxt-link></li>
+            <li><nuxt-link to="/write" class="navbar_item_content navbar_item_btn">发布清单</nuxt-link></li>
           </ul>
         </div>
       </div>
@@ -36,8 +36,9 @@
 </template>
 
 <script>
+import { mapState,mapMutations } from 'vuex'
 export default {
-  name: 'CommonHeader',
+  name: 'HomeHeader',
   data() {
     return {
       scrollTop: 0,
@@ -59,7 +60,19 @@ export default {
         this.backgroundStyle.background = 'transparent'
         this.displayStyle.display = 'none'
       }
+    },
+    ...mapMutations({
+      clearSession: 'localStorage/clearSession'
+    }),
+    handleLoginOut() {
+      this.clearSession()
+      console.log(this.session)
     }
+  },
+  computed: {
+    ...mapState({
+      session: state => state.localStorage.session
+    })
   },
   activated() {
     window.addEventListener('scroll', this.handleScroll)
@@ -90,7 +103,7 @@ export default {
           background: transparent
         @media (min-width: 47.99rem)
           .search_md
-            width: calc(100vw - 39.5rem) !important
+            width: calc(100vw - 28rem) !important
         @media (max-width: 47.99rem)
           .search_mobile
             width: calc(100vw - 5rem) !important
