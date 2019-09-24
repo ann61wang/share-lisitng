@@ -2,7 +2,7 @@
   <div class="body_min_width">
     <common-header></common-header>
     <div class="container-fluid wrapper">
-      <write-title ref="title"></write-title>
+      <write-title></write-title>
       <write-list></write-list>
     </div>
     <div class="margin"></div>

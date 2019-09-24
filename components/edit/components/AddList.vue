@@ -10,7 +10,7 @@
     </transition>
     <input type="checkbox" class="input_checkbox" :id="this.index">
     <label :for="this.index" v-show="!subTitle && !numMaker && boxShow"><span></span></label>
-    <div contenteditable="true" :class="name" v-text="content" @blur="content = $event.target.innerText"></div>
+    <div contenteditable="true" :class="inputClassName" v-text="content" @blur="content = $event.target.innerText"></div>
     <transition-group name="fade">
       <span class="iconfont icon_more" v-show="show" @click="isShow=true" key="nowIndex">&#xe73a;</span>
       <div v-show="isShow" class="choice_wrapper" @mouseleave="isShow=false" key="nowIndex+1">
@@ -32,7 +32,7 @@
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  name: 'AddList',
+  name: 'EditAddList',
   props: ['index', 'id'],
   data() {
     return {
@@ -110,22 +110,31 @@ export default {
       }
     },
     ...mapMutations({
-      syncLabelShow: 'localStorage/syncLabelShow'
+      syncLabelShow: 'sessionStorage/syncLabelShow',
+      syncContent: 'sessionStorage/syncContent'
     })
   },
   computed: {
-    name() {
-      if(!this.subTitle) {
-        return this.inputText ? 'input_list' : 'input_list input_text'
-      }else {
-        return this.subTitle ? 'input_list input_subtitle' : 'input_list'
+    contentObj() {
+      return {
+        id: String(this.id),
+        content: this.content
       }
     },
-    _id() {
-      return String(this.id)
+    inputClassName: {
+      get() {
+        if(!this.subTitle) {
+          return this.inputText ? 'input_list' : 'input_list input_text'
+        }else {
+          return this.subTitle ? 'input_list input_subtitle' : 'input_list'
+        }
+      },
+      set(val) {}
     },
     ...mapState({
-      labelShow: state => state.localStorage.labelShow
+      listCache: state => state.sessionStorage.listCache,
+      labelShow: state => state.sessionStorage.labelShow,
+      contentCache: state => state.sessionStorage.content
     }),
     labelShowObj() {
       return {
@@ -137,9 +146,7 @@ export default {
   },
   watch: {
     content() {
-      try {
-        if(this.content != undefined) localStorage[this._id] = this.content
-      } catch (e) {}
+      this.syncContent(this.contentObj)
     },
     subTitle() {
       this.syncLabelShow(this.labelShowObj)
@@ -152,10 +159,21 @@ export default {
     }
   },
   mounted() {
-    try {
-      if(localStorage[this._id]) this.content = localStorage[this._id]
-    } catch (e) {}
+    if(this.id < this.listCache.length) {
+      this.content = this.listCache[this.index].content
+      // this.liClassName = this.listData[this.index].liClassName
+      // this.inputClassName = this.listData[this.index].spanClassName
+      this.subTitle = this.listCache[this.index].labelShow.subTitle
+      this.numMaker = this.listCache[this.index].labelShow.numMaker
+      this.boxShow = this.listCache[this.index].labelShow.boxShow
+    }
     this.syncLabelShow(this.labelShowObj)
+  },
+  activated() {
+    if(this.id === 0) {
+      this.content = this.listCache[0].content
+      this.syncLabelShow(this.labelShowObj)
+    }
   }
 }
 </script>

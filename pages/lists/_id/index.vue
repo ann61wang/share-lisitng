@@ -33,7 +33,7 @@ export default {
     if(process.env.VUE_ENV === 'client') {
       url = 'http://localhost:3000/users/' + store.state.localStorage.session + '/tasks/' + params.id
     }else {
-      //当刷新时，store 的值为空，所以使用路由传参的方式来获取 vuex 中的值
+      //当刷新时，store 的值为空，所以使用路由传参的方式来获取 vuex 中 session 的值
       url = 'http://localhost:3000/users/' + query.user +'/tasks/' + params.id
     }
     return axios.get(url)

@@ -46,7 +46,7 @@
 
 
     <el-button class="save_btn" @click="submitDate">
-      保存
+      更新
     </el-button>
     <el-dropdown @command="handleCommand">
       <span class="el-dropdown-link">
@@ -68,14 +68,14 @@
 </template>
 
 <script>
-import AddList from '~/components/write/components/AddList'
+import AddList from '~/components/edit/components/AddList'
 import draggable from 'vuedraggable'
 import { mapState, mapMutations } from 'vuex'
 import axios from 'axios'
 let Base64 = require("js-base64").Base64
 
 export default {
-  name: 'WriteList',
+  name: 'EditList',
   components: {
     AddList,
     draggable
@@ -113,17 +113,17 @@ export default {
         this.$router.push('/login')
         return
       }else {
-        if(!this.title) {
+        if(!this.test.titleCache) {
           this.$message.error('标题不能为空')
           return
         }else if(!this.$refs.list[0].$el.children[3].innerText){
           this.$message.error('第一条的内容不能为空')
           return
         }else {
-          this.listData.imgSrc = this.imgSrc
-          this.listData.imgAlt = this.imgAlt
-          this.listData.title = this.title
-          this.listData.desc = this.desc
+          this.listData.imgSrc = this.test.imgSrc
+          this.listData.imgAlt = this.test.imgAlt
+          this.listData.title = this.test.titleCache
+          this.listData.desc = this.test.descCache
           this.listData.maker = this.session
           this.$refs.list.forEach(item => {
             this.listData.listMessage.push({
@@ -134,17 +134,15 @@ export default {
               labelShow: this.labelShow
             })
           })
-          axios.post('http://localhost:3000/users/' + this.session + '/tasks/', this.listData)
-            .then(this.handlePostInfo).catch(reason => console.log(reason))
+          axios.put('http://localhost:3000/users/' + this.session + '/tasks/' + this.$route.params.id, this.listData)
+            .then(this.handleUpdateInfo).catch(reason => console.log(reason))
         }
       }
     },
-    handlePostInfo(res) {
+    handleUpdateInfo(res) {
       let data = res.data
       let id = data._id
       let user = data.maker
-      this.clearCacheAll()
-      this.clearComfirm()
       setTimeout(() => location.reload(), 50)
       this.$router.push({name: 'lists-id', params: { id }, query: { user }})
     },
@@ -224,9 +222,10 @@ export default {
       this.inputValue = ''
     },
     ...mapMutations({
-      changeImgAlt: 'localStorage/changeImgAlt',
-      syncList: 'localStorage/syncList',
-      clearCacheAll: 'localStorage/clearCacheAll'
+      changeImgAlt: 'sessionStorage/changeImgAlt',
+      syncList: 'sessionStorage/syncList',
+      syncListCache: 'sessionStorage/syncListCache',
+      clearCacheAll: 'sessionStorage/clearCacheAll'
     })
   },
   computed: {
@@ -244,12 +243,10 @@ export default {
       return this.items.slice()
     },
     ...mapState({
-      listNum: state => state.localStorage.listNum,
-      imgSrc: state => state.localStorage.test.imgSrc,
-      imgAlt: state => state.localStorage.test.imgAlt,
-      title: state => state.localStorage.test.titleCache,
-      desc: state => state.localStorage.test.descCache,
-      labelShow: state => state.localStorage.labelShow,
+      listNum: state => state.sessionStorage.listNum,
+      listCache: state => state.sessionStorage.listCache,
+      test: state => state.sessionStorage.test,
+      labelShow: state => state.sessionStorage.labelShow,
       session: state => state.localStorage.session
     }),
     listData() {
@@ -273,11 +270,18 @@ export default {
      this.syncList(this.copyItems)
    }
   },
-  mounted() {
-    if(this.listNum.length > 1) {
-      this.items = this.listNum
-      this.count = this.listNum.length - 1
+  activated() {
+    if(this.listCache.length && this.count < this.listCache.length-1) {
+      for(var i = 1; i < this.listCache.length; i++) {
+        this.items.push({component: 'add-list', id: i})
+        this.syncList(this.copyItems)
+        this.count++
+      }
     }
+    console.log(this.$refs.list)
+    this.$refs.list.forEach((item) => {
+      console.log(item.id)
+    })
   }
  }
 </script>

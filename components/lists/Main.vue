@@ -8,14 +8,28 @@
       </div>
 
       <ul class="list_checkboxes">
-        <li :class="item.liClassName" v-for="(item,index) of listData.listMessage" :key="index">
-          <input type="checkbox" class="input_checkbox" :id="index">
-          <label :for="index" v-show="!item.labelShow.subTitle && !item.labelShow.numMaker && item.labelShow.boxShow"><span></span></label>
+        <li :class="item.liClassName" v-for="(item,index) of listData.listMessage" :key="item.listId">
+          <input type="checkbox" class="input_checkbox" :id="item.listId">
+          <label :for="item.listId" v-show="!item.labelShow.subTitle && !item.labelShow.numMaker && item.labelShow.boxShow"><span></span></label>
           <span :class="item.spanClassName" v-text="item.content"></span>
         </li>
       </ul>
 
-      <button class="btn btn-default collect_btn">Copy this checklist</button>
+      <button class="btn btn-default collect_btn" v-show="!isMaker">Copy this checklist</button>
+      <el-row v-show="isMaker">
+        <el-button type="primary" icon="el-icon-edit" @click="handleEditBtn" circle></el-button>
+        <el-popover
+          placement="top"
+          width="160"
+          v-model="visible">
+          <p>你确定要删除这个清单吗？</p>
+          <div style="text-align: right; margin: 0">
+            <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+            <el-button type="primary" size="mini" @click="handleDeleteBtn">确定</el-button>
+          </div>
+          <el-button type="danger" icon="el-icon-delete" slot="reference" circle></el-button>
+        </el-popover>
+      </el-row>
       <div class="level">
         <nuxt-link class="level_item" to="/"><span class="iconfont">&#xe62c;</span>  174 copies saved<span class="spacer"></span></nuxt-link>
         <nuxt-link class="level_item" to="/"><span class="iconfont">&#xe62b;</span>  979 views</nuxt-link>
@@ -34,37 +48,40 @@ export default {
   props: {
     listData: Object
   },
-  // data() {
-  //   return {
-  //     title: '',
-  //     desc: '',
-  //     imgSrc: '',
-  //     imgAlt: '',
-  //     listMessage: []
-  //   }
-  // },
-  // methods: {
-  //   getListInfo() {
-  //     axios.get('http://localhost:3000/users/' + this.session + '/tasks/' + this.$route.params.id)
-  //       .then(this.handleGetInfo).catch(reason => console.log(reason))
-  //   },
-  //   handleGetInfo(res) {
-  //     let data = res.data
-  //     this.title = data.title
-  //     this.desc = data.desc
-  //     this.imgSrc = Base64.decode(data.imgSrc)
-  //     this.imgAlt = data.imgAlt
-  //     this.listMessage = data.listMessage
-  //   }
-  // },
+  data() {
+    return {
+      visible: false
+    }
+  },
+  methods: {
+    handleEditBtn() {
+      // setTimeout(() => location.reload(), 50)
+      // this.$router.push('/lists/' + this.$route.params.id + '/edit')
+    },
+    handleDeleteBtn() {
+      this.visible = false
+      axios.delete('http://localhost:3000/users/' + this.session + '/tasks/' + this.$route.params.id + '?user=' + this.$route.query.user)
+      .catch((e) => {
+        error({ statusCode: 404, message: '页面没有找到' })
+      })
+      this.$router.push('/user/' + this.session)
+    }
+  },
   computed: {
     ...mapState({
       session: state => state.localStorage.session
-    })
+    }),
+    isMaker() {
+      if(this.$route.query.user === this.session) {
+        return true
+      }else {
+        return false
+      }
+    }
   },
-  // mounted() {
-  //   this.getListInfo()
-  // }
+  mounted() {
+    console.log(this.listData.listMessage)
+  }
 }
 </script>
 
@@ -89,6 +106,11 @@ export default {
         height: 100%
         display: block
         object-fit: cover
+    .el-row
+      margin: 0 auto
+      margin-top: 10rem
+      margin-bottom: 1.6rem
+      width: 9.5rem
     .collect_btn
       display: block
       margin: 0 auto

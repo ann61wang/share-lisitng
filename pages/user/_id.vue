@@ -4,6 +4,7 @@
     <div class="container-fluid margin_medium">
       <div class="container_max_width">
         <h2>我的所有清单</h2>
+        <div v-show="listArr.length === 0" style="height: 30rem;"></div>
         <div class="row with_gutter">
           <div v-for="(item,index) of listArr" :key="item._id"
             class="column col-xs-12 col-sm-6 col-md-4 col-lg-4"
@@ -32,11 +33,6 @@ export default {
   components: {
     CommonHeader,
     CommonFooter
-  },
-  data() {
-    return {
-      title: ''
-    }
   },
   async asyncData ({ store, params, query, error }) {
     let urlUserInfo = ''

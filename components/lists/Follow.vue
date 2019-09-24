@@ -12,7 +12,7 @@
     </div>
     <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 level_right" style="text-align: right; line-height: 8rem;">
       <button class="btn btn-default right_btn"><span class="iconfont icon_style">&#xe61a;</span>  112 likes</button>
-      <button class="btn btn-default right_btn"><span class="iconfont icon_style">&#xe603;</span>  Collect</button>
+      <!-- <button class="btn btn-default right_btn"><span class="iconfont icon_style">&#xe603;</span>  Collect</button> -->
       <button class="btn btn-default right_btn"><span class="iconfont icon_style">&#xe626;</span>  Share</button>
     </div>
   </section>
