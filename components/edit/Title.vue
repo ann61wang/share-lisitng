@@ -7,9 +7,11 @@
       </div>
 
       <el-upload
+        ref="upload"
         class="upload-demo"
         drag
         :action="actionPath"
+        :show-file-list="false"
         accept="image/jpeg,image/png"
         :before-upload="beforeAvatarUpload"
         :data="postData"
@@ -58,7 +60,6 @@ export default {
     return {
       isUpload: false,
       isImgChange: false,
-      upload: 'file',
       titleValue: '',
       descValue: '',
 
@@ -116,7 +117,6 @@ export default {
       this.clearImage()
       this.imageUrl  = this.imgSrc
       this.isUpload = false
-      this.upload = 'file'
       this.$refs.upload.clearFiles()
     },
     ...mapMutations({
@@ -151,15 +151,17 @@ export default {
     }
   },
   mounted() {
-    if(this.imgSrc) {
-      this.isUpload = true
-      this.imageUrl = this.imgSrc
-      this.imageAlt = this.imgAlt
-    }
-    if(this.titleCache || this.descCache) {
-      this.titleValue = this.titleCache
-      this.descValue = this.descCache
-    }
+    setTimeout(() => {
+      if(this.imgSrc) {
+        this.isUpload = true
+        this.imageUrl = this.imgSrc
+        this.imageAlt = this.imgAlt
+      }
+      if(this.titleCache || this.descCache) {
+        this.titleValue = this.titleCache
+        this.descValue = this.descCache
+      }
+    },1)
   },
   created() {
     var policy = {}
@@ -182,6 +184,10 @@ export default {
       background: $bgGrayColor
       width: 100%
       height: 22rem
+      .avatar
+        width: 100%
+        height: 100%
+        object-fit: cover
     .el-upload__input
       display: none
 

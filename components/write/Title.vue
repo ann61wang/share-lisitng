@@ -60,7 +60,6 @@ export default {
     return {
       isUpload: false,
       isImgChange: false,
-      upload: 'file',
       titleValue: '',
       descValue: '',
 
@@ -118,7 +117,6 @@ export default {
       this.clearImage()
       this.imageUrl  = this.imgSrc
       this.isUpload = false
-      this.upload = 'file'
       this.$refs.upload.clearFiles()
     },
     ...mapMutations({
@@ -184,6 +182,10 @@ export default {
       background: $bgGrayColor
       width: 100%
       height: 22rem
+      .avatar
+        width: 100%
+        height: 100%
+        object-fit: cover
     .el-upload__input
       display: none
 

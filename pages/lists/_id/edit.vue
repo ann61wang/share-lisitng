@@ -80,10 +80,10 @@ export default {
     })
   },
   mounted() {
+    this.insertImg(this.imageObj)
     this.syncListObj(Object.assign({},this.listMessage))
     this.syncValue(this.listTitle)
     this.judgeIsNumMaker(this.isNumMaker)
-    this.insertImg(this.imageObj)
   }
 }
 </script>

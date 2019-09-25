@@ -274,10 +274,7 @@ export default {
    },
    items() {
      this.syncList(this.copyItems)
-   },
-   // isNumMaker() {
-   //   this.judgeIsNumMaker(this.isNumMaker)
-   // }
+   }
   },
   mounted() {
     if(this.listNum.length > 1) {

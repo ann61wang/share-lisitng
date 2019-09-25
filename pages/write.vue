@@ -23,12 +23,10 @@ export default {
   },
   methods: {
     handleClearTitle() {
+      this.$refs.title.clearImg()
       this.$refs.title.titleValue = ''
       this.$refs.title.descValue = ''
     }
-  },
-  mounted() {
-    localStorage.listMessage = {}
   }
 }
 </script>
