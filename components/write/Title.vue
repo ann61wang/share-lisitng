@@ -2,26 +2,28 @@
   <div>
     <div class="wrapper" @mouseenter="handleDivMouseEnter" @mouseleave="handleDivMouseLeave">
       <div class="img_change" v-show="isUpload && isImgChange">
-        <label class="iconfont icon_change" title="更换" for="picture">&#xe60b;</label>
+        <!-- <label class="iconfont icon_change" title="更换" for="file">&#xe60b;</label> -->
         <span class="iconfont icon_clear" title="删除" @click.prevent="clearImg">&#xe612;</span>
       </div>
 
-      <!-- <el-upload
+      <el-upload
+        ref="upload"
         class="upload-demo"
         drag
         :action="actionPath"
+        :show-file-list="false"
         accept="image/jpeg,image/png"
         :before-upload="beforeAvatarUpload"
         :data="postData"
         :on-success="handleAvatarSuccess"
       >
-        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+        <img v-if="imageUrl" :src="imageUrl" :alt="imageAlt" class="avatar">
         <i v-else class="el-icon-upload"></i>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div class="el-upload__tip" slot="tip">只能上传 jpg/png 文件，且不超过 5MB</div>
-      </el-upload> -->
+        <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
+        <!-- <div class="el-upload__tip" slot="tip">只能上传 jpg/png 文件，且不超过 5MB</div> -->
+      </el-upload>
 
-      <label :class="isUpload ? 'uploade_picture' : 'uploade_picture cancel_pointer'" :for="upload">
+      <!-- <label :class="isUpload ? 'uploade_picture' : 'uploade_picture cancel_pointer'" :for="upload">
         <div class="img_area" v-show="imgSrc">
           <img :src="cacheImgSrc" :alt="imgAlt">
         </div>
@@ -31,7 +33,7 @@
           <div class="img_alt" v-show="isUpload && show" key="1">{{this.imgAlt}}</div>
           <div class="text" v-show="show && !isUpload" key="2">添加题图</div>
         </transition-group>
-      </label>
+      </label> -->
 
 
     </div>
@@ -56,25 +58,24 @@ export default {
   name: 'WriteTitle',
   data() {
     return {
-      show: false,
       isUpload: false,
       isImgChange: false,
-      upload: 'picture',
-      cacheImgSrc: '',
+      upload: 'file',
       titleValue: '',
       descValue: '',
 
-      actionPath:'https://upload.qiniup.com',
+      actionPath:'https://upload-z2.qiniup.com',
       postData: {},
-      imageUrl: ''
+      imageUrl: '',
+      imageAlt: ''
     }
   },
   methods: {
     beforeAvatarUpload(file) {
-      const isAllow = true
+      let isAllow = true
       const isLt2M = file.size / 1024 / 1024 < 5
 
-      if(file.type !== 'image/jpeg' || file.type !== 'image/png')
+      if(file.type !== 'image/jpeg' && file.type !== 'image/png')
         isAllow = false
 
       if (!isAllow)
@@ -86,52 +87,53 @@ export default {
       return isAllow && isLt2M
     },
     handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw)
+      // this.imageUrl = URL.createObjectURL(file.raw)
+      this.imageUrl = 'http://pydmbbyau.bkt.clouddn.com/' + res.key
+      this.imageAlt = file.name.substring(0,file.name.length-4)
+      this.insertImg(this.imageObj)
+      this.isUpload = true
     },
     handleDivMouseEnter() {
-      this.show = true
       this.isImgChange = true
     },
     handleDivMouseLeave() {
-      this.show = false
       this.isImgChange = false
     },
-    getFile(e) {
-      if(e.target.files[0]) {
-        let reader = new FileReader()
-        let obj = {}
-        obj.imgAlt = e.target.files[0].name
-        reader.readAsDataURL(e.target.files[0])
-        reader.onload = ((el) => {
-          obj.imgSrc = el.target.result
-          this.insertImg(Object.assign({},obj))
-          this.cacheImgSrc  = this.imgSrc
-        })
-        this.isUpload = true
-        this.upload = ''
-      }
-    },
+    // getFile(e) {
+    //   if(e.target.files[0]) {
+    //     let reader = new FileReader()
+    //     let obj = {}
+    //     obj.imgAlt = e.target.files[0].name
+    //     reader.readAsDataURL(e.target.files[0])
+    //     reader.onload = ((el) => {
+    //       obj.imgSrc = el.target.result
+    //       this.insertImg(Object.assign({},obj))
+    //       this.cacheImgSrc  = this.imgSrc
+    //     })
+    //     this.isUpload = true
+    //     this.upload = ''
+    //   }
+    // },
     clearImg() {
-      if(this.$refs.file.files[0]) {
-        this.$refs.file.value = ''
-        this.clearImgAlt()
-        this.cacheImgSrc  = this.imgSrc
-        this.isUpload = false
-        this.upload = 'picture'
-      }else if(!this.$refs.file.files[0] && this.imgSrc) {
-        this.clearImgAlt()
-        this.cacheImgSrc  = this.imgSrc
-        this.isUpload = false
-        this.upload = 'picture'
-      }
+      this.clearImage()
+      this.imageUrl  = this.imgSrc
+      this.isUpload = false
+      this.upload = 'file'
+      this.$refs.upload.clearFiles()
     },
     ...mapMutations({
       insertImg: 'localStorage/insertImg',
-      clearImgAlt: 'localStorage/clearImgAlt',
+      clearImage: 'localStorage/clearImage',
       syncValue: 'localStorage/syncValue'
     })
   },
   computed: {
+    imageObj() {
+      return Object.assign({},{
+        imgSrc: this.imageUrl,
+        imgAlt: this.imageAlt
+      })
+    },
     titleObj() {
       return Object.assign({},{ title: this.titleValue, desc: this.descValue })
     },
@@ -151,29 +153,39 @@ export default {
     }
   },
   mounted() {
-    if(this.imgSrc) this.isUpload = true
-    this.cacheImgSrc  = this.imgSrc
+    if(this.imgSrc) {
+      this.isUpload = true
+      this.imageUrl = this.imgSrc
+      this.imageAlt = this.imgAlt
+    }
     if(this.titleCache || this.descCache) {
       this.titleValue = this.titleCache
       this.descValue = this.descCache
     }
   },
-  // created() {
-  //   var policy = {}
-  //   var bucketName = 'zhizhuoedu'
-  //   var AK ='你的七牛云AK'
-  //   var SK = '你的七牛云SK'
-  //   var deadline = Math.round(new Date().getTime() / 1000) + 3600
-  //   policy.scope = bucketName
-  //   policy.deadline = deadline
-  //   this.postData.token = genUpToken(AK, SK, policy)
-  // }
+  created() {
+    var policy = {}
+    var bucketName = 'share-list'
+    var AK ='P1ZMzS2ClZA0ccLzGubOO-vjSUJ-5UqXk4NOP7y0'
+    var SK = 'hSG4WkKXI7IOQewF7rCjBjBmKvKa9gsfcU6IzDGC'
+    var deadline = Math.round(new Date().getTime() / 1000) + 3600
+    policy.scope = bucketName
+    policy.deadline = deadline
+    this.postData.token = genUpToken(AK, SK, policy)
+  }
 }
 </script>
 
 <style lang="stylus" scoped>
-  .wrapper >>> .el-upload__input
-    display: none
+  .wrapper >>> .el-upload
+    width: 100%
+    height: 22rem
+    .el-upload-dragger
+      background: $bgGrayColor
+      width: 100%
+      height: 22rem
+    .el-upload__input
+      display: none
 
   .wrapper
     margin: 10rem auto 0
@@ -183,17 +195,17 @@ export default {
     max-height: 25rem
     position: relative
     border-radius: $borderRadius
-    background: $bgGrayColor
     box-sizing: border-box
     .img_change
       position: absolute
       right: 0
-      bottom: -1rem
+      bottom: .5rem
       background: #564343
       border-radius: $borderRadius
       display: flex
       justify-content: space-between
       align-items: center
+      z-index: 99
       .icon_change
         display: inline-block
         margin: .6rem 1.2rem

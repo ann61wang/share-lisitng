@@ -63,10 +63,16 @@ export default {
   },
   computed: {
     listTitle() {
-      return {
+      return Object.assign({}, {
         title: this.title,
         desc: this.desc
-      }
+      })
+    },
+    imageObj() {
+      return Object.assign({}, {
+        imgSrc: this.imgSrc,
+        imgAlt: this.imgAlt
+      })
     },
     ...mapState({
       listNum: state => state.sessionStorage.listNum,
@@ -77,6 +83,7 @@ export default {
     this.syncListObj(Object.assign({},this.listMessage))
     this.syncValue(this.listTitle)
     this.judgeIsNumMaker(this.isNumMaker)
+    this.insertImg(this.imageObj)
   }
 }
 </script>

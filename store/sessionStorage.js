@@ -25,7 +25,7 @@ export const mutations = {
     state.image.imgAlt = obj.imgAlt
     state.image.imgSrc = obj.imgSrc
   },
-  clearImgAlt(state) {
+  clearImage(state) {
     state.image.imgAlt = ''
     state.image.imgSrc = ''
   },
