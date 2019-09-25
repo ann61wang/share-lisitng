@@ -108,9 +108,6 @@ export default {
     ...mapState({
       session: state => state.localStorage.session
     })
-  },
-  mounted() {
-    console.log(this.session)
   }
 }
 </script>

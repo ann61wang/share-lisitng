@@ -43,6 +43,7 @@ export default {
           desc: data.desc,
           imgSrc: data.imgSrc,
           imgAlt: data.imgAlt,
+          isNumMaker: data.isNumMaker,
           listMessage: data.listMessage
         }
       }
@@ -54,30 +55,28 @@ export default {
   methods: {
     ...mapMutations({
       syncList: 'sessionStorage/syncList',
-      syncListCache: 'sessionStorage/syncListCache',
-      syncTest: 'sessionStorage/syncTest'
+      syncListObj: 'sessionStorage/syncListObj',
+      insertImg: 'sessionStorage/insertImg',
+      syncValue: 'sessionStorage/syncValue',
+      judgeIsNumMaker: 'sessionStorage/judgeIsNumMaker'
     })
   },
   computed: {
     listTitle() {
       return {
-        titleCache: this.title,
-        descCache: this.desc,
-        imgSrc: this.imgSrc,
-        imgAlt: this.imgAlt
+        title: this.title,
+        desc: this.desc
       }
     },
     ...mapState({
       listNum: state => state.sessionStorage.listNum,
-      listCache: state => state.sessionStorage.listCache,
-      test: state => state.sessionStorage.test
+      listCache: state => state.sessionStorage.listMessage
     })
   },
-  activated() {
-    if(this.listMessage.length) {
-      this.syncListCache(this.listMessage)
-    }
-    this.syncTest(this.listTitle)
+  mounted() {
+    this.syncListObj(Object.assign({},this.listMessage))
+    this.syncValue(this.listTitle)
+    this.judgeIsNumMaker(this.isNumMaker)
   }
 }
 </script>

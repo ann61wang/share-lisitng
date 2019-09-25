@@ -8,9 +8,9 @@
       </div>
 
       <ul class="list_checkboxes">
-        <li :class="item.liClassName" v-for="(item,index) of listData.listMessage" :key="item.listId">
-          <input type="checkbox" class="input_checkbox" :id="item.listId">
-          <label :for="item.listId" v-show="!item.labelShow.subTitle && !item.labelShow.numMaker && item.labelShow.boxShow"><span></span></label>
+        <li :class="item.liClassName" v-for="(item,key) of listData.listMessage" :key="key">
+          <input type="checkbox" class="input_checkbox" :id="key">
+          <label :for="key" v-show="!item.labelShow.subTitle && !item.labelShow.numMaker && item.labelShow.boxShow"><span></span></label>
           <span :class="item.spanClassName" v-text="item.content"></span>
         </li>
       </ul>
@@ -55,8 +55,7 @@ export default {
   },
   methods: {
     handleEditBtn() {
-      // setTimeout(() => location.reload(), 50)
-      // this.$router.push('/lists/' + this.$route.params.id + '/edit')
+      this.$router.push('/lists/' + this.$route.params.id + '/edit')
     },
     handleDeleteBtn() {
       this.visible = false
@@ -78,9 +77,6 @@ export default {
         return false
       }
     }
-  },
-  mounted() {
-    console.log(this.listData.listMessage)
   }
 }
 </script>

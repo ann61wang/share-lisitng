@@ -1,33 +1,38 @@
 
 export const state = () => ({
-  listNum: [],
   session: '',
-  labelShow: {},
-  test: {
+  image: {
     imgAlt: '',
     imgSrc: '',
+    expire: 2
+  },
+  title: {
     titleCache: '',
     descCache: '',
     expire: 2
   },
+  listNum: [],
+  isNumMaker: false,
+  listMessage: {},
+  category: '其他',
   expire: 2
 })
 
 export const mutations = {
   changeImgAlt(state, inputValue) {
-    state.test.imgAlt = inputValue
+    state.image.imgAlt = inputValue
   },
   insertImg(state, obj) {
-    state.test.imgAlt = obj.imgAlt
-    state.test.imgSrc = obj.imgSrc
+    state.image.imgAlt = obj.imgAlt
+    state.image.imgSrc = obj.imgSrc
   },
   clearImgAlt(state) {
-    state.test.imgAlt = ''
-    state.test.imgSrc = ''
+    state.image.imgAlt = ''
+    state.image.imgSrc = ''
   },
   syncValue(state, value) {
-    state.test.titleCache = value.title
-    state.test.descCache = value.desc
+    state.title.titleCache = value.title
+    state.title.descCache = value.desc
   },
   syncList(state, items) {
     state.listNum = items
@@ -35,14 +40,20 @@ export const mutations = {
   haveSession(state, id) {
     state.session = id
   },
-  syncLabelShow(state, obj) {
-    state.labelShow.subTitle = obj.subTitle
-    state.labelShow.numMaker = obj.numMaker
-    state.labelShow.boxShow = obj.boxShow
+  syncCategory(state, category) {
+    state.category = category
+  },
+  syncListMessage(state, obj) {
+    state.listMessage[String(obj.listIndex)] = obj
+  },
+  judgeIsNumMaker(state, bool) {
+    state.isNumMaker = bool
   },
   clearCacheAll(state) {
-    state.labelShow = {}
-    state.test = {}
+    state.title = {}
+    state.image = {}
+    state.category = '其他'
+    state.listMessage = {}
   },
   clearSession(state) {
     state.session = ''

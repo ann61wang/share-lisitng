@@ -104,7 +104,7 @@ export default {
         reader.readAsDataURL(e.target.files[0])
         reader.onload = ((el) => {
           obj.imgSrc = el.target.result
-          this.insertImg(obj)
+          this.insertImg(Object.assign({},obj))
           this.cacheImgSrc  = this.imgSrc
         })
         this.isUpload = true
@@ -128,30 +128,26 @@ export default {
     ...mapMutations({
       insertImg: 'localStorage/insertImg',
       clearImgAlt: 'localStorage/clearImgAlt',
-      loadImg: 'localStorage/load',
       syncValue: 'localStorage/syncValue'
     })
   },
   computed: {
+    titleObj() {
+      return Object.assign({},{ title: this.titleValue, desc: this.descValue })
+    },
     ...mapState({
-      imgAlt: state => state.localStorage.test.imgAlt,
-      imgSrc: state => state.localStorage.test.imgSrc,
-      titleCache: state => state.localStorage.test.titleCache,
-      descCache: state => state.localStorage.test.descCache
+      imgAlt: state => state.localStorage.image.imgAlt,
+      imgSrc: state => state.localStorage.image.imgSrc,
+      titleCache: state => state.localStorage.title.titleCache,
+      descCache: state => state.localStorage.title.descCache
     })
   },
   watch: {
     titleValue() {
-      this.syncValue({
-        title: this.titleValue,
-        desc: this.descValue
-      })
+      this.syncValue(this.titleObj)
     },
     descValue() {
-      this.syncValue({
-        title: this.titleValue,
-        desc: this.descValue
-      })
+      this.syncValue(this.titleObj)
     }
   },
   mounted() {

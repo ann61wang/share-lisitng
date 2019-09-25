@@ -2,8 +2,8 @@
   <div class="body_min_width">
     <common-header></common-header>
     <div class="container-fluid wrapper">
-      <write-title></write-title>
-      <write-list></write-list>
+      <write-title ref="title"></write-title>
+      <write-list @clearTitle="handleClearTitle"></write-list>
     </div>
     <div class="margin"></div>
   </div>
@@ -20,6 +20,15 @@ export default {
     CommonHeader,
     WriteTitle,
     WriteList
+  },
+  methods: {
+    handleClearTitle() {
+      this.$refs.title.titleValue = ''
+      this.$refs.title.descValue = ''
+    }
+  },
+  mounted() {
+    localStorage.listMessage = {}
   }
 }
 </script>

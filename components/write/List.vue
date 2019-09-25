@@ -106,7 +106,7 @@ export default {
   },
   methods: {
     handleCommand(command) {
-      this.listData.category = command
+      this.syncCategory(command)
     },
     submitDate() {
       if(!this.session) {
@@ -125,15 +125,10 @@ export default {
           this.listData.title = this.title
           this.listData.desc = this.desc
           this.listData.maker = this.session
-          this.$refs.list.forEach(item => {
-            this.listData.listMessage.push({
-              listId: item.id,
-              liClassName: item.$el.className,
-              spanClassName: item.$el.children[3].className,
-              content: item.$el.children[3].innerText,
-              labelShow: this.labelShow
-            })
-          })
+          this.listData.category = this.category
+          this.listData.listMessage = this.listMessage
+          this.listData.isNumMaker = this.isNumMaker
+          this.judgeIsNumMaker(this.isNumMaker)
           axios.post('http://localhost:3000/users/' + this.session + '/tasks/', this.listData)
             .then(this.handlePostInfo).catch(reason => console.log(reason))
         }
@@ -145,7 +140,7 @@ export default {
       let user = data.maker
       this.clearCacheAll()
       this.clearComfirm()
-      setTimeout(() => location.reload(), 50)
+      this.$emit('clearTitle')
       this.$router.push({name: 'lists-id', params: { id }, query: { user }})
     },
     add: async function (index,name) {
@@ -210,6 +205,7 @@ export default {
       this.syncList(this.copyItems)
       this.isClearAll = false
       setTimeout(() => { if(this.$refs.list[0].content) this.$refs.list[0].content = '' }, 450)
+      if(this.isNumMaker) this.handleNumClick()
       try {
         Object.keys(localStorage).forEach((item) => {
           if(!isNaN(Number(item))) {
@@ -226,6 +222,8 @@ export default {
     ...mapMutations({
       changeImgAlt: 'localStorage/changeImgAlt',
       syncList: 'localStorage/syncList',
+      syncCategory: 'localStorage/syncCategory',
+      judgeIsNumMaker: 'localStorage/judgeIsNumMaker',
       clearCacheAll: 'localStorage/clearCacheAll'
     })
   },
@@ -245,23 +243,26 @@ export default {
     },
     ...mapState({
       listNum: state => state.localStorage.listNum,
-      imgSrc: state => state.localStorage.test.imgSrc,
-      imgAlt: state => state.localStorage.test.imgAlt,
-      title: state => state.localStorage.test.titleCache,
-      desc: state => state.localStorage.test.descCache,
-      labelShow: state => state.localStorage.labelShow,
+      imgSrc: state => state.localStorage.image.imgSrc,
+      imgAlt: state => state.localStorage.image.imgAlt,
+      title: state => state.localStorage.title.titleCache,
+      desc: state => state.localStorage.title.descCache,
+      listMessage: state => state.localStorage.listMessage,
+      maker: state => state.localStorage.maker,
+      category: state => state.localStorage.category,
+      isNumMakerCache: state => state.localStorage.isNumMaker,
       session: state => state.localStorage.session
     }),
     listData() {
       return {
-        listId: '',
         imgSrc: '',
         imgAlt: '',
         title: '',
         desc: '',
         maker: '',
         category: '其他',
-        listMessage: []
+        isNumMaker: false,
+        listMessage: {}
       }
     }
   },
@@ -271,7 +272,10 @@ export default {
    },
    items() {
      this.syncList(this.copyItems)
-   }
+   },
+   // isNumMaker() {
+   //   this.judgeIsNumMaker(this.isNumMaker)
+   // }
   },
   mounted() {
     if(this.listNum.length > 1) {

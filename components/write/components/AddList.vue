@@ -1,6 +1,7 @@
 <template lang="html">
   <li ref="list"
     :class="liClassName"
+    :style="liBackground"
     @mouseenter="liMouseEnter"
     @mouseleave="liMouseLeave"
     @keydown.13.prevent="handleAddLi"
@@ -10,7 +11,7 @@
     </transition>
     <input type="checkbox" class="input_checkbox" :id="this.index">
     <label :for="this.index" v-show="!subTitle && !numMaker && boxShow"><span></span></label>
-    <div contenteditable="true" :class="name" v-text="content" @blur="content = $event.target.innerText"></div>
+    <div contenteditable="true" :class="name" v-text="content" @blur="handleInputBlur($event)" ref="inputBox"></div>
     <transition-group name="fade">
       <span class="iconfont icon_more" v-show="show" @click="isShow=true" key="nowIndex">&#xe73a;</span>
       <div v-show="isShow" class="choice_wrapper" @mouseleave="isShow=false" key="nowIndex+1">
@@ -36,6 +37,7 @@ export default {
   props: ['index', 'id'],
   data() {
     return {
+      isWatch: false,
       nowIndex: 0,
       show: false,
       isShow: false,
@@ -55,19 +57,25 @@ export default {
         draggable: true,
         list_maker: false,
         break: false,
-        li_background: false,
         margin_top: false
+      },
+      liBackground: {
+        background: 'transparent'
       }
     }
   },
   methods: {
+    handleInputBlur(e) {
+      this.content = e.target.innerText
+      this.isWatch = true
+    },
     liMouseEnter() {
       this.show = true
-      this.liClassName.li_background = true
+      this.liBackground.background = 'rgba(0,225,200,.2)'
     },
     liMouseLeave() {
       this.show = false
-      this.liClassName.li_background = false
+      this.liBackground.background = 'transparent'
     },
     handleAddLi() {
       this.$emit('handle-add')
@@ -110,52 +118,59 @@ export default {
       }
     },
     ...mapMutations({
-      syncLabelShow: 'localStorage/syncLabelShow'
+      syncListMessage: 'localStorage/syncListMessage'
     })
   },
   computed: {
-    name() {
-      if(!this.subTitle) {
-        return this.inputText ? 'input_list' : 'input_list input_text'
-      }else {
-        return this.subTitle ? 'input_list input_subtitle' : 'input_list'
-      }
+    name: {
+      get() {
+        if(!this.subTitle) {
+          return this.inputText ? 'input_list' : 'input_list input_text'
+        }else {
+          return this.subTitle ? 'input_list input_subtitle' : 'input_list'
+        }
+      },
+      set(val){}
     },
     _id() {
       return String(this.id)
     },
     ...mapState({
-      labelShow: state => state.localStorage.labelShow
+      listMessage: state => state.localStorage.listMessage
     }),
-    labelShowObj() {
+    listMessageObj() {
       return {
-        subTitle: this.subTitle,
-        numMaker: this.numMaker,
-        boxShow: this.boxShow
+        listIndex: this.index,
+        listId: this.id,
+        liClassName: Object.assign({},this.liClassName),
+        spanClassName: this.name,
+        content: this.content,
+        labelShow: Object.assign({},{subTitle: this.subTitle, numMaker: this.numMaker, boxShow: this.boxShow, inputText: this.inputText})
       }
     }
   },
   watch: {
     content() {
       try {
-        if(this.content != undefined) localStorage[this._id] = this.content
+        localStorage[this._id] = this.content
       } catch (e) {}
     },
-    subTitle() {
-      this.syncLabelShow(this.labelShowObj)
-    },
-    numMaker() {
-      this.syncLabelShow(this.labelShowObj)
-    },
-    boxShow() {
-      this.syncLabelShow(this.labelShowObj)
+    listMessageObj() {
+      this.syncListMessage(Object.assign({},this.listMessageObj))
     }
   },
   mounted() {
+    //刷新时，localStorage缓存无法保存所有值和样式，不知道什么原因
+    // if(Object.keys(this.listMessage).length && this.id < Object.keys(this.listMessage).length) {
+    //   this.liClassName = Object.assign({},this.listMessage[this._id].liClassName)
+    //   this.name = this.listMessage[this._id].name
+    //   this.content = this.listMessage[this._id].content
+    //   this.labelShow = Object.assign({},this.listMessage[this._id].labelShow)
+    // }
+
     try {
       if(localStorage[this._id]) this.content = localStorage[this._id]
     } catch (e) {}
-    this.syncLabelShow(this.labelShowObj)
   }
 }
 </script>

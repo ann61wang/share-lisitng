@@ -83,12 +83,13 @@ export default {
   data() {
     return {
       count: 0,
+      isWatch: false,
       isDragging: false,
       isNumMaker: false,
       isClearAll: false,
       isPicName: false,
       inputValue: '',
-      items: [{component: 'add-list', id: 0}],
+      items: [],
       btns: [{
         title: '切换标记符', icon: '&#xe62e;'
       },{
@@ -106,34 +107,28 @@ export default {
   },
   methods: {
     handleCommand(command) {
-      this.listData.category = command
+      this.syncCategory(command)
     },
     submitDate() {
       if(!this.session) {
         this.$router.push('/login')
         return
       }else {
-        if(!this.test.titleCache) {
+        if(!this.title.titleCache) {
           this.$message.error('标题不能为空')
           return
         }else if(!this.$refs.list[0].$el.children[3].innerText){
           this.$message.error('第一条的内容不能为空')
           return
         }else {
-          this.listData.imgSrc = this.test.imgSrc
-          this.listData.imgAlt = this.test.imgAlt
-          this.listData.title = this.test.titleCache
-          this.listData.desc = this.test.descCache
+          this.listData.imgSrc = this.image.imgSrc
+          this.listData.imgAlt = this.image.imgAlt
+          this.listData.title = this.title.titleCache
+          this.listData.desc = this.title.descCache
           this.listData.maker = this.session
-          this.$refs.list.forEach(item => {
-            this.listData.listMessage.push({
-              listId: item.id,
-              liClassName: item.$el.className,
-              spanClassName: item.$el.children[3].className,
-              content: item.$el.children[3].innerText,
-              labelShow: this.labelShow
-            })
-          })
+          this.listData.category = this.category
+          this.listData.isNumMaker = this.isNumMakerCache
+          this.listData.listMessage = this.listMessage
           axios.put('http://localhost:3000/users/' + this.session + '/tasks/' + this.$route.params.id, this.listData)
             .then(this.handleUpdateInfo).catch(reason => console.log(reason))
         }
@@ -143,7 +138,6 @@ export default {
       let data = res.data
       let id = data._id
       let user = data.maker
-      setTimeout(() => location.reload(), 50)
       this.$router.push({name: 'lists-id', params: { id }, query: { user }})
     },
     add: async function (index,name) {
@@ -206,8 +200,10 @@ export default {
       this.items = [{component: 'add-list', id: 0}]
       this.count = 0
       this.syncList(this.copyItems)
+      this.clearListMessage()
       this.isClearAll = false
       setTimeout(() => { if(this.$refs.list[0].content) this.$refs.list[0].content = '' }, 450)
+      if(this.isNumMaker) this.handleNumClick()
       try {
         Object.keys(localStorage).forEach((item) => {
           if(!isNaN(Number(item))) {
@@ -224,7 +220,10 @@ export default {
     ...mapMutations({
       changeImgAlt: 'sessionStorage/changeImgAlt',
       syncList: 'sessionStorage/syncList',
-      syncListCache: 'sessionStorage/syncListCache',
+      syncListMessage: 'sessionStorage/syncListMessage',
+      syncCategory: 'sessionStorage/syncCategory',
+      judgeIsNumMaker: 'sessionStorage/judgeIsNumMaker',
+      clearListMessage: 'sessionStorage/clearListMessage',
       clearCacheAll: 'sessionStorage/clearCacheAll'
     })
   },
@@ -244,9 +243,11 @@ export default {
     },
     ...mapState({
       listNum: state => state.sessionStorage.listNum,
-      listCache: state => state.sessionStorage.listCache,
-      test: state => state.sessionStorage.test,
-      labelShow: state => state.sessionStorage.labelShow,
+      listMessage: state => state.sessionStorage.listMessage,
+      title: state => state.sessionStorage.title,
+      image: state => state.sessionStorage.image,
+      category: state => state.sessionStorage.category,
+      isNumMakerCache: state => state.sessionStorage.isNumMaker,
       session: state => state.localStorage.session
     }),
     listData() {
@@ -258,7 +259,8 @@ export default {
         desc: '',
         maker: '',
         category: '其他',
-        listMessage: []
+        isNumMaker: false,
+        listMessage: {}
       }
     }
   },
@@ -268,20 +270,22 @@ export default {
    },
    items() {
      this.syncList(this.copyItems)
+   },
+   isNumMaker() {
+     if(this.isWatch)
+       this.judgeIsNumMaker(this.isNumMaker)
    }
   },
-  activated() {
-    if(this.listCache.length && this.count < this.listCache.length-1) {
-      for(var i = 1; i < this.listCache.length; i++) {
+  mounted() {
+    if(Object.keys(this.listMessage).length && this.count < Object.keys(this.listMessage).length-1) {
+      this.isNumMaker = this.isNumMakerCache
+      for(var i = 0; i < Object.keys(this.listMessage).length; i++) {
         this.items.push({component: 'add-list', id: i})
         this.syncList(this.copyItems)
         this.count++
       }
+      this.isWatch = true
     }
-    console.log(this.$refs.list)
-    this.$refs.list.forEach((item) => {
-      console.log(item.id)
-    })
   }
  }
 </script>

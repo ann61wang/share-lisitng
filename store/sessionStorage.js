@@ -1,53 +1,60 @@
 
 export const state = () => ({
-  listNum: [],
-  listCache: [],
-  content: {},
-  labelShow: {},
-  test: {
+  image: {
     imgAlt: '',
     imgSrc: '',
+    expire: 2
+  },
+  title: {
     titleCache: '',
-    descCache: ''
-  }
+    descCache: '',
+    expire: 2
+  },
+  listNum: [],
+  isNumMaker: false,
+  listMessage: {},
+  category: '其他',
+  expire: 2
 })
 
 export const mutations = {
   changeImgAlt(state, inputValue) {
-    state.test.imgAlt = inputValue
+    state.image.imgAlt = inputValue
   },
   insertImg(state, obj) {
-    state.test.imgAlt = obj.imgAlt
-    state.test.imgSrc = obj.imgSrc
+    state.image.imgAlt = obj.imgAlt
+    state.image.imgSrc = obj.imgSrc
   },
   clearImgAlt(state) {
-    state.test.imgAlt = ''
-    state.test.imgSrc = ''
+    state.image.imgAlt = ''
+    state.image.imgSrc = ''
   },
   syncValue(state, value) {
-    state.test.titleCache = value.title
-    state.test.descCache = value.desc
+    state.title.titleCache = value.title
+    state.title.descCache = value.desc
   },
   syncList(state, items) {
     state.listNum = items
   },
-  syncListCache(state, arr) {
-    state.listCache = arr
+  syncCategory(state, category) {
+    state.category = category
   },
-  syncTest(state, obj) {
-    state.test = obj
+  syncListMessage(state, obj) {
+    state.listMessage[String(obj.listIndex)] = obj
   },
-  syncLabelShow(state, obj) {
-    state.labelShow.subTitle = obj.subTitle
-    state.labelShow.numMaker = obj.numMaker
-    state.labelShow.boxShow = obj.boxShow
+  syncListObj(state, obj) {
+    state.listMessage = obj
   },
-  syncContent(state, obj) {
-    state.content[obj.id] = obj.content
+  judgeIsNumMaker(state, bool) {
+    state.isNumMaker = bool
   },
   clearCacheAll(state) {
-    state.labelShow = {}
-    state.test = {}
-    state.listCache = []
+    state.title = {}
+    state.image = {}
+    state.category = '其他'
+    state.listMessage = {}
+  },
+  clearListMessage(state) {
+    state.listMessage = {}
   }
 }

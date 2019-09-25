@@ -1,6 +1,7 @@
 <template lang="html">
   <li ref="list"
     :class="liClassName"
+    :style="liBackground"
     @mouseenter="liMouseEnter"
     @mouseleave="liMouseLeave"
     @keydown.13.prevent="handleAddLi"
@@ -55,19 +56,21 @@ export default {
         draggable: true,
         list_maker: false,
         break: false,
-        li_background: false,
         margin_top: false
+      },
+      liBackground: {
+        background: 'transparent'
       }
     }
   },
   methods: {
     liMouseEnter() {
       this.show = true
-      this.liClassName.li_background = true
+      this.liBackground.background = 'rgba(0,225,200,.2)'
     },
     liMouseLeave() {
       this.show = false
-      this.liClassName.li_background = false
+      this.liBackground.background = 'transparent'
     },
     handleAddLi() {
       this.$emit('handle-add')
@@ -110,16 +113,12 @@ export default {
       }
     },
     ...mapMutations({
-      syncLabelShow: 'sessionStorage/syncLabelShow',
-      syncContent: 'sessionStorage/syncContent'
+      syncListMessage: 'sessionStorage/syncListMessage'
     })
   },
   computed: {
-    contentObj() {
-      return {
-        id: String(this.id),
-        content: this.content
-      }
+    _id() {
+      return String(this.id)
     },
     inputClassName: {
       get() {
@@ -131,48 +130,34 @@ export default {
       },
       set(val) {}
     },
-    ...mapState({
-      listCache: state => state.sessionStorage.listCache,
-      labelShow: state => state.sessionStorage.labelShow,
-      contentCache: state => state.sessionStorage.content
-    }),
-    labelShowObj() {
+    listMessageObj() {
       return {
-        subTitle: this.subTitle,
-        numMaker: this.numMaker,
-        boxShow: this.boxShow
+        listIndex: this.index,
+        listId: this.id,
+        liClassName: Object.assign({},this.liClassName),
+        spanClassName: this.inputClassName,
+        content: this.content,
+        labelShow: Object.assign({},{subTitle: this.subTitle, numMaker: this.numMaker, boxShow: this.boxShow, inputText: this.inputText})
       }
-    }
+    },
+    ...mapState({
+      listMessage: state => state.sessionStorage.listMessage
+    })
   },
   watch: {
-    content() {
-      this.syncContent(this.contentObj)
-    },
-    subTitle() {
-      this.syncLabelShow(this.labelShowObj)
-    },
-    numMaker() {
-      this.syncLabelShow(this.labelShowObj)
-    },
-    boxShow() {
-      this.syncLabelShow(this.labelShowObj)
+    listMessageObj() {
+      this.syncListMessage(Object.assign({},this.listMessageObj))
     }
   },
   mounted() {
-    if(this.id < this.listCache.length) {
-      this.content = this.listCache[this.index].content
-      // this.liClassName = this.listData[this.index].liClassName
-      // this.inputClassName = this.listData[this.index].spanClassName
-      this.subTitle = this.listCache[this.index].labelShow.subTitle
-      this.numMaker = this.listCache[this.index].labelShow.numMaker
-      this.boxShow = this.listCache[this.index].labelShow.boxShow
-    }
-    this.syncLabelShow(this.labelShowObj)
-  },
-  activated() {
-    if(this.id === 0) {
-      this.content = this.listCache[0].content
-      this.syncLabelShow(this.labelShowObj)
+    if(this.id < Object.keys(this.listMessage).length) {
+      this.content = this.listMessage[this._id].content
+      this.liClassName = Object.assign({},this.listMessage[this._id].liClassName)
+      this.inputClassName = this.listMessage[this._id].spanClassName
+      this.subTitle = this.listMessage[this._id].labelShow.subTitle
+      this.numMaker = this.listMessage[this._id].labelShow.numMaker
+      this.boxShow = this.listMessage[this._id].labelShow.boxShow
+      this.inputText = this.listMessage[this._id].labelShow.inputText
     }
   }
 }
@@ -190,8 +175,6 @@ export default {
     text-shadow: .1rem .1rem .1rem rgba(#09f, .5)
   .break
     counter-reset: item -1
-  .li_background
-    background: rgba(0,225,200,.2)
   .margin_top
     margin-top: 3rem
   li
