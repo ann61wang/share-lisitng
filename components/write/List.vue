@@ -129,6 +129,8 @@ export default {
           this.listData.listMessage = this.listMessage
           this.listData.isNumMaker = this.isNumMaker
           this.judgeIsNumMaker(this.isNumMaker)
+          axios.post('http://localhost:3000/categories/' + this.category, this.listData)
+            .catch(reason => console.log(reason))
           axios.post('http://localhost:3000/users/' + this.session + '/tasks/', this.listData)
             .then(this.handlePostInfo).catch(reason => console.log(reason))
         }

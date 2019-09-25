@@ -4,12 +4,13 @@
     <div class="container-fluid margin_medium">
       <div class="container_max_width">
         <h2>{{title}}</h2>
+        <div v-show="listArr.length === 0" style="height: 30rem;"></div>
         <div class="row with_gutter">
-          <div v-for="(item,index) of collection" :key="item.id"
+          <div v-for="(item,index) of listArr" :key="item._id"
             class="column col-xs-12 col-sm-6 col-md-4 col-lg-4"
           >
-            <nuxt-link :to="'/lists/' + item.id" class="list_shadow">
-              <img :src="item.imgUrl" alt="" class="column_img">
+            <nuxt-link :to="'/lists/' + item._id + '?user=' + item.maker" class="list_shadow">
+              <img :src="item.imgSrc" :alt="item.imgAlt" class="column_img">
               <div class="list_content">
                 <h4>{{item.title}}</h4>
                 <div class="iconfont icon_list">&#xe635;</div>
@@ -39,6 +40,23 @@ export default {
       collection: []
     }
   },
+  async asyncData ({ store, params, query, error }) {
+    let url = ''
+    if(process.env.VUE_ENV === 'client') {
+      url = 'http://localhost:3000/categories/' + params.id
+    }else {
+      url = 'http://localhost:3000/categories/' + params.id
+    }
+    return axios.get(url)
+    .then((res) => {
+      return {
+        taskArr: res.data
+      }
+    })
+    .catch((e) => {
+      error({ statusCode: 404, message: '页面没有找到' })
+    })
+  },
   methods: {
     getCollectionInfo() {
       axios.get('/api/collections.json', {
@@ -54,6 +72,11 @@ export default {
         this.title = data.title
         this.collection = data.collection
       }
+    }
+  },
+  computed: {
+    listArr() {
+      return this.taskArr
     }
   },
   mounted() {
