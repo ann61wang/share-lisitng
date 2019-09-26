@@ -12,8 +12,8 @@ export const state = () => ({
   },
   listNum: [],
   isNumMaker: false,
+  category: 'other',
   listMessage: {},
-  category: '其他',
   expire: 2
 })
 
@@ -51,7 +51,7 @@ export const mutations = {
   clearCacheAll(state) {
     state.title = {}
     state.image = {}
-    state.category = '其他'
+    state.category = 'other'
     state.listMessage = {}
   },
   clearListMessage(state) {

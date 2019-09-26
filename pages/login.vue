@@ -71,7 +71,7 @@ export default {
       let data = res.data
       if(data != null) {
         if(data.pass == this.userInfo.pass) {
-          this.haveSession(data._id)
+          this.haveSession(data.name)
           this.$router.push('/')
         }else {
           this.open2()
@@ -95,12 +95,13 @@ export default {
       });
     },
     ...mapMutations({
-      haveSession: "localStorage/haveSession"
+      haveSession: 'localStorage/haveSession'
     })
   },
   computed: {
     userInfo() {
       return {
+        _id: Base64.encode(this.ruleForm.name),
         name: Base64.encode(this.ruleForm.name),
         pass: sha256(this.ruleForm.pass)
       }
@@ -108,6 +109,9 @@ export default {
     ...mapState({
       session: state => state.localStorage.session
     })
+  },
+  mounted() {
+    // console.log(this.$route.query.userId)
   }
 }
 </script>

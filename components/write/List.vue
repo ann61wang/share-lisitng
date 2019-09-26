@@ -53,15 +53,15 @@
         清单类别<i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item command="旅游">旅游</el-dropdown-item>
-        <el-dropdown-item command="教育">教育</el-dropdown-item>
-        <el-dropdown-item command="电影">电影</el-dropdown-item>
-        <el-dropdown-item command="娱乐">娱乐</el-dropdown-item>
-        <el-dropdown-item command="工作">工作</el-dropdown-item>
-        <el-dropdown-item command="梦想">梦想</el-dropdown-item>
-        <el-dropdown-item command="体育">体育</el-dropdown-item>
-        <el-dropdown-item command="美食">美食</el-dropdown-item>
-        <el-dropdown-item command="其他" divided>其他(默认)</el-dropdown-item>
+        <el-dropdown-item command="travel">旅游</el-dropdown-item>
+        <el-dropdown-item command="education">教育</el-dropdown-item>
+        <el-dropdown-item command="movies">电影</el-dropdown-item>
+        <el-dropdown-item command="entertainment">娱乐</el-dropdown-item>
+        <el-dropdown-item command="work">工作</el-dropdown-item>
+        <el-dropdown-item command="dream">梦想</el-dropdown-item>
+        <el-dropdown-item command="sports">体育</el-dropdown-item>
+        <el-dropdown-item command="food">美食</el-dropdown-item>
+        <el-dropdown-item command="other" divided>其他(默认)</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
   </div>
@@ -124,26 +124,26 @@ export default {
           this.listData.imgAlt = this.imgAlt
           this.listData.title = this.title
           this.listData.desc = this.desc
-          this.listData.maker = this.session
-          this.listData.category = this.category
           this.listData.listMessage = this.listMessage
           this.listData.isNumMaker = this.isNumMaker
+          this.listData.author = this.session
+          this.listData.category = this.category
           this.judgeIsNumMaker(this.isNumMaker)
-          axios.post('http://localhost:3000/categories/' + this.category, this.listData)
-            .catch(reason => console.log(reason))
-          axios.post('http://localhost:3000/users/' + this.session + '/tasks/', this.listData)
+          // axios.post('http://localhost:3000/categories/' + this.category + '/tasks/', this.listData)
+          //   .catch(reason => console.log(reason))
+          axios.post('http://localhost:3000/tasks/', this.listData)
             .then(this.handlePostInfo).catch(reason => console.log(reason))
         }
       }
     },
     handlePostInfo(res) {
       let data = res.data
+      console.log(data)
       let id = data._id
-      let user = data.maker
       this.clearCacheAll()
       this.clearComfirm()
       this.$emit('clearTitle')
-      this.$router.push({name: 'lists-id', params: { id }, query: { user }})
+      this.$router.push('/lists/' + id)
     },
     add: async function (index,name) {
       this.count++
@@ -261,9 +261,9 @@ export default {
         imgAlt: '',
         title: '',
         desc: '',
-        maker: '',
-        category: '其他',
         isNumMaker: false,
+        author: '',
+        category: 'other',
         listMessage: {}
       }
     }

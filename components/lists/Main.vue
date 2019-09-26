@@ -59,7 +59,7 @@ export default {
     },
     handleDeleteBtn() {
       this.visible = false
-      axios.delete('http://localhost:3000/users/' + this.session + '/tasks/' + this.$route.params.id + '?user=' + this.$route.query.user)
+      axios.delete('http://localhost:3000/tasks/' + this.$route.params.id)
       .catch((e) => {
         error({ statusCode: 404, message: '页面没有找到' })
       })
@@ -71,13 +71,16 @@ export default {
       session: state => state.localStorage.session
     }),
     isMaker() {
-      if(this.$route.query.user === this.session) {
+      if(this.listData.author === this.session) {
         return true
       }else {
         return false
       }
     }
-  }
+  },
+  // mounted() {
+  //   console.log(this.listData)
+  // }
 }
 </script>
 

@@ -26,10 +26,10 @@ export default {
   async asyncData ({ store, params, query, error }) {
     let url = ''
     if(process.env.VUE_ENV === 'client') {
-      url = 'http://localhost:3000/users/' + store.state.localStorage.session + '/tasks/' + params.id
+      url = 'http://localhost:3000/tasks/' + params.id
     }else {
       //当刷新时，store 的值为空，所以使用路由传参的方式来获取 vuex 中 session 的值
-      url = 'http://localhost:3000/users/' + query.user +'/tasks/' + params.id
+      url = 'http://localhost:3000/tasks/' + params.id
     }
     return axios.get(url)
     .then((res) => {
@@ -38,7 +38,8 @@ export default {
         error({ statusCode: 404, message: '页面没有找到' })
       }else {
         return {
-          maker: data.maker,
+          author: data.author,
+          category: data.category,
           title: data.title,
           desc: data.desc,
           imgSrc: data.imgSrc,

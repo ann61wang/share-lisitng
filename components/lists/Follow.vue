@@ -20,8 +20,7 @@
 
 <script>
 export default {
-  name: 'ListFollow',
-  props: ['makerInfo']
+  name: 'ListFollow'
 }
 </script>
 

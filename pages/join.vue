@@ -29,6 +29,7 @@
 import CommonHeader from '~/components/common/Header'
 import CommonFooter from '~/components/common/Footer'
 import axios from 'axios'
+import { mapState, mapMutations } from 'vuex'
 let Base64 = require("js-base64").Base64
 let sha256 = require("js-sha256").sha256
 
@@ -93,8 +94,8 @@ export default {
         showClose: true,
         message: '该用户名已被注册，请换一个用户名！',
         type: 'warning'
-      });
-    },
+      })
+    }
   },
   computed: {
     userInfo() {
