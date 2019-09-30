@@ -15,7 +15,7 @@
         </li>
       </ul>
 
-      <button class="btn btn-default collect_btn" v-show="!isMaker">Copy this checklist</button>
+      <button class="btn btn-default collect_btn" v-show="!isMaker" @click="handleCopyList">复制这个清单</button>
       <el-row v-show="isMaker">
         <el-button type="primary" icon="el-icon-edit" @click="handleEditBtn" circle></el-button>
         <el-popover
@@ -31,8 +31,10 @@
         </el-popover>
       </el-row>
       <div class="level">
-        <nuxt-link class="level_item" to="/"><span class="iconfont">&#xe62c;</span>  174 copies saved<span class="spacer"></span></nuxt-link>
-        <nuxt-link class="level_item" to="/"><span class="iconfont">&#xe62b;</span>  979 views</nuxt-link>
+        <div class="text_center">
+          <nuxt-link class="level_item" to="/"><span class="iconfont">&#xe62c;</span>  {{listData.copy}} 复制量<span class="spacer"></span></nuxt-link>
+          <nuxt-link class="level_item" to="/"><span class="iconfont">&#xe62b;</span>  {{listData.pv}} 浏览量</nuxt-link>
+        </div>
       </div>
     </div>
   </section>
@@ -40,7 +42,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import axios from 'axios'
 let Base64 = require("js-base64").Base64
 
 export default {
@@ -54,12 +55,15 @@ export default {
     }
   },
   methods: {
+    handleCopyList() {
+      this.$router.push('/copy?id=' + this.$route.params.id)
+    },
     handleEditBtn() {
       this.$router.push('/lists/' + this.$route.params.id + '/edit')
     },
     handleDeleteBtn() {
       this.visible = false
-      axios.delete('http://localhost:3000/tasks/' + this.$route.params.id)
+      this.$axios.delete('/api/tasks/' + this.$route.params.id)
       .catch((e) => {
         error({ statusCode: 404, message: '页面没有找到' })
       })
@@ -77,10 +81,7 @@ export default {
         return false
       }
     }
-  },
-  // mounted() {
-  //   console.log(this.listData)
-  // }
+  }
 }
 </script>
 
@@ -123,9 +124,12 @@ export default {
     .level
       margin: 0 auto
       width: 24rem
-      .level_item
-        text-decoration: none
-        color: #666
-        .spacer
-          margin-right: 1.6rem
+      .text_center
+        margin: 0 auto
+        width: 18rem
+        .level_item
+          text-decoration: none
+          color: #666
+          .spacer
+            margin-right: 1.6rem
 </style>

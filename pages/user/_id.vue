@@ -35,7 +35,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import CommonHeader from '~/components/common/Header'
 import CommonFooter from '~/components/common/Footer'
 import { mapState } from 'vuex'
@@ -51,22 +50,22 @@ export default {
       input: ''
     }
   },
-  async asyncData ({ store, params, query, error }) {
+  async asyncData ({ app, store, params, query, error }) {
     let urlUserInfo = ''
     let urlTasks = ''
     if(process.env.VUE_ENV === 'client') {
-      urlUserInfo = 'http://localhost:3000/users/' + params.id
-      urlTasks = 'http://localhost:3000/tasks/'
+      urlUserInfo = '/api/users/' + params.id
+      urlTasks = '/api/tasks/'
     }else {
-      urlUserInfo = 'http://localhost:3000/users/' + params.id
-      urlTasks = 'http://localhost:3000/tasks/'
+      urlUserInfo = '/api/users/' + params.id
+      urlTasks = '/api/tasks/'
     }
-    return axios.get(urlUserInfo)
+    return app.$axios.get(urlUserInfo)
     .then((res) => {
       if(res.data === null) {
         error({ statusCode: 404, message: '页面没有找到' })
       }else {
-        return axios.get(urlTasks + '?author=' + params.id)
+        return app.$axios.get(urlTasks + '?author=' + params.id)
         .then((res) => {
           return {
             taskArr: res.data
@@ -81,7 +80,7 @@ export default {
   methods: {
     addCategory() {
       if(this.input) {
-        axios.post('http://localhost:3000/categories/', this.categoryInfo)
+        this.$axios.post('/api/categories/', this.categoryInfo)
           .then(this.handlePostInfo).catch(reason => console.log(reason))
       }
     },
@@ -110,7 +109,7 @@ export default {
     },
     removeCategory() {
       if(this.input) {
-        axios.delete('http://localhost:3000/categories/' + this.input)
+        this.$axios.delete('/api/categories/' + this.input)
           .then(this.handleDeleteInfo).catch(reason => console.log(reason))
       }
     },
@@ -133,7 +132,11 @@ export default {
   },
   computed: {
     listArr() {
-      return this.taskArr
+      if(this.taskArr) {
+        return this.taskArr
+      }else {
+        return []
+      }
     },
     isAdmin() {
       if(this.session === '5YWt5LiA') {
@@ -153,9 +156,11 @@ export default {
       category: state => state.localStorage.category
     })
   },
-  // mounted() {
-  //   localStorage.clear()
-  // }
+  mounted() {
+    if(this.listArr.message == '请重新登陆') {
+      this.$router.push('/login')
+    }
+  }
 }
 </script>
 

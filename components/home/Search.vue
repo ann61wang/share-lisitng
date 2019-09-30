@@ -7,9 +7,9 @@
     <section class="hero_content">
       <h1 class="hero_title">用清单让你的生活变得简单且高效，过上期待的生活</h1>
       <div>
-        <div class="hero_search">
-          <input type="search" placeholder="输入关键词">
-          <nuxt-link tag="div" to="#" class="glyphicon glyphicon-search search_icon"></nuxt-link>
+        <div class="hero_search" @keydown.13="handleSearch">
+          <input type="search" v-model="inputValue" placeholder="输入关键词">
+          <div class="glyphicon glyphicon-search search_icon" @click="handleSearch"></div>
         </div>
         <div class="search_tags">Suggested: notebook  gym  yoga  writing  paper  working  more</div>
       </div>
@@ -20,7 +20,21 @@
 
 <script>
 export default {
-  name: 'HomeSearch'
+  name: 'HomeSearch',
+  data() {
+    return {
+      inputValue: ''
+    }
+  },
+  methods: {
+    handleSearch() {
+      if(this.inputValue) {
+        this.$router.push({name: 'search-id', params:{id: this.inputValue}})
+      }else {
+        alert('请输入关键词搜索')
+      }
+    }
+  }
 }
 </script>
 

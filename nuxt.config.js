@@ -53,17 +53,20 @@ module.exports = {
   styleResources: {
     stylus: ['./assets/styles/varibles.styl', './assets/styles/mixins.styl']
   },
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:3000'
+  },
   axios: {
+    baseUrl: process.env.baseUrl,
     proxy: true,
-    prefix: '/api',       // 增加请求标识
     credentials: true
   },
   proxy: {
     '/api': {
-      target: 'http://localhost:3030',
+      target: 'http://localhost:3000',
       changeOrigin: true,
       pathRewrite: {
-        '^/api' : '/mock'
+        '^/api' : '/'
       }
     }
   },

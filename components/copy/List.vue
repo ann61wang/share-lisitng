@@ -44,9 +44,8 @@
       </transition-group>
     </draggable>
 
-
     <el-button class="save_btn" @click="submitDate">
-      更新
+      发布
     </el-button>
     <el-dropdown @command="handleCommand">
       <span class="el-dropdown-link">
@@ -68,13 +67,13 @@
 </template>
 
 <script>
-import AddList from '~/components/edit/components/AddList'
+import AddList from '~/components/copy/components/AddList'
 import draggable from 'vuedraggable'
 import { mapState, mapMutations } from 'vuex'
 let Base64 = require("js-base64").Base64
 
 export default {
-  name: 'EditList',
+  name: 'CopyList',
   components: {
     AddList,
     draggable
@@ -129,12 +128,12 @@ export default {
           this.listData.category = this.category
           this.listData.listMessage = this.listMessage
 
-          this.$axios.put('/api/tasks/' + this.$route.params.id, this.listData)
-            .then(this.handleUpdateInfo).catch(reason => console.log(reason))
+          this.$axios.post('/api/tasks/', this.listData)
+            .then(this.handlePostInfo).catch(reason => console.log(reason))
         }
       }
     },
-    handleUpdateInfo(res) {
+    handlePostInfo(res) {
       let data = res.data
       let id = data._id
       this.$router.push('/lists/' + id)

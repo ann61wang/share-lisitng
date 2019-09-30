@@ -71,7 +71,6 @@
 import AddList from '~/components/write/components/AddList'
 import draggable from 'vuedraggable'
 import { mapState, mapMutations } from 'vuex'
-import axios from 'axios'
 let Base64 = require("js-base64").Base64
 
 export default {
@@ -131,14 +130,13 @@ export default {
           this.judgeIsNumMaker(this.isNumMaker)
           // axios.post('http://localhost:3000/categories/' + this.category + '/tasks/', this.listData)
           //   .catch(reason => console.log(reason))
-          axios.post('http://localhost:3000/tasks/', this.listData)
+          this.$axios.post('/api/tasks/', this.listData)
             .then(this.handlePostInfo).catch(reason => console.log(reason))
         }
       }
     },
     handlePostInfo(res) {
       let data = res.data
-      console.log(data)
       let id = data._id
       this.clearCacheAll()
       this.clearComfirm()

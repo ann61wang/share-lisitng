@@ -14,10 +14,10 @@
               <div class="iconfont logo_icon logo_icon_mobile">🧾</div>
               <div class="logo_name logo_name_mobile">共享清单</div>
             </nuxt-link>
-            <div class="navbar_search search_none" ref="search">
-              <input type="search" placeholder="输入关键词">
+            <div class="navbar_search search_none" @keydown.13="handleSearch">
+              <input type="search" placeholder="输入关键词" v-model="inputValue">
               <!-- <span class="iconfont">&#xe60e;</span> -->
-              <nuxt-link tag="div" to="#" class="glyphicon glyphicon-search search_icon"></nuxt-link>
+              <div class="glyphicon glyphicon-search search_icon" @click="handleSearch"></div>
             </div>
           </div>
         </div>
@@ -37,15 +37,31 @@
 
 <script>
 import { mapState,mapMutations } from 'vuex'
+
 export default {
   name: 'CommonHeader',
+  data() {
+    return {
+      inputValue: ''
+    }
+  },
   methods: {
+    handleSearch() {
+      if(this.inputValue) {
+        this.$router.push({name: 'search-id', params:{id: this.inputValue}})
+      }else {
+        alert('请输入关键词搜索')
+      }
+    },
     ...mapMutations({
       clearSession: 'localStorage/clearSession'
     }),
     handleLoginOut() {
+      this.$axios.get('/api/logout')
+        .then(this.handleGetInfo).catch(reason => console.log(reason))
+    },
+    handleGetInfo(res) {
       this.clearSession()
-      console.log(this.session)
     }
   },
   computed: {

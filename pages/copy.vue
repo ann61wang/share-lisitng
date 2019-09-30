@@ -2,8 +2,8 @@
   <div class="body_min_width">
     <common-header></common-header>
     <div class="container-fluid wrapper">
-      <edit-title></edit-title>
-      <edit-list></edit-list>
+      <copy-title></copy-title>
+      <copy-list></copy-list>
     </div>
     <div class="margin"></div>
   </div>
@@ -11,26 +11,26 @@
 
 <script>
 import CommonHeader from '~/components/common/Header'
-import EditTitle from '~/components/edit/Title'
-import EditList from '~/components/edit/List'
+import CopyTitle from '~/components/copy/Title'
+import CopyList from '~/components/copy/List'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-  name: 'Edit',
+  name: 'Copy',
   components: {
     CommonHeader,
-    EditTitle,
-    EditList
+    CopyTitle,
+    CopyList
   },
-  async asyncData ({ app, store, params, query, error }) {
+  async asyncData ({ app, params, query, error }) {
     let url = ''
     if(process.env.VUE_ENV === 'client') {
-      url = '/api/tasks/' + params.id
+      url = '/api/tasks/' + query.id
     }else {
       //当刷新时，store 的值为空，所以使用路由传参的方式来获取 vuex 中 session 的值
-      url = '/api/tasks/' + params.id
+      url = '/api/tasks/' + query.id
     }
-    return app.$axios.get(url)
+    return app.$axios.get(url + '?copy=1' )
     .then((res) => {
       let data = res.data
       if(data.name === 'CastError') {

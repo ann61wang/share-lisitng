@@ -2,7 +2,7 @@
   <div class="body_min_width">
     <common-header></common-header>
     <div class="container-fluid list_page">
-      <list-follow></list-follow>
+      <list-follow :likeInfo="likeInfo"></list-follow>
       <list-main :listData="listData"></list-main>
       <list-relate></list-relate>
     </div>
@@ -16,7 +16,6 @@ import ListFollow from '~/components/lists/Follow'
 import ListMain from '~/components/lists/Main'
 import ListRelate from '~/components/lists/Relate'
 import CommonFooter from '~/components/common/Footer'
-import axios from 'axios'
 import { mapState } from 'vuex'
 
 export default {
@@ -28,23 +27,25 @@ export default {
     ListRelate,
     CommonFooter
   },
-  async asyncData ({ store, params, query, error }) {
-    let url = ''
-    if(process.env.VUE_ENV === 'client') {
-      url = 'http://localhost:3000/tasks/' + params.id
-    }else {
-      //当刷新时，store 的值为空，所以使用路由传参的方式来获取 vuex 中 session 的值
-      url = 'http://localhost:3000/tasks/' + params.id
-    }
-    return axios.get(url)
+  async asyncData ({ app, params, error }) {
+    return app.$axios.get('/api/tasks/' + params.id)
     .then((res) => {
       let data = res.data
       if(data.name === 'CastError') {
         error({ statusCode: 404, message: '页面没有找到' })
+      }else if(data.message == '请重新登陆'){
+        return {
+          message: '请重新登陆'
+        }
       }else {
         return {
           author: data.author,
           category: data.category,
+          pv: data.pv,
+          likes: data.likes,
+          isClickLike: data.isClickLike,
+          copy: data.copy,
+          isNumMaker: data.isNumMaker,
           title: data.title,
           desc: data.desc,
           imgSrc: data.imgSrc,
@@ -62,16 +63,31 @@ export default {
       return {
         title: this.title,
         desc: this.desc,
+        pv: this.pv,
+        copy: this.copy,
         imgSrc: this.imgSrc,
         imgAlt: this.imgAlt,
+        isNumMaker: this.isNumMaker,
         author: this.author,
         category: this.category,
         listMessage: this.listMessage
       }
     },
+    likeInfo() {
+      return {
+        author: this.author,
+        likes: this.likes,
+        isClickLike: this.isClickLike
+      }
+    },
     ...mapState({
       session: state => state.localStorage.session
     })
+  },
+  mounted() {
+    if(this.message == '请重新登陆') {
+      this.$route.push('/login')
+    }
   }
 }
 </script>

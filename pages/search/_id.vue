@@ -3,8 +3,8 @@
     <common-header></common-header>
     <div class="container-fluid margin_medium">
       <div class="container_max_width">
-        <h2>{{this.$route.params.id}}</h2>
-        <div v-show="listArr.length === 0" style="height: 30rem;"></div>
+        <h2>搜索关键词 {{this.$route.query.keyword}} 的结果：</h2>
+        <div v-show="listArr.length == 0" style="height: 30rem;"></div>
         <div class="row with_gutter">
           <div v-for="(item,index) of listArr" :key="item._id"
             class="column col-xs-12 col-sm-6 col-md-4 col-lg-4"
@@ -33,14 +33,8 @@ export default {
     CommonHeader,
     CommonFooter
   },
-  async asyncData ({ app, store, params, query, error }) {
-    let url = ''
-    if(process.env.VUE_ENV === 'client') {
-      url = '/api/tasks/'
-    }else {
-      url = '/api/tasks/'
-    }
-    return app.$axios.get(url + '?category=' + params.id)
+  async asyncData ({ app, params, error }) {
+    return app.$axios.get('/api/tasks?keyword=' + params.id)
     .then((res) => {
       return {
         taskArr: res.data
@@ -58,9 +52,6 @@ export default {
         return []
       }
     }
-  },
-  mounted() {
-    // console.log(this.listArr)
   }
 }
 </script>

@@ -14,10 +14,10 @@
               <div class="iconfont logo_icon logo_icon_mobile">🧾</div>
               <div class="logo_name logo_name_mobile">共享清单</div>
             </nuxt-link>
-            <div class="navbar_search search_none" :style="displayStyle">
-              <input type="search" placeholder="输入关键词">
+            <div class="navbar_search search_none" :style="displayStyle" @keydown.13="handleSearch">
+              <input type="search" placeholder="输入关键词" v-model="inputValue">
               <!-- <span class="iconfont">&#xe60e;</span> -->
-              <nuxt-link tag="div" to="#" class="glyphicon glyphicon-search search_icon"></nuxt-link>
+              <div class="glyphicon glyphicon-search search_icon" @click="handleSearch"></div>
             </div>
           </div>
         </div>
@@ -37,10 +37,12 @@
 
 <script>
 import { mapState,mapMutations } from 'vuex'
+
 export default {
   name: 'HomeHeader',
   data() {
     return {
+      inputValue: '',
       scrollTop: 0,
       backgroundStyle: {
         background: 'transparent'
@@ -51,6 +53,13 @@ export default {
     }
   },
   methods: {
+    handleSearch() {
+      if(this.inputValue) {
+        this.$router.push({name: 'search-id', params:{id: this.inputValue}})
+      }else {
+        alert('请输入关键词搜索')
+      }
+    },
     handleScroll() {
       this.scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
       if(this.scrollTop > 270) {
@@ -65,8 +74,11 @@ export default {
       clearSession: 'localStorage/clearSession'
     }),
     handleLoginOut() {
+      this.$axios.get('/api/logout')
+        .then(this.handleGetInfo).catch(reason => console.log(reason))
+    },
+    handleGetInfo(res) {
       this.clearSession()
-      console.log(this.session)
     }
   },
   computed: {

@@ -28,7 +28,6 @@
 <script>
 import CommonHeader from '~/components/common/Header'
 import CommonFooter from '~/components/common/Footer'
-import axios from 'axios'
 import { mapState, mapMutations } from 'vuex'
 let Base64 = require("js-base64").Base64
 let sha256 = require("js-sha256").sha256
@@ -73,7 +72,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if(valid) {
-          axios.post('http://localhost:3000/users/', this.userInfo)
+          this.$axios.post('/api/users/', this.userInfo)
             .then(this.handlePostInfo).catch(reason => console.log(reason))
         }else {
           alert('注册失败')
@@ -100,8 +99,8 @@ export default {
   computed: {
     userInfo() {
       return {
-        _id: Base64.encode(this.ruleForm.name),
-        name: Base64.encode(this.ruleForm.name),
+        _id: this.ruleForm.name,
+        name: this.ruleForm.name,
         pass: sha256(this.ruleForm.pass)
       }
     }
