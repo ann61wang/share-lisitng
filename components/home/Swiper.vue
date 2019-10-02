@@ -3,9 +3,9 @@
     <no-ssr>
       <swiper :options="swiperOption" ref="mySwiper">
         <swiper-slide v-for="(page, index) of pages" :key="index">
-          <nuxt-link tag="div" class="category" v-for="(item, index) of page" :key="item.id" :to="'/collections/' + item.english">
-            <div class="category_title">{{item.title}}</div>
-            <img class="category-img adaptive_img" :src="item.imgUrl">
+          <nuxt-link tag="div" class="category" v-for="(item, index) of page" :key="item._id" :to="'/collections/' + item._id">
+            <div class="category_title">{{item.name}}</div>
+            <img class="category-img adaptive_img" :src="item.imageUrl" :alt="item.imageAlt">
           </nuxt-link>
         </swiper-slide>
       </swiper>
@@ -18,6 +18,7 @@
 <script>
 export default {
   name: 'HomeSwiper',
+  props: ['categories'],
   data () {
     return {
       isMounted: false,
@@ -37,53 +38,7 @@ export default {
       },
       rightObj: {
         display: 'block'
-      },
-      imgs: [{
-        id: "0001",
-        title: "旅游",
-        english: 'travel',
-        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
-      },{
-        id: "0002",
-        title: "教育",
-        english: 'enducation',
-        imgUrl: "https://images.pexels.com/photos/2531709/pexels-photo-2531709.jpeg?auto=compress&crop=focalpoint&cs=tinysrgb&fit=crop&h=350.0&sharp=10&w=1400"
-      },{
-        id: "0003",
-        title: "体育",
-        english: 'sports',
-        imgUrl: "https://images.pexels.com/photos/2064357/pexels-photo-2064357.jpeg?cs=srgb&dl=fruit-milk-splash-2064357.jpg&fm=jpg"
-      },{
-        id: "0004",
-        title: "工作",
-        english: 'work',
-        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
-      },{
-        id: "0005",
-        title: "梦想",
-        english: 'dream',
-        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
-      },{
-        id: "0006",
-        title: "电影",
-        english: 'movies',
-        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
-      },{
-        id: "0007",
-        title: "娱乐",
-        english: 'entertainment',
-        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
-      },{
-        id: "0008",
-        title: "美食",
-        english: 'food',
-        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
-      },{
-        id: "0009",
-        title: "其他",
-        english: 'other',
-        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
-     }]
+      }
     }
   },
   updated(){
@@ -102,7 +57,7 @@ export default {
       //计算 slide 的个数
       let w = (this.swiper.width < 536) ? 112 : 187
       const pages = []
-      this.imgs.forEach((item, index) => {
+      this.categories.forEach((item, index) => {
         //总是让 slide 装下 swiper 宽度减去一个图片区域的宽度，这样就可以点击箭头时，最后一个图片就是打头的图片
         let num = this.swiper.width / w - 1
         const page = Math.floor(index / num)
@@ -182,8 +137,8 @@ export default {
       position: relative
       .category_title
         position: absolute
-        left: 7.5rem
-        top: 2.4rem
+        left: 40%
+        top: 36%
         z-index: 2
         font-size: 1.8rem
         font-weight: 600

@@ -126,6 +126,7 @@ export default {
           this.listData.desc = this.title.descCache
           this.listData.isNumMaker = this.isNumMakerCache
           this.listData.author = this.session
+          this.listData.lastCategory = this.lastCategory
           this.listData.category = this.category
           this.listData.listMessage = this.listMessage
 
@@ -246,6 +247,7 @@ export default {
       title: state => state.sessionStorage.title,
       image: state => state.sessionStorage.image,
       category: state => state.sessionStorage.category,
+      lastCategory: state => state.sessionStorage.lastCategory,
       isNumMakerCache: state => state.sessionStorage.isNumMaker,
       session: state => state.localStorage.session
     }),
@@ -257,6 +259,7 @@ export default {
         desc: '',
         isNumMaker: false,
         author: '',
+        lastCategory: '',
         category: 'other',
         listMessage: {}
       }

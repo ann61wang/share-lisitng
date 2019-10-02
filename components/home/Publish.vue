@@ -1,31 +1,30 @@
 <template lang="html">
   <div class="container-fluid margin_medium container_max_width">
     <div class="container_wrapper">
-      <h3 style="text-align: center;">Publisher benefits</h3>
-      <p style="text-align: center;">Besides becoming a total rockstar, there are so many benefits to being a publisher.</p>
+      <h3 style="text-align: center;">创作者的好处</h3>
+      <p style="text-align: center;">成为一个创作者有很多的好处</p>
       <div class="prev_desc">
         <img class="img-responsive" src="https://as.ftcdn.net/r/v1/pics/a014e23bc2f86a494c2eb15c032c51a3b120c2d7/home/open-in.jpg" alt="">
       </div>
 
       <div class="row next_desc">
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-          <h3>Here's an example of a published checklist and a few of the many benefits.</h3>
+          <h3>这是一个已发布的清单示例，以及其中的一些好处</h3>
           <p>
-            ✓ Rank in Google Search<br>
-            ✓ It's super fast to publish<br>
-            ✓ Checklists are interactive<br>
-            ✓ Personalize options<br>
-            ✓ Link to your website<br>
-            ✓ Drive traffic and leads to your site<br>
+            ✓ 百度搜索中排名靠前<br>
+            ✓ 非常快地速度就可以发布一个清单<br>
+            ✓ 清单是交互式的<br>
+            ✓ 可以个性化定制清单<br>
+            ✓ 链接到你的网站或者文章<br>
+            ✓ 为你的站点增加流量<br>
             <br>
-            ✓ Track views<br>
-            ✓ Track PDFs downloaded<br>
-            ✓ Track # of copies made<br>
-            ✓ Easily share on social media
+            ✓ 视图追踪<br>
+            ✓ 追踪清单被复制的数量<br>
+            ✓ 非常容易分享到社交媒体<br>
           </p>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-            <img class="img-responsive" src="https://as.ftcdn.net/r/v1/pics/a6bbebc616533491f17aff232d4f13856d164870/home/in-app.jpg" alt="">
+            <img class="img-responsive" src="http://pydmbbyau.bkt.clouddn.com/FgDQBsq_MjF4XxvVGw-A8Lr1d9fh" alt="">
         </div>
       </div>
     </div>

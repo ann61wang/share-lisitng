@@ -4,7 +4,7 @@
     <div class="container-fluid list_page">
       <list-follow :likeInfo="likeInfo"></list-follow>
       <list-main :listData="listData"></list-main>
-      <list-relate></list-relate>
+      <list-relate :category="category"></list-relate>
     </div>
     <common-footer></common-footer>
   </div>
@@ -86,7 +86,7 @@ export default {
   },
   mounted() {
     if(this.message == '请重新登陆') {
-      this.$route.push('/login')
+      this.$router.push('/login')
     }
   }
 }

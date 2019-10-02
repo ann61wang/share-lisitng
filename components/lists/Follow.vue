@@ -4,7 +4,7 @@
       <nuxt-link to="/" class="user_info">
         <div class="user_img"><img src="https://images.pexels.com/users/avatars/344572/felix-mittermeier-366.jpeg?w=256&h=256&fit=crop&crop=faces" alt=""></div>
         <div class="user_message">
-          <h3>{{likeInfo.author}}</h3>
+          <h3>{{likeInfo.author._id}}</h3>
           <div class="follower_count"><span>794</span> 个关注</div>
         </div>
       </nuxt-link>

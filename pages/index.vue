@@ -2,8 +2,8 @@
   <div class="body_min_width">
     <home-header :user="user"></home-header>
     <home-search></home-search>
-    <home-swiper></home-swiper>
-    <home-trending></home-trending>
+    <home-swiper :categories="categories"></home-swiper>
+    <home-trending :taskArr="taskArr"></home-trending>
     <home-publish></home-publish>
     <home-topPub></home-topPub>
     <common-footer></common-footer>
@@ -32,22 +32,23 @@ export default {
     CommonFooter
   },
   async asyncData ({ app, error }) {
-    return app.$axios.get('/api/login')
-    .then((res) => {
-      let data = res.data
-      if(data.ret_code == 0) {
-        return {
-          user: data.user
-        }
-      }else {
-        return {
-          user: ''
-        }
+    let [request1Data, request2Data] = await Promise.all([
+      app.$axios.get('/api/categories'),
+      app.$axios.get('/api/tasks?trending=1')
+    ])
+    if(request1Data.data.ret_code == 0) {
+      return {
+        user: request1Data.data.user,
+        categories: request1Data.data.categories,
+        taskArr: request2Data.data
       }
-    })
-    .catch((e) => {
-      error({ statusCode: 404, message: '页面没有找到' })
-    })
+    }else {
+      return {
+        user: '',
+        categories: request1Data.data.categories,
+        taskArr: request2Data.data
+      }
+    }
   },
   methods: {
     ...mapMutations({

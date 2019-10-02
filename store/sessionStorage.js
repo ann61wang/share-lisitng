@@ -12,6 +12,7 @@ export const state = () => ({
   },
   listNum: [],
   isNumMaker: false,
+  lastCategory: '',
   category: 'other',
   listMessage: {},
   expire: 2
@@ -35,6 +36,9 @@ export const mutations = {
   },
   syncList(state, items) {
     state.listNum = items
+  },
+  syncLastCategory(state, lastCategory) {
+    state.lastCategory = lastCategory
   },
   syncCategory(state, category) {
     state.category = category

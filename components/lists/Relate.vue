@@ -1,12 +1,12 @@
 <template lang="html">
   <section class="section">
-    <h4>Related Checklists</h4>
+    <h4>相关推荐</h4>
     <div class="row with_gutter">
-      <div v-for="(item,index) of imgs" :key="item.id"
+      <div v-for="(item,index) of listArr" :key="item.id"
         class="column col-xs-12 col-sm-6 col-md-4 col-lg-4"
       >
-        <nuxt-link :to="'/lists/' + item.id" class="list_shadow">
-          <img :src="item.imgUrl" alt="" class="column_img">
+        <nuxt-link :to="'/lists/' + item._id" class="list_shadow">
+          <img :src="item.imgSrc" :alt="item.imgAlt" class="column_img">
           <div class="list_content">
             <h4>{{item.title}}</h4>
             <div class="iconfont icon_list">&#xe635;</div>
@@ -18,24 +18,26 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'ListRelate',
+  props: ['category'],
   data() {
     return {
-      imgs: [{
-        id: "0001",
-        title: "travel",
-        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
-      }, {
-        id: "0002",
-        title: "education",
-        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
-      },{
-        id: "0003",
-        title: "work",
-        imgUrl: "https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500"
-      }]
+      listArr: []
     }
+  },
+  methods: {
+    handleGetInfo(res) {
+      this.listArr = res.data.filter((item) => {
+        return item._id != this.$route.params.id
+      })
+    }
+  },
+  mounted() {
+    this.$axios.get('/api/tasks?category=' + this.category._id)
+      .then(this.handleGetInfo).catch(reason => console.log(reason))
   }
 }
 </script>
@@ -63,7 +65,7 @@ export default {
         .column_img
           display: block
           width: 100%
-          min-height: 16.8rem
+          height: 18rem
           object-fit: cover
         .list_content
           padding: 2rem

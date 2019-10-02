@@ -33,17 +33,17 @@ export default {
     CommonHeader,
     CommonFooter
   },
-  async asyncData ({ app, store, params, query, error }) {
-    let url = ''
-    if(process.env.VUE_ENV === 'client') {
-      url = '/api/tasks/'
-    }else {
-      url = '/api/tasks/'
-    }
-    return app.$axios.get(url + '?category=' + params.id)
+  async asyncData ({ app, params, error }) {
+    let url = '/api/categories/' + params.id
+
+    return app.$axios.get(url)
     .then((res) => {
-      return {
-        taskArr: res.data
+      if(res.data === null) {
+        error({ statusCode: 404, message: '页面没有找到' })
+      }else {
+        return {
+          taskArr: res.data.tasks
+        }
       }
     })
     .catch((e) => {
@@ -58,9 +58,6 @@ export default {
         return []
       }
     }
-  },
-  mounted() {
-    // console.log(this.listArr)
   }
 }
 </script>
@@ -92,7 +89,7 @@ export default {
           .column_img
             display: block
             width: 100%
-            min-height: 16.8rem
+            height: 18rem
             object-fit: cover
           .list_content
             padding: 2rem

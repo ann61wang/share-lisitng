@@ -62,7 +62,9 @@ export default {
       syncListObj: 'sessionStorage/syncListObj',
       insertImg: 'sessionStorage/insertImg',
       syncValue: 'sessionStorage/syncValue',
-      judgeIsNumMaker: 'sessionStorage/judgeIsNumMaker'
+      judgeIsNumMaker: 'sessionStorage/judgeIsNumMaker',
+      syncLastCategory: 'sessionStorage/syncLastCategory',
+      syncCategory: 'sessionStorage/syncCategory'
     })
   },
   computed: {
@@ -88,8 +90,10 @@ export default {
     this.syncListObj(Object.assign({},this.listMessage))
     this.syncValue(this.listTitle)
     this.judgeIsNumMaker(this.isNumMaker)
+    this.syncLastCategory(this.category)
+    this.syncCategory(this.category)
     if(this.message == '请重新登陆') {
-      this.$route.push('/login')
+      this.$router.push('/login')
     }
   }
 }

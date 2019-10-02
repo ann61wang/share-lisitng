@@ -3,7 +3,8 @@
     <common-header></common-header>
     <div class="container-fluid margin_medium">
       <div class="container_max_width">
-        <h2>搜索关键词 {{this.$route.query.keyword}} 的结果：</h2>
+        <h2 v-if="isHaveList">搜索关键词 {{this.$route.params.id}} 的结果：</h2>
+        <h2 v-else>没有搜索到与 {{this.$route.params.id}} 相关的清单，换一个关键词试试</h2>
         <div v-show="listArr.length == 0" style="height: 30rem;"></div>
         <div class="row with_gutter">
           <div v-for="(item,index) of listArr" :key="item._id"
@@ -33,6 +34,11 @@ export default {
     CommonHeader,
     CommonFooter
   },
+  data() {
+    return {
+      isHaveList: true
+    }
+  },
   async asyncData ({ app, params, error }) {
     return app.$axios.get('/api/tasks?keyword=' + params.id)
     .then((res) => {
@@ -51,6 +57,11 @@ export default {
       }else {
         return []
       }
+    }
+  },
+  mounted() {
+    if(this.listArr.length == 0) {
+      this.isHaveList = false
     }
   }
 }

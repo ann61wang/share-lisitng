@@ -4,13 +4,20 @@
     <div class="container-fluid margin_medium">
       <div class="container_max_width">
         <h2>我的所有清单</h2>
-        <!-- 管理员可以创建分类，还需要处理 DOM 元素的增减 -->
+        <!-- 管理员可以创建和删除分类，还需要处理 DOM 元素的增减 -->
         <el-row v-show="isAdmin" :gutter="14">
           <el-col :span="4">
-            <el-input v-model="input" placeholder="创建或删除分类"></el-input>
+            <el-input v-model="inputEnglish" placeholder="创建或删除分类(英文)"></el-input>
+            <image-upload></image-upload>
+          </el-col>
+          <el-col :span="4">
+            <el-input v-model="inputChinese" placeholder="创建或删除分类(中文)"></el-input>
           </el-col>
           <el-col :span="4">
             <el-button @click="addCategory">创建</el-button>
+            <el-button>更新</el-button>
+          </el-col>
+          <el-col :span="4">
             <el-button @click="removeCategory">删除</el-button>
           </el-col>
         </el-row>
@@ -37,49 +44,42 @@
 <script>
 import CommonHeader from '~/components/common/Header'
 import CommonFooter from '~/components/common/Footer'
+import ImageUpload from '~/components/user/ImageUpload'
 import { mapState } from 'vuex'
 
 export default {
   name: 'User',
   components: {
     CommonHeader,
-    CommonFooter
+    CommonFooter,
+    ImageUpload
   },
   data() {
     return {
-      input: ''
+      inputEnglish: '',
+      inputChinese: ''
     }
   },
-  async asyncData ({ app, store, params, query, error }) {
-    let urlUserInfo = ''
-    let urlTasks = ''
-    if(process.env.VUE_ENV === 'client') {
-      urlUserInfo = '/api/users/' + params.id
-      urlTasks = '/api/tasks/'
-    }else {
-      urlUserInfo = '/api/users/' + params.id
-      urlTasks = '/api/tasks/'
-    }
-    return app.$axios.get(urlUserInfo)
+  async asyncData ({ app, params, query, error }) {
+    let url = '/api/users/' + params.id
+
+    return app.$axios.get(url)
     .then((res) => {
       if(res.data === null) {
         error({ statusCode: 404, message: '页面没有找到' })
       }else {
-        return app.$axios.get(urlTasks + '?author=' + params.id)
-        .then((res) => {
-          return {
-            taskArr: res.data
-          }
-        })
-        .catch((e) => {
-          error({ statusCode: 404, message: '页面没有找到' })
-        })
+        return {
+          taskArr: res.data.tasks
+        }
       }
+    })
+    .catch((e) => {
+      error({ statusCode: 404, message: '页面没有找到' })
     })
   },
   methods: {
     addCategory() {
-      if(this.input) {
+      if(this.inputEnglish && this.inputChinese) {
         this.$axios.post('/api/categories/', this.categoryInfo)
           .then(this.handlePostInfo).catch(reason => console.log(reason))
       }
@@ -91,12 +91,13 @@ export default {
       }else {
         this.open2()
       }
-      this.input = ''
+      this.inputEnglish = ''
+      this.inputChinese = ''
     },
     open1() {
       this.$message({
         showClose: true,
-        message: this.input + '分类被成功创建',
+        message: this.inputChinese + '分类被成功创建',
         type: 'success'
       })
     },
@@ -108,8 +109,8 @@ export default {
       })
     },
     removeCategory() {
-      if(this.input) {
-        this.$axios.delete('/api/categories/' + this.input)
+      if(this.inputEnglish) {
+        this.$axios.delete('/api/categories/' + this.inputEnglish)
           .then(this.handleDeleteInfo).catch(reason => console.log(reason))
       }
     },
@@ -120,15 +121,16 @@ export default {
       }else {
         alert('删除分类失败')
       }
-      this.input = ''
+      this.inputEnglish = ''
+      this.inputChinese = ''
     },
     open3() {
       this.$message({
         showClose: true,
-        message: this.input + '分类被成功删除',
+        message: this.inputChinese + '分类被成功删除',
         type: 'success'
       })
-    },
+    }
   },
   computed: {
     listArr() {
@@ -139,7 +141,7 @@ export default {
       }
     },
     isAdmin() {
-      if(this.session === '5YWt5LiA') {
+      if(this.session === 'admin') {
         return true
       }else {
         return false
@@ -147,13 +149,17 @@ export default {
     },
     categoryInfo() {
       return {
-        _id: this.input,
-        name: this.input
+        _id: this.inputEnglish,
+        name: this.inputChinese,
+        imageUrl: this.imgSrc,
+        imageAlt: this.imgAlt
       }
     },
     ...mapState({
       session: state => state.localStorage.session,
-      category: state => state.localStorage.category
+      category: state => state.localStorage.category,
+      imgSrc: state => state.user.image.imgSrc,
+      imgAlt: state => state.user.image.imgAlt
     })
   },
   mounted() {
@@ -191,7 +197,7 @@ export default {
           .column_img
             display: block
             width: 100%
-            min-height: 16.8rem
+            height: 18rem
             object-fit: cover
           .list_content
             padding: 2rem

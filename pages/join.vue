@@ -8,13 +8,17 @@
       class="demo-fuleForm join_form"
     >
       <el-form-item label="用户名" prop="name">
-        <el-input v-model.trim="ruleForm.name"></el-input>
+        <el-input
+          v-model.trim="ruleForm.name"
+          maxlength="8"
+          show-word-limit
+        ></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="pass">
-        <el-input type="password" v-model.trim="ruleForm.pass" autocomplete="off"></el-input>
+        <el-input type="password" v-model.trim="ruleForm.pass" autocomplete="off" show-password></el-input>
       </el-form-item>
       <el-form-item label="确认密码" prop="checkPass">
-        <el-input type="password" v-model.trim="ruleForm.checkPass" autocomplete="off"></el-input>
+        <el-input type="password" v-model.trim="ruleForm.checkPass" autocomplete="off" show-password></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button>
@@ -39,6 +43,15 @@ export default {
     CommonFooter
   },
   data() {
+    let validateName = (rule, value, callback) => {
+      let reg = /^[A-Za-z0-9_]+$/
+      if(!reg.test(value)) {
+        callback(new Error('只能输入英文字母、数字和下划线'))
+      }else {
+        callback()
+      }
+    }
+
     let validatePass = (rule, value, callback) => {
       if(value != this.ruleForm.pass) {
         callback(new Error('两次输入密码不一致！'))
@@ -55,7 +68,8 @@ export default {
       rules: {
         name: [
           {required: true, message: '请输入用户名', trigger: 'blur' },
-          { max: 8, message: '用户名过长', trigger: 'change' }
+          { max: 8, message: '用户名过长', trigger: 'change' },
+          { validator: validateName, trigger: 'blur' }
         ],
         pass: [
           {required: true, message: '请输入密码', trigger: 'blur' },
