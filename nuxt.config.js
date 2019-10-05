@@ -54,7 +54,7 @@ module.exports = {
     stylus: ['./assets/styles/varibles.styl', './assets/styles/mixins.styl']
   },
   env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:3000'
+    baseUrl: process.env.BASE_URL || 'https://limitless-journey-02855.herokuapp.com'
   },
   axios: {
     baseUrl: process.env.baseUrl,
@@ -63,7 +63,7 @@ module.exports = {
   },
   proxy: {
     '/api': {
-      target: 'http://localhost:3000',
+      target: 'https://limitless-journey-02855.herokuapp.com',
       changeOrigin: true,
       pathRewrite: {
         '^/api' : ''
