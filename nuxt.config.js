@@ -63,7 +63,7 @@ module.exports = {
   },
   proxy: {
     '/api': {
-      target: 'https://limitless-journey-02855.herokuapp.com',
+      target: 'http://localhost:3000',
       changeOrigin: true,
       pathRewrite: {
         '^/api' : ''

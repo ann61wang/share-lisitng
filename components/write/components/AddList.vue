@@ -153,6 +153,7 @@ export default {
     content() {
       try {
         localStorage[this._id] = this.content
+
       } catch (e) {}
     },
     listMessageObj() {
