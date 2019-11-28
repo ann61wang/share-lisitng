@@ -21,6 +21,7 @@
   "dependencies": {
     "@nuxtjs/style-resources": "^1.0.0",
     "bootstrap": "^3.3.7",
+    "cos-js-sdk-v5": "^0.5.20",
     "cross-env": "^5.2.0",
     "crypto-js": "^3.1.9-1",
     "element-ui": "^2.12.0",

@@ -6,28 +6,26 @@
         <span class="iconfont icon_clear" title="删除" @click.prevent="clearImg">&#xe612;</span>
       </div>
 
-      <el-upload
-        ref="upload"
-        class="upload-demo"
-        drag
-        :action="actionPath"
-        :show-file-list="false"
-        accept="image/jpeg,image/png"
-        :before-upload="beforeAvatarUpload"
-        :data="postData"
-        :on-success="handleAvatarSuccess"
-      >
-        <img v-if="imageUrl" :src="imageUrl" :alt="imageAlt" class="avatar">
-        <!-- <i v-else class="el-icon-upload"></i> -->
-        <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
-      </el-upload>
+      <label :class="isUpload ? 'uploade_picture' : 'uploade_picture cancel_pointer'" :for="upload">
+        <div class="img_area" v-show="imageUrl">
+          <img :src="imageUrl" :alt="imageAlt">
+        </div>
+        <input type="file" accept="image/png, image/jpeg, image/jpg" class="uploade_picture_input" id="picture" @change="getFile" ref="file">
+        <div class="iconfont icon_camera" v-show="!isUpload">&#xe60b;</div>
+        <transition-group name="fade">
+          <div class="img_alt" v-show="isUpload && show" key="1">{{this.imgAlt}}</div>
+          <div class="text" v-show="show && !isUpload" key="2">添加图片</div>
+        </transition-group>
+      </label>
     </div>
   </div>
 </template>
 
 <script>
-import { genUpToken } from '@/assets/styles/qiniuToken'
 import { mapState, mapMutations } from 'vuex'
+if(process.browser) {
+  var COS = require('cos-js-sdk-v5')
+}
 
 export default {
   name: 'ImageUpload',
@@ -35,53 +33,96 @@ export default {
     return {
       isUpload: false,
       isImgChange: false,
-
-      actionPath:'https://upload-z2.qiniup.com',
-      postData: {},
+      titleValue: '',
+      descValue: '',
+      show: false,
+      upload: 'picture',
       imageUrl: '',
       imageAlt: ''
     }
   },
   methods: {
-    beforeAvatarUpload(file) {
-      let isAllow = true
-      const isLt2M = file.size / 1024 / 1024 < 5
-
-      if(file.type !== 'image/jpeg' && file.type !== 'image/png')
-        isAllow = false
-
-      if (!isAllow)
-        this.$message.error('上传头像图片只能是 JPG/PNG 格式!')
-
-      if (!isLt2M)
-        this.$message.error('上传头像图片大小不能超过 5MB!')
-
-      return isAllow && isLt2M
-    },
-    handleAvatarSuccess(res, file) {
-      // this.imageUrl = URL.createObjectURL(file.raw)
-      this.imageUrl = 'http://pydmbbyau.bkt.clouddn.com/' + res.key
-      this.imageAlt = file.name.substring(0,file.name.length-4)
-      this.isUpload = true
-      this.insertImg(this.imgObj)
-    },
     handleDivMouseEnter() {
       this.isImgChange = true
+      this.show = true
     },
     handleDivMouseLeave() {
       this.isImgChange = false
+      this.show = false
+    },
+    getFile(e) {
+      if(e.target.files[0]) {
+        let type = e.target.files[0].type
+        let size = e.target.files[0].size
+        let isAllow = true
+        const isLt2M = size / 1024 / 1024 < 5
+
+        if(type !== 'image/jpeg' && type !== 'image/png') isAllow = false
+        if (!isAllow) this.$message.error('上传头像图片只能是 JPG/PNG 格式!')
+        if (!isLt2M) this.$message.error('上传头像图片大小不能超过 5MB!')
+
+        if(isAllow && isLt2M) {
+          let self = this
+          let reader = new FileReader()
+          let selectedFile = e.target.files[0]
+          this.imageObj.imgAlt = selectedFile.name
+          this.imageAlt = this.imageObj.imgAlt
+          reader.readAsDataURL(e.target.files[0])
+          reader.onload = ((el) => {
+            self.imageUrl = el.target.result
+          })
+
+          let cos = new COS({
+            getAuthorization: function (options,callback) { 
+              let authorization = COS.getAuthorization({
+                SecretId: 'AKIDINCh4EtmEX3S2Zerdw1rQn6NSJ5SlqdY',
+                SecretKey: 'xz6DEE3dfT2QjKjy0mY8TabOfiaOybx5',
+                Method: options.Method,
+                Key: options.Key,
+                Query: options.Query,
+                Headers: options.Headers,
+                Expires: 60,
+              });
+              callback(authorization);
+            }
+          })
+
+          cos.putObject({
+            Bucket: 'sharelist-1255748781',
+            Region: 'ap-guangzhou',
+            Key: self.imageAlt,
+            Body: selectedFile,
+            onProgress: function (progressData) {
+              console.log(JSON.stringify(progressData))
+            }
+          }, function (err,data) {
+            console.log(err || data)
+            if(data) {
+              self.imageObj.imgSrc = 'https://' + data.Location
+              self.insertImg(Object.assign({},self.imageObj))
+            }
+          })
+          this.isUpload = true
+          this.show = false
+          this.upload = ''
+        }
+      }
     },
     clearImg() {
-      this.imageUrl  = ''
+      this.clearImage()
+      this.imageUrl  = this.imgSrc
       this.isUpload = false
-      this.$refs.upload.clearFiles()
+      this.upload = 'picture'
+      // this.$refs.upload.clearFiles()
+      this.$refs.file.value = ''
     },
     ...mapMutations({
-      insertImg: 'user/insertImg'
+      insertImg: 'user/insertImg',
+      clearImage: 'user/clearImage'
     })
   },
   computed: {
-    imgObj() {
+    imageObj() {
       return {
         imgSrc: this.imageUrl,
         imgAlt: this.imageAlt
@@ -91,41 +132,17 @@ export default {
       imgSrc: state => state.user.image.imgSrc,
       imgAlt: state => state.user.image.imgAlt
     })
-  },
-  created() {
-    var policy = {}
-    var bucketName = 'share-list'
-    var AK ='P1ZMzS2ClZA0ccLzGubOO-vjSUJ-5UqXk4NOP7y0'
-    var SK = 'hSG4WkKXI7IOQewF7rCjBjBmKvKa9gsfcU6IzDGC'
-    var deadline = Math.round(new Date().getTime() / 1000) + 3600
-    policy.scope = bucketName
-    policy.deadline = deadline
-    this.postData.token = genUpToken(AK, SK, policy)
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-  .wrapper >>> .el-upload
-    width: 100%
-    height: 12rem
-    .el-upload-dragger
-      background: $bgGrayColor
-      width: 100%
-      height: 12rem
-      .avatar
-        width: 100%
-        height: 100%
-        object-fit: cover
-    .el-upload__input
-      display: none
-
   .wrapper
-    margin: 1rem auto 0
+    margin: 1rem auto 1rem
     cursor: pointer
-    max-width: 66rem
-    min-height: 19.2rem
-    max-height: 25rem
+    width: 20rem
+    min-height: 10rem
+    max-height: 10rem
     position: relative
     border-radius: $borderRadius
     box-sizing: border-box
@@ -143,7 +160,7 @@ export default {
         display: inline-block
         margin: .6rem 1.2rem
         color: #f6f6f6
-        font-size: 2.3rem
+        font-size: 1.4rem
         cursor: pointer
       .icon_clear
         display: inline-block
@@ -154,24 +171,26 @@ export default {
       cursor: pointer
     .uploade_picture
       display: block
-      line-height: 19.2rem
-      min-height: 19.2rem
+      line-height: 10rem
+      min-height: 10rem
       text-align: center
       .img_area
         width: 100%
-        min-height: 19.2rem
-        max-height: 25rem
+        min-height: 10rem
+        max-height: 10rem
         z-index: 3
         img
           width: 100%
           height: 100%
+          max-height: 10rem
+          object-fit: cover
       .uploade_picture_input
         display: none
       .icon_camera
         margin: 0 auto
-        width: 4.2rem
-        height: 4.2rem
-        font-size: 4.6rem
+        width: 2.4rem
+        height: 2.4rem
+        font-size: 2.6rem
         color: rgba(26,26,26,.2)
       .fade-enter, .fade-leave-to
         opacity: 0
@@ -182,7 +201,7 @@ export default {
         width: 100%
         text-align: center
         left: 0
-        bottom: 5rem
+        bottom: 1rem
         line-height: 1
         color: grey
       .img_alt
@@ -190,7 +209,6 @@ export default {
         width: 100%
         text-align: center
         left: 0
-        bottom: 1rem
         line-height: 1
         color: #f6f6f6
 </style>

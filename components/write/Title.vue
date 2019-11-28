@@ -6,26 +6,27 @@
         <span class="iconfont icon_clear" title="删除" @click.prevent="clearImg">&#xe612;</span>
       </div>
 
-      <el-upload
+      <!-- <el-upload
         ref="upload"
         class="upload-demo"
         drag
         :action="actionPath"
         :show-file-list="false"
         accept="image/jpeg,image/png"
-        :before-upload="beforeAvatarUpload"
+        :before-upload="beforeImgUpload"
+        :on-progress="imgUpload"
         :data="postData"
-        :on-success="handleAvatarSuccess"
+        :on-success="handleImgSuccess"
       >
         <img v-if="imageUrl" :src="imageUrl" :alt="imageAlt" class="avatar">
         <i v-else class="el-icon-upload"></i>
         <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
-        <!-- <div class="el-upload__tip" slot="tip">只能上传 jpg/png 文件，且不超过 5MB</div> -->
-      </el-upload>
+        <div class="el-upload__tip" slot="tip">只能上传 jpg/png 文件，且不超过 5MB</div>
+      </el-upload> -->
 
-      <!-- <label :class="isUpload ? 'uploade_picture' : 'uploade_picture cancel_pointer'" :for="upload">
-        <div class="img_area" v-show="imgSrc">
-          <img :src="cacheImgSrc" :alt="imgAlt">
+      <label :class="isUpload ? 'uploade_picture' : 'uploade_picture cancel_pointer'" :for="upload">
+        <div class="img_area" v-show="imageUrl">
+          <img :src="imageUrl" :alt="imageAlt">
         </div>
         <input type="file" accept="image/png, image/jpeg, image/jpg" class="uploade_picture_input" id="picture" @change="getFile" ref="file">
         <div class="iconfont icon_camera" v-show="!isUpload">&#xe60b;</div>
@@ -33,7 +34,7 @@
           <div class="img_alt" v-show="isUpload && show" key="1">{{this.imgAlt}}</div>
           <div class="text" v-show="show && !isUpload" key="2">添加题图</div>
         </transition-group>
-      </label> -->
+      </label>
 
 
     </div>
@@ -52,7 +53,9 @@
 
 <script>
 import { mapState, mapMutations, mapGetters } from 'vuex'
-import { genUpToken } from '@/assets/styles/qiniuToken'
+if(process.browser) {
+  var COS = require('cos-js-sdk-v5')
+}
 
 export default {
   name: 'WriteTitle',
@@ -62,62 +65,121 @@ export default {
       isImgChange: false,
       titleValue: '',
       descValue: '',
-
-      actionPath:'https://upload-z2.qiniup.com',
-      postData: {},
+      show: false,
+      upload: 'picture',
       imageUrl: '',
       imageAlt: ''
     }
   },
   methods: {
-    beforeAvatarUpload(file) {
-      let isAllow = true
-      const isLt2M = file.size / 1024 / 1024 < 5
-
-      if(file.type !== 'image/jpeg' && file.type !== 'image/png')
-        isAllow = false
-
-      if (!isAllow)
-        this.$message.error('上传头像图片只能是 JPG/PNG 格式!')
-
-      if (!isLt2M)
-        this.$message.error('上传头像图片大小不能超过 5MB!')
-
-      return isAllow && isLt2M
-    },
-    handleAvatarSuccess(res, file) {
-      // this.imageUrl = URL.createObjectURL(file.raw)
-      this.imageUrl = 'http://pydmbbyau.bkt.clouddn.com/' + res.key
-      this.imageAlt = file.name.substring(0,file.name.length-4)
-      this.insertImg(this.imageObj)
-      this.isUpload = true
-    },
+    // beforeImgUpload(file) {
+    //   let isAllow = true
+    //   const isLt2M = file.size / 1024 / 1024 < 5
+    //
+    //   if(file.type !== 'image/jpeg' && file.type !== 'image/png')
+    //     isAllow = false
+    //
+    //   if (!isAllow)
+    //     this.$message.error('上传头像图片只能是 JPG/PNG 格式!')
+    //
+    //   if (!isLt2M)
+    //     this.$message.error('上传头像图片大小不能超过 5MB!')
+    //
+    //   return isAllow && isLt2M
+    // },
+    // handleImgSuccess(res, file) {
+    //   // this.imageUrl = URL.createObjectURL(file.raw)
+    //   this.imageUrl = 'http://pydmbbyau.bkt.clouddn.com/' + res.key
+    //   this.imageAlt = file.name.substring(0,file.name.length-4)
+    //   this.insertImg(this.imageObj)
+    //   this.isUpload = true
+    // },
     handleDivMouseEnter() {
       this.isImgChange = true
+      this.show = true
     },
     handleDivMouseLeave() {
       this.isImgChange = false
+      this.show = false
     },
-    // getFile(e) {
-    //   if(e.target.files[0]) {
-    //     let reader = new FileReader()
-    //     let obj = {}
-    //     obj.imgAlt = e.target.files[0].name
-    //     reader.readAsDataURL(e.target.files[0])
-    //     reader.onload = ((el) => {
-    //       obj.imgSrc = el.target.result
-    //       this.insertImg(Object.assign({},obj))
-    //       this.cacheImgSrc  = this.imgSrc
-    //     })
-    //     this.isUpload = true
-    //     this.upload = ''
-    //   }
-    // },
+    getFile(e) {
+      if(e.target.files[0]) {
+        let type = e.target.files[0].type
+        let size = e.target.files[0].size
+        let isAllow = true
+        const isLt2M = size / 1024 / 1024 < 5
+
+        if(type !== 'image/jpeg' && type !== 'image/png') isAllow = false
+        if (!isAllow) this.$message.error('上传头像图片只能是 JPG/PNG 格式!')
+        if (!isLt2M) this.$message.error('上传头像图片大小不能超过 5MB!')
+
+        if(isAllow && isLt2M) {
+          let self = this
+          let reader = new FileReader()
+          let selectedFile = e.target.files[0]
+          this.imageObj.imgAlt = selectedFile.name.substring(0,selectedFile.name.length-4)
+          this.imageAlt = this.imageObj.imgAlt
+          reader.readAsDataURL(e.target.files[0])
+          reader.onload = ((el) => {
+            self.imageUrl = el.target.result
+          })
+
+          let cos = new COS({
+            getAuthorization: function (options,callback) { 
+              let authorization = COS.getAuthorization({
+                SecretId: 'AKIDINCh4EtmEX3S2Zerdw1rQn6NSJ5SlqdY',
+                SecretKey: 'xz6DEE3dfT2QjKjy0mY8TabOfiaOybx5',
+                Method: options.Method,
+                Key: options.Key,
+                Query: options.Query,
+                Headers: options.Headers,
+                Expires: 60,
+              });
+              callback(authorization);
+            }
+          })
+
+          cos.putObject({
+            Bucket: 'sharelist-1255748781',
+            Region: 'ap-guangzhou',
+            Key: self.imageAlt,
+            Body: selectedFile,
+            onProgress: function (progressData) {
+              console.log(JSON.stringify(progressData))
+            }
+          }, function (err,data) {
+            console.log(err || data)
+            if(data) {
+              self.imageObj.imgSrc = 'https://' + data.Location
+              self.insertImg(Object.assign({},self.imageObj))
+            }
+          })
+
+          // cos.getObject({
+          //   Bucket: 'sharelist-1255748781',
+          //   Key: self.imageAlt,
+          //   Region: 'ap-guangzhou',
+          //   Sign: false
+          // }, function (err, data) {
+          //   console.log(err || data,'返回值')
+          //   if(data) {
+          //     console.log(data.Url)
+          //   }
+          // })
+
+          this.isUpload = true
+          this.show = false
+          this.upload = ''
+        }
+      }
+    },
     clearImg() {
       this.clearImage()
       this.imageUrl  = this.imgSrc
       this.isUpload = false
-      this.$refs.upload.clearFiles()
+      this.upload = 'picture'
+      // this.$refs.upload.clearFiles()
+      this.$refs.file.value = ''
     },
     ...mapMutations({
       insertImg: 'localStorage/insertImg',
@@ -160,16 +222,6 @@ export default {
       this.titleValue = this.titleCache
       this.descValue = this.descCache
     }
-  },
-  created() {
-    var policy = {}
-    var bucketName = 'share-list'
-    var AK ='P1ZMzS2ClZA0ccLzGubOO-vjSUJ-5UqXk4NOP7y0'
-    var SK = 'hSG4WkKXI7IOQewF7rCjBjBmKvKa9gsfcU6IzDGC'
-    var deadline = Math.round(new Date().getTime() / 1000) + 3600
-    policy.scope = bucketName
-    policy.deadline = deadline
-    this.postData.token = genUpToken(AK, SK, policy)
   }
 }
 </script>
@@ -234,6 +286,8 @@ export default {
         img
           width: 100%
           height: 100%
+          max-height: 25rem
+          object-fit: cover
       .uploade_picture_input
         display: none
       .icon_camera

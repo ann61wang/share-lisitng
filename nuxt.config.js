@@ -54,7 +54,7 @@ module.exports = {
     stylus: ['./assets/styles/varibles.styl', './assets/styles/mixins.styl']
   },
   env: {
-    baseUrl: process.env.BASE_URL || 'https://limitless-journey-02855.herokuapp.com'
+    baseUrl: process.env.BASE_URL || 'https://localhost:3000'
   },
   axios: {
     baseUrl: process.env.baseUrl,

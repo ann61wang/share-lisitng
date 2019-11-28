@@ -24,7 +24,7 @@
           </p>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-            <img class="img-responsive" src="http://pydmbbyau.bkt.clouddn.com/FgDQBsq_MjF4XxvVGw-A8Lr1d9fh" alt="">
+            <img class="img-responsive" src="https://sharelist-1255748781.cos.ap-guangzhou.myqcloud.com/Snip20191002_15" alt="">
         </div>
       </div>
     </div>
