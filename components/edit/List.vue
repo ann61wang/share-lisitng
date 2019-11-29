@@ -138,6 +138,7 @@ export default {
     handleUpdateInfo(res) {
       let data = res.data
       let id = data._id
+      this.yRefresh()
       this.$router.push('/lists/' + id)
     },
     add: async function (index,name) {
@@ -222,6 +223,7 @@ export default {
       syncList: 'sessionStorage/syncList',
       syncListMessage: 'sessionStorage/syncListMessage',
       syncCategory: 'sessionStorage/syncCategory',
+      yRefresh: 'localStorage/yRefresh',
       judgeIsNumMaker: 'sessionStorage/judgeIsNumMaker',
       clearListMessage: 'sessionStorage/clearListMessage',
       clearCacheAll: 'sessionStorage/clearCacheAll'

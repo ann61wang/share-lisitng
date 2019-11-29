@@ -1,6 +1,7 @@
 
 export const state = () => ({
   session: '',
+  refresh: false,
   image: {
     imgAlt: '',
     imgSrc: '',
@@ -48,6 +49,12 @@ export const mutations = {
   },
   judgeIsNumMaker(state, bool) {
     state.isNumMaker = bool
+  },
+  yRefresh(state) {
+    state.refresh = true
+  },
+  nRefresh(state) {
+    state.refresh = false
   },
   clearCacheAll(state) {
     state.title = {}

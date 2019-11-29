@@ -83,7 +83,7 @@ export default {
       listCache: state => state.sessionStorage.listMessage
     })
   },
-  mounted() {
+  created() {
     this.insertImg(this.imageObj)
     this.syncListObj(Object.assign({},this.listMessage))
     this.syncValue(this.listTitle)

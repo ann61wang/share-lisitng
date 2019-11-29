@@ -3,7 +3,7 @@
     <home-header :user="user"></home-header>
     <home-search></home-search>
     <home-swiper :categories="categories"></home-swiper>
-    <home-trending :taskArr="taskArr"></home-trending>
+    <home-trending :taskArr="taskArr" ref="trending"></home-trending>
     <home-publish></home-publish>
     <home-topPub></home-topPub>
     <common-footer></common-footer>
@@ -52,16 +52,24 @@ export default {
   },
   methods: {
     ...mapMutations({
-      haveSession: 'localStorage/haveSession'
+      haveSession: 'localStorage/haveSession',
+      nRefresh: 'localStorage/nRefresh'
     })
   },
   computed: {
     ...mapState({
-      session: state => state.localStorage.session
+      session: state => state.localStorage.session,
+      refresh: state => state.localStorage.refresh
     })
   },
-  mounted() {
+  mounted () {
     this.haveSession(this.user)
+  },
+  activated () {
+    if(this.refresh) {
+      this.$refs.trending.handleTrending()
+      this.nRefresh()
+    }
   }
 }
 </script>

@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 let Base64 = require("js-base64").Base64
 
 export default {
@@ -67,12 +67,16 @@ export default {
       .catch((e) => {
         error({ statusCode: 404, message: '页面没有找到' })
       })
+      this.yRefresh()
       this.$router.push('/user/' + this.session)
-    }
+    },
+    ...mapMutations({
+      yRefresh: 'localStorage/yRefresh'
+    })
   },
   computed: {
     ...mapState({
-      session: state => state.localStorage.session
+      session: state => state.localStorage.session,
     }),
     isMaker() {
       if(this.listData.author._id === this.session) {

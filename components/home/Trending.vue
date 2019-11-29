@@ -34,12 +34,12 @@ export default {
     }
   },
   methods: {
-    handleNewTask() {
+    handleNewTask () {
       this.$axios.get('/api/tasks?new=1')
         .then((res) => this.listArr = res.data).catch(reason => console.log(reason))
       this.isShow = false
     },
-    handleTrending() {
+    handleTrending () {
       this.$axios.get('/api/tasks?trending=1')
         .then((res) => this.listArr = res.data).catch(reason => console.log(reason))
       this.isShow = true

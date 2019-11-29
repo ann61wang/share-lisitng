@@ -141,6 +141,7 @@ export default {
       this.clearCacheAll()
       this.clearComfirm()
       this.$emit('clearTitle')
+      this.yRefresh()
       this.$router.push('/lists/' + id)
     },
     add: async function (index,name) {
@@ -224,6 +225,7 @@ export default {
       syncList: 'localStorage/syncList',
       syncCategory: 'localStorage/syncCategory',
       judgeIsNumMaker: 'localStorage/judgeIsNumMaker',
+      yRefresh: 'localStorage/yRefresh',
       clearCacheAll: 'localStorage/clearCacheAll'
     })
   },
