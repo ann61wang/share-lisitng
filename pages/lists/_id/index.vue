@@ -84,7 +84,7 @@ export default {
       session: state => state.localStorage.session
     })
   },
-  mounted() {
+  activated () {
     if(this.message == '请重新登陆') {
       this.$router.push('/login')
     }

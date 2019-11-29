@@ -162,7 +162,7 @@ export default {
       imgAlt: state => state.user.image.imgAlt
     })
   },
-  mounted() {
+  activated () {
     if(this.listArr.message == '请重新登陆') {
       this.$router.push('/login')
     }
