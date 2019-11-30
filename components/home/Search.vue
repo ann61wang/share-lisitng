@@ -11,7 +11,7 @@
           <input type="search" v-model="inputValue" placeholder="输入关键词">
           <div class="glyphicon glyphicon-search search_icon" @click="handleSearch"></div>
         </div>
-        <div class="search_tags">Suggested: notebook  gym  yoga  writing  paper  working  more</div>
+        <div class="search_tags">推荐词: 工作  健身  写作  电影  书籍  旅游  游戏  ...</div>
       </div>
     </section>
     <div class="hero_footer"></div>

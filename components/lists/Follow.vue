@@ -1,10 +1,10 @@
 <template lang="html">
   <section class="row list_page_section">
     <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 level_left">
-      <nuxt-link to="/" class="user_info">
+      <nuxt-link :to="authorUrl" class="user_info">
         <div class="user_img"><img src="https://images.pexels.com/users/avatars/344572/felix-mittermeier-366.jpeg?w=256&h=256&fit=crop&crop=faces" alt=""></div>
         <div class="user_message">
-          <h3>{{likeInfo.author._id}}</h3>
+          <h3>{{authorId}}</h3>
           <div class="follower_count"><span>794</span> 个关注</div>
         </div>
       </nuxt-link>
@@ -26,6 +26,8 @@ export default {
   data() {
     return {
       likesCopy: this.likeInfo.likes,
+      authorUrl: '',
+      authorId: '',
       objStyle: {
         color: ''
       }
@@ -51,6 +53,10 @@ export default {
   mounted() {
     if(this.likeInfo.isClickLike) {
       this.objStyle.color = 'red'
+    }
+    if(this.likeInfo.author !== undefined) {
+      this.authorUrl = `/user/${this.likeInfo.author.name}`
+      this.authorId = this.likeInfo.author._id
     }
   }
 }

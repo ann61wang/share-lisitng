@@ -30,7 +30,7 @@
 
     </div>
     <p style="text-align: center;">制作简单的清单给更多人使用</p>
-    <button class="btn btn-default btn-block my_btn">成为创作者</button>
+    <nuxt-link to="/write" class="btn btn-default btn-block my_btn">成为创作者</nuxt-link>
   </div>
 </template>
 

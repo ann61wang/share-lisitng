@@ -45,7 +45,7 @@
 import CommonHeader from '~/components/common/Header'
 import CommonFooter from '~/components/common/Footer'
 import ImageUpload from '~/components/user/ImageUpload'
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'User',
@@ -141,11 +141,7 @@ export default {
       }
     },
     isAdmin() {
-      if(this.session === 'admin') {
-        return true
-      }else {
-        return false
-      }
+      return this.session === 'admin'
     },
     categoryInfo() {
       return {
@@ -162,7 +158,7 @@ export default {
       imgAlt: state => state.user.image.imgAlt
     })
   },
-  activated () {
+  mounted () {
     if(this.listArr.message == '请重新登陆') {
       this.$router.push('/login')
     }

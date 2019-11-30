@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nuxt keep-alive :keep-alive-props="{ exclude: ['Edit', 'Copy', 'HomeHeader', 'CommonHeader'] }" />
+    <nuxt keep-alive :keep-alive-props="{ exclude: ['User', 'Lists', 'Edit', 'Copy', 'HomeHeader', 'CommonHeader'] }" />
   </div>
 </template>
 

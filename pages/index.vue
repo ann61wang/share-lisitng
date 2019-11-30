@@ -2,10 +2,12 @@
   <div class="body_min_width">
     <home-header :user="user"></home-header>
     <home-search></home-search>
-    <home-swiper :categories="categories"></home-swiper>
-    <home-trending :taskArr="taskArr" ref="trending"></home-trending>
-    <home-publish></home-publish>
-    <home-topPub></home-topPub>
+    <div class="main_area">
+      <home-swiper :categories="categories"></home-swiper>
+      <home-trending :taskArr="taskArr" ref="trending"></home-trending>
+      <home-publish></home-publish>
+      <home-topPub></home-topPub>
+    </div>
     <common-footer></common-footer>
   </div>
 </template>
@@ -77,4 +79,7 @@ export default {
 <style lang="stylus" scoped>
   .body_min_width
     min-width: $minWidth
+    .main_area
+      max-width: 144rem
+      margin: 0 auto;
 </style>

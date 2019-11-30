@@ -79,10 +79,8 @@ export default {
       session: state => state.localStorage.session,
     }),
     isMaker() {
-      if(this.listData.author._id === this.session) {
-        return true
-      }else {
-        return false
+      if(this.listData.author !== undefined) {
+        return this.listData.author._id === this.session
       }
     }
   }

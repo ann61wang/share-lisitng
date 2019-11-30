@@ -4,7 +4,7 @@
     <div class="container-fluid list_page">
       <list-follow :likeInfo="likeInfo"></list-follow>
       <list-main :listData="listData"></list-main>
-      <list-relate :category="category"></list-relate>
+      <list-relate :category="listData.category"></list-relate>
     </div>
     <common-footer></common-footer>
   </div>
@@ -34,9 +34,7 @@ export default {
       if(data.name === 'CastError') {
         error({ statusCode: 404, message: '页面没有找到' })
       }else if(data.message == '请重新登陆'){
-        return {
-          message: '请重新登陆'
-        }
+        return { message: '请重新登陆' }
       }else {
         return {
           author: data.author,
@@ -84,7 +82,7 @@ export default {
       session: state => state.localStorage.session
     })
   },
-  activated () {
+  mounted () {
     if(this.message == '请重新登陆') {
       this.$router.push('/login')
     }

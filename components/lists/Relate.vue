@@ -36,8 +36,10 @@ export default {
     }
   },
   mounted() {
-    this.$axios.get('/api/tasks?category=' + this.category._id)
-      .then(this.handleGetInfo).catch(reason => console.log(reason))
+    if(this.category !== undefined) {
+      this.$axios.get('/api/tasks?category=' + this.category._id)
+        .then(this.handleGetInfo).catch(reason => console.log(reason))  
+    }
   }
 }
 </script>

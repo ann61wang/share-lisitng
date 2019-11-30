@@ -1,14 +1,16 @@
 <template lang="html">
   <div class="container-fluid margin_medium container_max_width">
     <div class="container_wrapper">
-      <h3 style="text-align: center;">创作者的好处</h3>
-      <p style="text-align: center;">成为一个创作者有很多的好处</p>
-      <div class="prev_desc">
-        <img class="img-responsive" src="https://as.ftcdn.net/r/v1/pics/a014e23bc2f86a494c2eb15c032c51a3b120c2d7/home/open-in.jpg" alt="">
+      <div style="margin-bottom: 2rem;">
+        <h3 style="text-align: center;">创作者的好处</h3>
+        <p style="text-align: center;">成为一个创作者有很多的好处</p>
       </div>
+      <!-- <div class="prev_desc">
+        <img class="img-responsive" src="https://as.ftcdn.net/r/v1/pics/a014e23bc2f86a494c2eb15c032c51a3b120c2d7/home/open-in.jpg" alt="">
+      </div> -->
 
       <div class="row next_desc">
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 benefits">
           <h3>这是一个已发布的清单示例，以及其中的一些好处</h3>
           <p>
             ✓ 百度搜索中排名靠前<br>
@@ -56,5 +58,21 @@ export default {
         width: 100%
         img
           object-fit: cover
-          max-height: 40rem
+          width: 100%
+          max-height: 55rem
+        .benefits
+          margin-top: 12rem
+          font-size: 1.6rem
+      @media (max-width: 61.9rem)
+        .next_desc
+          margin: 0 auto
+          width: 100%
+          img
+            object-fit: cover
+            width: 100%
+            max-height: 55rem
+          .benefits
+            margin: 0 0 1rem 1rem
+            font-size: 1.4rem
+
 </style>
