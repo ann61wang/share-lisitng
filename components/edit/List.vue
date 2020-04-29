@@ -13,12 +13,12 @@
       </div>
     </div>
     <div class="clear_confirm" v-show="isClearAll">
-      <div class="iconfont icon_cancel" @click="isClearAll = false" title="取消">&#xe604;</div>
+      <div class="iconfont icon_cancel" @click="isClearAll = false" title="取消">&#xe615;</div>
       <div class="content_confirm">确认要删除全部清单么？</div>
       <button class="btn btn-default btn-block icon_clear" @click="clearComfirm">确认</button>
     </div>
     <div class="picture_name" v-show="isPicName">
-      <div class="iconfont name_cancel" title="取消" @click="isPicName = false">&#xe604;</div>
+      <div class="iconfont name_cancel" title="取消" @click="isPicName = false">&#xe615;</div>
       <input type="text" class="input_name" placeholder="添加适合的图片名称可以提高百度排名" v-model="inputValue">
       <button class="btn btn-default btn-block name_submit" @click="handleNameSubmit">添加</button>
     </div>
@@ -167,6 +167,12 @@ export default {
         case 1:
           this.handleBoxClear()
           break;
+        case 2:
+          this.handelFnClear()
+          break;
+        case 3:
+          this.handelFnClear()
+          break;
         case 4:
           this.handleClearAll()
           break;
@@ -174,7 +180,7 @@ export default {
           if(this.imgSrc) {
             this.isPicName = true
           }else {
-            alert('请先添加图片，再添加图片名称')
+            this.$message.error('请先添加图片，再添加图片名称')
           }
           break;
         default:
@@ -193,6 +199,9 @@ export default {
     },
     handleBoxClear() {
       if(!this.isNumMaker) this.$refs.list.forEach((item) => item.handleBoxShow())
+    },
+    handelFnClear() {
+      this.$message('未开启功能')
     },
     handleClearAll() {
       this.isClearAll = true

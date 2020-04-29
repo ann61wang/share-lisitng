@@ -2,7 +2,7 @@
   <header class="container-fluid hero">
     <div class="hero_hover"></div>
     <div class="hero_background">
-      <img src="https://images.pexels.com/photos/1832715/pexels-photo-1832715.jpeg?auto=compress&crop=edges&cs=tinysrgb&fit=crop&h=375.0&w=1500" alt="">
+      <img src="https://sharelist-1255748781.cos.ap-guangzhou.myqcloud.com/photo-1547480053-7d174f67b557.jpeg" alt="">
     </div>
     <section class="hero_content">
       <h1 class="hero_title">用清单让你的生活变得简单且高效，过上期待的生活</h1>
@@ -30,8 +30,9 @@ export default {
     handleSearch() {
       if(this.inputValue) {
         this.$router.push({name: 'search-id', params:{id: this.inputValue}})
+        this.inputValue = ''
       }else {
-        alert('请输入关键词搜索')
+        this.$message.error('请输入关键词')
       }
     }
   }

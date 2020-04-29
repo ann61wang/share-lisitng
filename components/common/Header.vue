@@ -11,7 +11,7 @@
           </button>
           <div class="navbar-brand navbar_container_search search_md search_mobile">
             <nuxt-link tag="div" to="/" class="navbar_logo">
-              <div class="iconfont logo_icon logo_icon_mobile">🧾</div>
+              <div class="iconfont logo_icon logo_icon_mobile">&#xe606;</div>
               <div class="logo_name logo_name_mobile">共享清单</div>
             </nuxt-link>
             <div class="navbar_search search_none" @keydown.13="handleSearch">
@@ -40,6 +40,7 @@ import { mapState,mapMutations } from 'vuex'
 
 export default {
   name: 'CommonHeader',
+  props: ['keyword'],
   data() {
     return {
       inputValue: ''
@@ -50,7 +51,7 @@ export default {
       if(this.inputValue) {
         this.$router.push({name: 'search-id', params:{id: this.inputValue}})
       }else {
-        alert('请输入关键词搜索')
+        this.$message.error('请输入关键词')
       }
     },
     ...mapMutations({
@@ -68,6 +69,11 @@ export default {
     ...mapState({
       session: state => state.localStorage.session
     })
+  },
+  activated() {
+    if(this.keyword) {
+      this.inputValue = this.keyword
+    }
   }
 }
 </script>
@@ -93,7 +99,7 @@ export default {
           background: transparent
         @media (min-width: 47.99rem)
           .search_md
-            width: calc(100vw - 39.5rem) !important
+            width: calc(100vw - 28rem) !important
         @media (max-width: 47.99rem)
           .search_mobile
             width: calc(100vw - 5rem) !important
@@ -109,15 +115,18 @@ export default {
               background: $bgBtnColor
               padding: 0 .8rem
               color: $whiteTextColor
+              font-size: 1.8rem
               width: 3.2rem
               height: 3.2rem
               line-height: 3.2rem
-            @media (max-width: 50rem)
+            @media (max-width: 70rem)
               .logo_name_mobile
                 margin: 0 2.5rem 0 1.6rem
-            @media (min-width: 50rem)
+                min-width: 5.6rem
+            @media (min-width: 70rem)
               .logo_name_mobile
                 margin: 0 4rem 0 2rem
+                min-width: 5.6rem
             @media (max-width: 37.5rem)
               .logo_icon_mobile
                 margin-right: 2rem

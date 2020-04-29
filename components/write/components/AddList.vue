@@ -17,8 +17,8 @@
       <div v-show="isShow" class="choice_wrapper" @mouseleave="isShow=false" key="nowIndex+1">
         <div v-for="(item,index) in items"
           @mouseenter="item.fixed = true"
-          @mouseleave="item.fixed = false"
-          @click="handleIconClick(index)"
+          @mouseleave="item.fixed =false"
+          @click="handleIconClick(index, item)"
           :key="item.desc"
           :class="item.fixed ? 'choice_btn choice_background' : 'choice_btn'"
         >
@@ -76,6 +76,7 @@ export default {
     liMouseLeave() {
       this.show = false
       this.liBackground.background = 'transparent'
+      if(this.isShow) this.isShow = false
     },
     handleAddLi() {
       this.$emit('handle-add')
@@ -102,7 +103,7 @@ export default {
     handleBoxShow() {
       this.boxShow = !this.boxShow
     },
-    handleIconClick(index) {
+    handleIconClick(index, item) {
       switch (index) {
         case 0:
           this.inputText = !this.inputText
@@ -196,6 +197,7 @@ export default {
     counter-increment: item
     position: relative
     margin-bottom: 1rem
+    margin-left: 1rem
     transition: background .4s ease-in-out
     .icon_drag
       position: absolute
@@ -260,7 +262,7 @@ export default {
       box-sizing: border-box
       background: $bgGrayColor
       position: absolute
-      right: -3rem
+      right: -1.5rem
       top: .8rem
       z-index: 9
       padding: .5rem

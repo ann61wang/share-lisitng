@@ -3,7 +3,7 @@
     <el-row :gutter="10">
       <el-col :xs="2" :sm="3" :md="4" :lg="4" :xl="4">
         <nuxt-link tag="div" to="/" class="navbar_logo">
-          <div class="iconfont logo_icon logo_icon_mobile">🧾</div>
+          <div class="iconfont logo_icon logo_icon_mobile">&#xe606;</div>
           <div class="logo_name logo_name_mobile">ShareL</div>
         </nuxt-link>
       </el-col>

@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="body_min_width">
-    <common-header></common-header>
+    <common-header :keyword="keyword"></common-header>
     <div class="container-fluid margin_medium">
       <div class="container_max_width">
         <h2 v-if="isHaveList">搜索关键词 {{this.$route.params.id}} 的结果：</h2>
@@ -57,6 +57,9 @@ export default {
       }else {
         return []
       }
+    },
+    keyword() {
+      return this.$route.params.id;
     }
   },
   mounted() {
@@ -94,7 +97,7 @@ export default {
           .column_img
             display: block
             width: 100%
-            min-height: 16.8rem
+            height: 18rem
             object-fit: cover
           .list_content
             padding: 2rem

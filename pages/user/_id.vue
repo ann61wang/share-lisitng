@@ -5,7 +5,7 @@
       <div class="container_max_width">
         <h2>我的所有清单</h2>
         <!-- 管理员可以创建和删除分类，还需要处理 DOM 元素的增减 -->
-        <el-row v-show="isAdmin" :gutter="14">
+        <el-row v-show="isAdmin" :gutter="14" class="min_width">
           <el-col :span="4">
             <el-input v-model="inputEnglish" placeholder="创建或删除分类(英文)"></el-input>
             <image-upload></image-upload>
@@ -178,6 +178,9 @@ export default {
     .container_max_width
       max-width: $maxWidth
       margin: 0 auto
+      @media (max-width: 69rem)
+       .min_width
+         display: none
       .with_gutter
         margin-top: 4rem
         .column

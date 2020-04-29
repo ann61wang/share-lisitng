@@ -71,6 +71,7 @@ export default {
     liMouseLeave() {
       this.show = false
       this.liBackground.background = 'transparent'
+      if(this.isShow) this.isShow = false
     },
     handleAddLi() {
       this.$emit('handle-add')
@@ -164,97 +165,100 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .list_maker::before
-    content: counter(item)
-    padding: .3rem 2rem .3rem .8rem
-    background: linear-gradient(to right, #f36, #f09)
-    font-size: 1.5rem
-    clip-path: polygon(0% 0%, 75% 0, 75% 51%, 100% 52%, 75% 80%, 75% 100%, 0 100%)
-    border-radius: .5rem
-    color: #fff
-    text-shadow: .1rem .1rem .1rem rgba(#09f, .5)
-  .break
-    counter-reset: item -1
-  .margin_top
-    margin-top: 3rem
-  li
-    counter-increment: item
-    position: relative
-    margin-bottom: 1rem
-    transition: background .4s ease-in-out
-    .icon_drag
-      position: absolute
-      cursor: move
-      left: -2rem
-      top: .2rem
-    .fade-enter, .fade-leave-to
-      opacity: 0
-    .fade-enter-active, .fade-leave-active
-        transition: opacity 1s
-    .input_checkbox
-      display: none
-    label
-      display: inline-block
-      width: 2rem
-      height: 2rem
-      margin-right: .5rem
-      margin-top: .3rem
-      vertical-align: middle
-      border: .1rem solid #999
-      border-radius: $borderRadius
-    input[type="checkbox"]:checked+label>span
-      display: block
-      width: .6rem
-      height: 1.2rem
-      border-color: #666
-      border-style: solid
-      border-width: 0 .2rem .3rem 0
-      transform: rotate(45deg)
-      margin-left: .6rem
-      margin-top: .1rem
-    .input_list
-      display: inline-block
-      width: calc(100% - 5.3rem)
-      min-height: 3rem
-      line-height: 3rem
-      vertical-align: top
-      margin-top: -.2rem
-      outline: none
-      border: none
-      padding: 0 .2rem
-    .input_list:empty:before
-      content: '输入文字'
-      color: #A6A8AB
-    .input_list:focus:before
-      content: none
-    .input_text
-      font-weight: $fontWeight
-      color: red
-    .input_subtitle
-      font-size: 1.8rem
-      font-weight: $fontWeight
-    .icon_more
+.list_maker::before
+  content: counter(item)
+  padding: .3rem 2rem .3rem .8rem
+  background: linear-gradient(to right, #f36, #f09)
+  font-size: 1.5rem
+  clip-path: polygon(0% 0%, 75% 0, 75% 51%, 100% 52%, 75% 80%, 75% 100%, 0 100%)
+  border-radius: .5rem
+  color: #fff
+  text-shadow: .1rem .1rem .1rem rgba(#09f, .5)
+.break
+  counter-reset: item -1
+.li_background
+  background: rgba(0,225,200,.2)
+.margin_top
+  margin-top: 3rem
+li
+  counter-increment: item
+  position: relative
+  margin-bottom: 1rem
+  margin-left: 1rem
+  transition: background .4s ease-in-out
+  .icon_drag
+    position: absolute
+    cursor: move
+    left: -2rem
+    top: .2rem
+  .fade-enter, .fade-leave-to
+    opacity: 0
+  .fade-enter-active, .fade-leave-active
+      transition: opacity 1s
+  .input_checkbox
+    display: none
+  label
+    display: inline-block
+    width: 2rem
+    height: 2rem
+    margin-right: .5rem
+    margin-top: .3rem
+    vertical-align: middle
+    border: .1rem solid #999
+    border-radius: $borderRadius
+  input[type="checkbox"]:checked+label>span
+    display: block
+    width: .6rem
+    height: 1.2rem
+    border-color: #666
+    border-style: solid
+    border-width: 0 .2rem .3rem 0
+    transform: rotate(45deg)
+    margin-left: .6rem
+    margin-top: .1rem
+  .input_list
+    display: inline-block
+    width: calc(100% - 5.3rem)
+    min-height: 3rem
+    line-height: 3rem
+    vertical-align: top
+    margin-top: -.2rem
+    outline: none
+    border: none
+    padding: 0 .2rem
+  .input_list:empty:before
+    content: '输入文字'
+    color: #A6A8AB
+  .input_list:focus:before
+    content: none
+  .input_text
+    font-weight: $fontWeight
+    color: red
+  .input_subtitle
+    font-size: 1.8rem
+    font-weight: $fontWeight
+  .icon_more
+    cursor: pointer
+    position: absolute
+    right: 0
+    top: .2rem
+  .choice_wrapper
+    min-width: 9rem
+    min-height: 9rem
+    box-shadow: 0 .2rem .6rem rgba(112,112,112,0.2)
+    box-sizing: border-box
+    background: $bgGrayColor
+    position: absolute
+    right: -1.5rem
+    top: .8rem
+    z-index: 9
+    padding: .5rem
+    .choice_btn
+      display: flex
+      width: 100%
+      justify-content: space-between
+      margin-bottom: .6rem
       cursor: pointer
-      position: absolute
-      right: 0
-      top: .2rem
-    .choice_wrapper
-      min-width: 9rem
-      min-height: 9rem
-      box-shadow: 0 .2rem .6rem rgba(112,112,112,0.2)
-      box-sizing: border-box
-      background: $bgGrayColor
-      position: absolute
-      right: -3rem
-      top: .8rem
-      z-index: 9
-      padding: .5rem
-      .choice_btn
-        display: flex
-        width: 100%
-        justify-content: space-between
-        margin-bottom: .6rem
-        cursor: pointer
-      .choice_background
-        background: rgba(0,225,200,.5)
+    .choice_background
+      background: rgba(0,225,200,.5)
 </style>
