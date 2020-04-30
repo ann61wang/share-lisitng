@@ -104,6 +104,7 @@ export const mutations = {
     }, obj.callback)
   },
   clearCosImg(state, imageAlt) {
+    //null 和 undefined 不能有属性
     if(!state.cos.on) {
       if(process.browser) {
         var COS = require('cos-js-sdk-v5')
