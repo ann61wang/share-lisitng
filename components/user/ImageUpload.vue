@@ -23,9 +23,6 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
-if(process.browser) {
-  var COS = require('cos-js-sdk-v5')
-}
 
 export default {
   name: 'ImageUpload',
@@ -72,36 +69,18 @@ export default {
             self.imageUrl = el.target.result
           })
 
-          let cos = new COS({
-            getAuthorization: function (options,callback) { 
-              let authorization = COS.getAuthorization({
-                SecretId: 'AKIDINCh4EtmEX3S2Zerdw1rQn6NSJ5SlqdY',
-                SecretKey: 'xz6DEE3dfT2QjKjy0mY8TabOfiaOybx5',
-                Method: options.Method,
-                Key: options.Key,
-                Query: options.Query,
-                Headers: options.Headers,
-                Expires: 60,
-              });
-              callback(authorization);
+          this.pushImg({
+            selectedFile: selectedFile,
+            imageAlt: this.imageAlt,
+            callback: function(err, data) {
+              console.log(err || data)
+              if(data) {
+                self.imageObj.imgSrc = 'https://' + data.Location
+                self.insertImg(Object.assign({}, self.imageObj))
+              }
             }
           })
 
-          cos.putObject({
-            Bucket: 'sharelist-1255748781',
-            Region: 'ap-guangzhou',
-            Key: self.imageAlt,
-            Body: selectedFile,
-            onProgress: function (progressData) {
-              console.log(JSON.stringify(progressData))
-            }
-          }, function (err,data) {
-            console.log(err || data)
-            if(data) {
-              self.imageObj.imgSrc = 'https://' + data.Location
-              self.insertImg(Object.assign({},self.imageObj))
-            }
-          })
           this.isUpload = true
           this.show = false
           this.upload = ''
@@ -115,10 +94,13 @@ export default {
       this.upload = 'picture'
       // this.$refs.upload.clearFiles()
       this.$refs.file.value = ''
+      this.clearCosImg(this.imageAlt)
     },
     ...mapMutations({
       insertImg: 'user/insertImg',
-      clearImage: 'user/clearImage'
+      clearImage: 'user/clearImage',
+      pushImg: 'localStorage/pushImg',
+      clearCosImg: 'localStorage/clearCosImg'
     })
   },
   computed: {

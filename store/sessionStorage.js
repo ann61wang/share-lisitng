@@ -46,6 +46,12 @@ export const mutations = {
   syncListMessage(state, obj) {
     state.listMessage[String(obj.listIndex)] = obj
   },
+  updateListMessage(state, index) {
+    delete state.listMessage[String(index)]
+  },
+  clearListMessage(state) {
+    state.listMessage = {}
+  },
   syncListObj(state, obj) {
     state.listMessage = obj
   },

@@ -55,7 +55,7 @@ export default {
   methods: {
     ...mapMutations({
       haveSession: 'localStorage/haveSession',
-      nRefresh: 'localStorage/nRefresh'
+      nRefresh: 'localStorage/nRefresh',
     })
   },
   computed: {

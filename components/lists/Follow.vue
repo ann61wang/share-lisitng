@@ -2,18 +2,18 @@
   <section class="row list_page_section">
     <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 level_left">
       <nuxt-link :to="authorUrl" class="user_info">
-        <div class="user_img"><img src="https://images.pexels.com/users/avatars/344572/felix-mittermeier-366.jpeg?w=256&h=256&fit=crop&crop=faces" alt=""></div>
+        <div class="user_img"><img src="https://sharelist-1255748781.cos.ap-guangzhou.myqcloud.com/felix-mittermeier-366.jpeg" alt=""></div>
         <div class="user_message">
           <h3>{{authorId}}</h3>
           <div class="follower_count"><span>794</span> 个关注</div>
         </div>
       </nuxt-link>
-      <button class="btn btn-default follow_btn">关注</button>
+      <button class="btn btn-default follow_btn" @click="fnFuture">关注</button>
     </div>
     <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 level_right" style="text-align: right; line-height: 8rem;">
       <button class="btn btn-default right_btn" @click.prevent="handleLike"><span :style="objStyle" class="iconfont icon_style">&#xe61a;</span>  {{likesCopy}} 点赞</button>
       <!-- <button class="btn btn-default right_btn"><span class="iconfont icon_style">&#xe603;</span>  Collect</button> -->
-      <button class="btn btn-default right_btn"><span class="iconfont icon_style">&#xe626;</span>  分享</button>
+      <button class="btn btn-default right_btn" @click="fnFuture"><span class="iconfont icon_style">&#xe626;</span>  分享</button>
     </div>
   </section>
 </template>
@@ -34,6 +34,9 @@ export default {
     }
   },
   methods: {
+    fnFuture() {
+      this.$message('未开启功能')
+    },
     handleLike() {
       this.$axios.get('/api/tasks/' + this.$route.params.id + '?like=' + 'this.session')
         .then(this.handleGetInfo).catch(reason => console.log(reason))

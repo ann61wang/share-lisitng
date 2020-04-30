@@ -154,6 +154,7 @@ export default {
     remove(index) {
       if(this.items.length > 1) {
         this.items.splice(index,1)
+        this.updateListMessage(index)
       }
       try {
         localStorage.removeItem(this._id)
@@ -214,6 +215,7 @@ export default {
       this.isClearAll = false
       setTimeout(() => { if(this.$refs.list[0].content) this.$refs.list[0].content = '' }, 450)
       if(this.isNumMaker) this.handleNumClick()
+      this.clearListMessage()
       try {
         Object.keys(localStorage).forEach((item) => {
           if(!isNaN(Number(item))) {
@@ -235,7 +237,9 @@ export default {
       yRefresh: 'localStorage/yRefresh',
       judgeIsNumMaker: 'sessionStorage/judgeIsNumMaker',
       clearListMessage: 'sessionStorage/clearListMessage',
-      clearCacheAll: 'sessionStorage/clearCacheAll'
+      clearCacheAll: 'sessionStorage/clearCacheAll',
+      updateListMessage: 'sessionStorage/updateListMessage',
+      clearListMessage: 'sessionStorage/clearListMessage'
     })
   },
   computed: {

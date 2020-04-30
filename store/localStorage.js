@@ -16,6 +16,7 @@ export const state = () => ({
   isNumMaker: false,
   category: 'other',
   listMessage: {},
+  cos: null,
   expire: 2
 })
 
@@ -47,6 +48,12 @@ export const mutations = {
   syncListMessage(state, obj) {
     state.listMessage[String(obj.listIndex)] = obj
   },
+  updateListMessage(state, index) {
+    delete state.listMessage[String(index)]
+  },
+  clearListMessage(state) {
+    state.listMessage = {}
+  },
   judgeIsNumMaker(state, bool) {
     state.isNumMaker = bool
   },
@@ -64,5 +71,69 @@ export const mutations = {
   },
   clearSession(state) {
     state.session = ''
+  },
+  pushImg(state, obj) {
+    if(!state.cos.on) {
+      if(process.browser) {
+        var COS = require('cos-js-sdk-v5')
+      }
+      state.cos = new COS({
+        getAuthorization: function (options,callback) { 
+          let authorization = COS.getAuthorization({
+            SecretId: 'AKIDINCh4EtmEX3S2Zerdw1rQn6NSJ5SlqdY',
+            SecretKey: 'xz6DEE3dfT2QjKjy0mY8TabOfiaOybx5',
+                Method: options.Method,
+                Key: options.Key,
+                Query: options.Query,
+                Headers: options.Headers,
+                Expires: 60,
+              });
+              callback(authorization);
+        }
+      })
+    }
+
+    state.cos.putObject({
+      Bucket: 'sharelist-1255748781',
+      Region: 'ap-guangzhou',
+      Key: obj.imageAlt,
+      Body: obj.selectedFile,
+      onProgress: function (progressData) {
+        console.log(JSON.stringify(progressData))
+      }
+    }, obj.callback)
+  },
+  clearCosImg(state, imageAlt) {
+    if(!state.cos.on) {
+      if(process.browser) {
+        var COS = require('cos-js-sdk-v5')
+      }
+      state.cos = new COS({
+        getAuthorization: function (options,callback) { 
+          let authorization = COS.getAuthorization({
+            SecretId: 'AKIDINCh4EtmEX3S2Zerdw1rQn6NSJ5SlqdY',
+            SecretKey: 'xz6DEE3dfT2QjKjy0mY8TabOfiaOybx5',
+                Method: options.Method,
+                Key: options.Key,
+                Query: options.Query,
+                Headers: options.Headers,
+                Expires: 60,
+              });
+              callback(authorization);
+        }
+      })
+    }
+
+    state.cos.deleteObject({
+      Bucket: 'sharelist-1255748781',
+      Region: 'ap-guangzhou',
+      Key: imageAlt,
+    }, (err, data) => {
+      if(err) {
+        console.log(err)
+      }else {
+        console.log(data)
+      }
+    })
   }
 }

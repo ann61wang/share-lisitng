@@ -5,25 +5,25 @@
     <div class="columns row">
       <nuxt-link tag="div" to="/user/admin" class="column col-xs-6 col-sm-6 col-md-3 col-lg-3">
         <div class="column_img">
-          <img class="column_img_content" src="https://images.pexels.com/users/avatars/344572/felix-mittermeier-366.jpeg?w=256&h=256&fit=crop&crop=faces" alt="">
+          <img class="column_img_content" src="https://sharelist-1255748781.cos.ap-guangzhou.myqcloud.com/felix-mittermeier-366.jpeg" alt="">
         </div>
         <p class="column_name">admin</p>
       </nuxt-link>
       <nuxt-link tag="div" to="/user/liuyi" class="column col-xs-6 col-sm-6 col-md-3 col-lg-3">
         <div class="column_img column_size">
-          <img class="column_img_content" src="https://images.pexels.com/users/avatars/344572/felix-mittermeier-366.jpeg?w=256&h=256&fit=crop&crop=faces" alt="">
+          <img class="column_img_content" src="https://sharelist-1255748781.cos.ap-guangzhou.myqcloud.com/felix-mittermeier-366.jpeg" alt="">
         </div>
         <p class="column_name">liuyi</p>
       </nuxt-link>
       <nuxt-link tag="div" to="/user/tanlulu" class="column col-xs-6 col-sm-6 col-md-3 col-lg-3">
         <div class="column_img column_size">
-          <img class="column_img_content" src="https://images.pexels.com/users/avatars/344572/felix-mittermeier-366.jpeg?w=256&h=256&fit=crop&crop=faces" alt="">
+          <img class="column_img_content" src="https://sharelist-1255748781.cos.ap-guangzhou.myqcloud.com/felix-mittermeier-366.jpeg" alt="">
         </div>
         <p class="column_name">tanlulu</p>
       </nuxt-link>
       <nuxt-link tag="div" to="/user/wang" class="column col-xs-6 col-sm-6 col-md-3 col-lg-3">
         <div class="column_img column_size">
-          <img class="column_img_content" src="https://images.pexels.com/users/avatars/344572/felix-mittermeier-366.jpeg?w=256&h=256&fit=crop&crop=faces" alt="">
+          <img class="column_img_content" src="https://sharelist-1255748781.cos.ap-guangzhou.myqcloud.com/felix-mittermeier-366.jpeg" alt="">
         </div>
         <p class="column_name">wang</p>
       </nuxt-link>

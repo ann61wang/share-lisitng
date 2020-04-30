@@ -68,15 +68,17 @@ export default {
         error({ statusCode: 404, message: '页面没有找到' })
       })
       this.yRefresh()
+      this.clearCosImg(this.listData.imgAlt)
       this.$router.push('/user/' + this.session)
     },
     ...mapMutations({
-      yRefresh: 'localStorage/yRefresh'
+      yRefresh: 'localStorage/yRefresh',
+      clearCosImg: 'localStorage/clearCosImg'
     })
   },
   computed: {
     ...mapState({
-      session: state => state.localStorage.session,
+      session: state => state.localStorage.session
     }),
     isMaker() {
       if(this.listData.author !== undefined) {

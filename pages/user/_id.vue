@@ -119,7 +119,7 @@ export default {
       if(data.message == 'Category successfully deleted') {
         this.open3()
       }else {
-        alert('删除分类失败')
+        this.$message.error('删除分类失败')
       }
       this.inputEnglish = ''
       this.inputChinese = ''
