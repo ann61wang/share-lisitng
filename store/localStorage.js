@@ -16,7 +16,7 @@ export const state = () => ({
   isNumMaker: false,
   category: 'other',
   listMessage: {},
-  cos: null,
+  cos: {},
   expire: 2
 })
 
