@@ -16,9 +16,36 @@ export const state = () => ({
   isNumMaker: false,
   category: 'other',
   listMessage: {},
-  cos: {},
   expire: 2
 })
+
+export const getters = {
+  initCOS(state) {
+    if(process.browser) {
+      var COS = require('cos-js-sdk-v5')
+    }
+    //没有存放在 state 中，因为必须在 mutations 中作更改，有点麻烦，应该返回一个新值，
+    //并且可以在组件中直接更改 getters 中的值，且一个组件在首次使用时就调用一次，因此需要判断 cos 是否是 COS 的实例
+    let cos = {}
+    if(state.cos instanceof COS === false) {
+      cos = new COS({
+        getAuthorization: function (options,callback) { 
+          let authorization = COS.getAuthorization({
+            SecretId: 'AKIDINCh4EtmEX3S2Zerdw1rQn6NSJ5SlqdY',
+            SecretKey: 'xz6DEE3dfT2QjKjy0mY8TabOfiaOybx5',
+                Method: options.Method,
+                Key: options.Key,
+                Query: options.Query,
+                Headers: options.Headers,
+                Expires: 60,
+              });
+              callback(authorization);
+        }
+      })
+    }
+    return cos
+  }
+}
 
 export const mutations = {
   changeImgAlt(state, inputValue) {
@@ -71,69 +98,5 @@ export const mutations = {
   },
   clearSession(state) {
     state.session = ''
-  },
-  pushImg(state, obj) {
-    if(!state.cos.on) {
-      if(process.browser) {
-        var COS = require('cos-js-sdk-v5')
-      }
-      state.cos = new COS({
-        getAuthorization: function (options,callback) { 
-          let authorization = COS.getAuthorization({
-            SecretId: 'AKIDINCh4EtmEX3S2Zerdw1rQn6NSJ5SlqdY',
-            SecretKey: 'xz6DEE3dfT2QjKjy0mY8TabOfiaOybx5',
-                Method: options.Method,
-                Key: options.Key,
-                Query: options.Query,
-                Headers: options.Headers,
-                Expires: 60,
-              });
-              callback(authorization);
-        }
-      })
-    }
-
-    state.cos.putObject({
-      Bucket: 'sharelist-1255748781',
-      Region: 'ap-guangzhou',
-      Key: obj.imageAlt,
-      Body: obj.selectedFile,
-      onProgress: function (progressData) {
-        console.log(JSON.stringify(progressData))
-      }
-    }, obj.callback)
-  },
-  clearCosImg(state, imageAlt) {
-    if(process.browser) {
-      var COS = require('cos-js-sdk-v5')
-    }
-    if(state.cos instanceof COS === false) {  
-      state.cos = new COS({
-        getAuthorization: function (options,callback) { 
-          let authorization = COS.getAuthorization({
-            SecretId: 'AKIDINCh4EtmEX3S2Zerdw1rQn6NSJ5SlqdY',
-            SecretKey: 'xz6DEE3dfT2QjKjy0mY8TabOfiaOybx5',
-                Method: options.Method,
-                Key: options.Key,
-                Query: options.Query,
-                Headers: options.Headers,
-                Expires: 60,
-              });
-              callback(authorization);
-        }
-      })
-    }
-
-    state.cos.deleteObject({
-      Bucket: 'sharelist-1255748781',
-      Region: 'ap-guangzhou',
-      Key: imageAlt,
-    }, (err, data) => {
-      if(err) {
-        console.log(err)
-      }else {
-        console.log(data)
-      }
-    })
   }
 }

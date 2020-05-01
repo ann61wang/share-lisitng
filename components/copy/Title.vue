@@ -83,15 +83,19 @@ export default {
             self.imageUrl = el.target.result
           })
 
-          this.pushImg({
-            selectedFile: selectedFile,
-            imageAlt: this.imageAlt,
-            callback: function(err, data) {
-              console.log(err || data)
-              if(data) {
-                self.imageObj.imgSrc = 'https://' + data.Location
-                self.insertImg(Object.assign({}, self.imageObj))
-              }
+          this.cos.putObject({
+            Bucket: 'sharelist-1255748781',
+            Region: 'ap-guangzhou',
+            Key: self.imageAlt,
+            Body: selectedFile,
+            onProgress: function (progressData) {
+              console.log(JSON.stringify(progressData))
+            }
+          }, function (err,data) {
+            console.log(err || data)
+            if(data) {
+              self.imageObj.imgSrc = 'https://' + data.Location
+              self.insertImg(Object.assign({},self.imageObj))
             }
           })
 
@@ -108,15 +112,24 @@ export default {
       this.upload = 'picture'
       // this.$refs.upload.clearFiles()
       this.$refs.file.value = ''
-      this.clearCosImg(this.imageAlt)
+      if(this.imageAlt) {
+        this.cos.deleteObject({
+          Bucket: 'sharelist-1255748781',
+          Region: 'ap-guangzhou',
+          Key: this.imageAlt,
+        }, (err, data) => {
+          if(err) {
+            console.log(err)
+          }else {
+            console.log(data)
+          }
+        })
+      }
     },
     ...mapMutations({
       insertImg: 'sessionStorage/insertImg',
       clearImage: 'sessionStorage/clearImage',
-      syncValue: 'sessionStorage/syncValue',
-      pushImg: 'localStorage/pushImg',
-      clearCosImg: 'localStorage/clearCosImg',
-      initCos: 'localStorage/initCos'
+      syncValue: 'sessionStorage/syncValue'
     })
   },
   computed: {
@@ -134,6 +147,9 @@ export default {
       imgSrc: state => state.sessionStorage.image.imgSrc,
       titleCache: state => state.sessionStorage.title.titleCache,
       descCache: state => state.sessionStorage.title.descCache
+    }),
+    ...mapGetters({
+      cos: '/localStorage/initCOS'
     })
   },
   watch: {
@@ -154,7 +170,6 @@ export default {
       this.titleValue = this.titleCache
       this.descValue = this.descCache
     }
-    this.initCos()
   }
 }
 </script>
