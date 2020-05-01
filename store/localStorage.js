@@ -16,6 +16,7 @@ export const state = () => ({
   isNumMaker: false,
   category: 'other',
   listMessage: {},
+  allow: false,
   expire: 2
 })
 
@@ -26,23 +27,20 @@ export const getters = {
     }
     //没有存放在 state 中，因为必须在 mutations 中作更改，有点麻烦，应该返回一个新值，
     //并且可以在组件中直接更改 getters 中的值，且一个组件在首次使用时就调用一次，因此需要判断 cos 是否是 COS 的实例
-    let cos = {}
-    if(cos instanceof COS === false) {
-      cos = new COS({
-        getAuthorization: function (options,callback) { 
-          let authorization = COS.getAuthorization({
-            SecretId: 'AKIDINCh4EtmEX3S2Zerdw1rQn6NSJ5SlqdY',
-            SecretKey: 'xz6DEE3dfT2QjKjy0mY8TabOfiaOybx5',
-                Method: options.Method,
-                Key: options.Key,
-                Query: options.Query,
-                Headers: options.Headers,
-                Expires: 60,
-              });
-              callback(authorization);
-        }
-      })
-    }
+    let cos = new COS({
+      getAuthorization: function (options,callback) { 
+        let authorization = COS.getAuthorization({
+          SecretId: 'AKIDINCh4EtmEX3S2Zerdw1rQn6NSJ5SlqdY',
+          SecretKey: 'xz6DEE3dfT2QjKjy0mY8TabOfiaOybx5',
+              Method: options.Method,
+              Key: options.Key,
+              Query: options.Query,
+              Headers: options.Headers,
+              Expires: 60,
+            });
+            callback(authorization);
+      }
+    })
     return cos
   }
 }

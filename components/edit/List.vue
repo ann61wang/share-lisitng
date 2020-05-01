@@ -178,7 +178,7 @@ export default {
           this.handleClearAll()
           break;
         case 5:
-          if(this.imgSrc) {
+          if(this.image.imgSrc) {
             this.isPicName = true
           }else {
             this.$message.error('请先添加图片，再添加图片名称')

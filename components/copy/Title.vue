@@ -49,8 +49,7 @@ export default {
       upload: 'picture',
 
       imageUrl: '',
-      imageAlt: '',
-      allow: false
+      imageAlt: ''
     }
   },
   methods: {
@@ -154,7 +153,8 @@ export default {
       imgAlt: state => state.sessionStorage.image.imgAlt,
       imgSrc: state => state.sessionStorage.image.imgSrc,
       titleCache: state => state.sessionStorage.title.titleCache,
-      descCache: state => state.sessionStorage.title.descCache
+      descCache: state => state.sessionStorage.title.descCache,
+      allow: state => state.localStorage.allow
     }),
     ...mapGetters({
       cos: 'localStorage/initCOS'

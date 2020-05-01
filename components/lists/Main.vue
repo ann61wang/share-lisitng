@@ -69,7 +69,7 @@ export default {
       })
       this.yRefresh()
 
-      if(this.listData.imgAlt) {
+      if(this.listData.imgAlt && this.allow) {
         this.cos.deleteObject({
           Bucket: 'sharelist-1255748781',
           Region: 'ap-guangzhou',
@@ -91,7 +91,8 @@ export default {
   },
   computed: {
     ...mapState({
-      session: state => state.localStorage.session
+      session: state => state.localStorage.session,
+      allow: state => state.localStorage.allow
     }),
     ...mapGetters({
       cos: 'localStorage/initCOS'
