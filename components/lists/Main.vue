@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex'
 let Base64 = require("js-base64").Base64
 
 export default {
@@ -68,17 +68,33 @@ export default {
         error({ statusCode: 404, message: '页面没有找到' })
       })
       this.yRefresh()
-      this.clearCosImg(this.listData.imgAlt)
+
+      if(this.listData.imgAlt) {
+        this.cos.deleteObject({
+          Bucket: 'sharelist-1255748781',
+          Region: 'ap-guangzhou',
+          Key: this.listData.imgAlt,
+        }, (err, data) => {
+          if(err) {
+            console.log(err)
+          }else {
+            console.log(data)
+          }
+        })
+      }
+
       this.$router.push('/user/' + this.session)
     },
     ...mapMutations({
-      yRefresh: 'localStorage/yRefresh',
-      clearCosImg: 'localStorage/clearCosImg'
+      yRefresh: 'localStorage/yRefresh'
     })
   },
   computed: {
     ...mapState({
       session: state => state.localStorage.session
+    }),
+    ...mapGetters({
+      cos: 'localStorage/initCOS'
     }),
     isMaker() {
       if(this.listData.author !== undefined) {

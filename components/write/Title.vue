@@ -121,31 +121,19 @@ export default {
             self.imageUrl = el.target.result
           })
 
-          // this.cos.putObject({
-          //   Bucket: 'sharelist-1255748781',
-          //   Region: 'ap-guangzhou',
-          //   Key: self.imageAlt,
-          //   Body: selectedFile,
-          //   onProgress: function (progressData) {
-          //     console.log(JSON.stringify(progressData))
-          //   }
-          // }, function (err,data) {
-          //   console.log(err || data)
-          //   if(data) {
-          //     self.imageObj.imgSrc = 'https://' + data.Location
-          //     self.insertImg(Object.assign({},self.imageObj))
-          //   }
-          // })
-
-          this.pushImg({
-            selectedFile: selectedFile,
-            imageAlt: this.imageAlt,
-            callback: function(err, data) {
-              console.log(err || data)
-              if(data) {
-                self.imageObj.imgSrc = 'https://' + data.Location
-                self.insertImg(Object.assign({}, self.imageObj))
-              }
+          this.cos.putObject({
+            Bucket: 'sharelist-1255748781',
+            Region: 'ap-guangzhou',
+            Key: self.imageAlt,
+            Body: selectedFile,
+            onProgress: function (progressData) {
+              console.log(JSON.stringify(progressData))
+            }
+          }, function (err,data) {
+            console.log(err || data)
+            if(data) {
+              self.imageObj.imgSrc = 'https://' + data.Location
+              self.insertImg(Object.assign({},self.imageObj))
             }
           })
 
@@ -174,14 +162,24 @@ export default {
       this.upload = 'picture'
       // this.$refs.upload.clearFiles()
       this.$refs.file.value = ''
-      this.clearCosImg(this.imageAlt)
+      if(this.imageAlt) {
+        this.cos.deleteObject({
+          Bucket: 'sharelist-1255748781',
+          Region: 'ap-guangzhou',
+          Key: this.imageAlt,
+        }, (err, data) => {
+          if(err) {
+            console.log(err)
+          }else {
+            console.log(data)
+          }
+        })
+      }
     },
     ...mapMutations({
       insertImg: 'localStorage/insertImg',
       clearImage: 'localStorage/clearImage',
-      syncValue: 'localStorage/syncValue',
-      pushImg: 'localStorage/pushImg',
-      clearCosImg: 'localStorage/clearCosImg'
+      syncValue: 'localStorage/syncValue'
     })
   },
   computed: {
@@ -199,6 +197,9 @@ export default {
       imgSrc: state => state.localStorage.image.imgSrc,
       titleCache: state => state.localStorage.title.titleCache,
       descCache: state => state.localStorage.title.descCache
+    }),
+    ...mapGetters({
+      cos: 'localStorage/initCOS'
     })
   },
   watch: {

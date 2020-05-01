@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex'
 
 export default {
   name: 'ImageUpload',
@@ -69,15 +69,19 @@ export default {
             self.imageUrl = el.target.result
           })
 
-          this.pushImg({
-            selectedFile: selectedFile,
-            imageAlt: this.imageAlt,
-            callback: function(err, data) {
-              console.log(err || data)
-              if(data) {
-                self.imageObj.imgSrc = 'https://' + data.Location
-                self.insertImg(Object.assign({}, self.imageObj))
-              }
+          this.cos.putObject({
+            Bucket: 'sharelist-1255748781',
+            Region: 'ap-guangzhou',
+            Key: self.imageAlt,
+            Body: selectedFile,
+            onProgress: function (progressData) {
+              console.log(JSON.stringify(progressData))
+            }
+          }, function (err,data) {
+            console.log(err || data)
+            if(data) {
+              self.imageObj.imgSrc = 'https://' + data.Location
+              self.insertImg(Object.assign({},self.imageObj))
             }
           })
 
@@ -94,13 +98,23 @@ export default {
       this.upload = 'picture'
       // this.$refs.upload.clearFiles()
       this.$refs.file.value = ''
-      this.clearCosImg(this.imageAlt)
+      if(this.imageAlt) {
+        this.cos.deleteObject({
+          Bucket: 'sharelist-1255748781',
+          Region: 'ap-guangzhou',
+          Key: this.imageAlt,
+        }, (err, data) => {
+          if(err) {
+            console.log(err)
+          }else {
+            console.log(data)
+          }
+        })
+      }
     },
     ...mapMutations({
       insertImg: 'user/insertImg',
-      clearImage: 'user/clearImage',
-      pushImg: 'localStorage/pushImg',
-      clearCosImg: 'localStorage/clearCosImg'
+      clearImage: 'user/clearImage'
     })
   },
   computed: {
@@ -113,6 +127,9 @@ export default {
     ...mapState({
       imgSrc: state => state.user.image.imgSrc,
       imgAlt: state => state.user.image.imgAlt
+    }),
+    ...mapGetters({
+      cos: 'localStorage/initCOS'
     })
   }
 }
