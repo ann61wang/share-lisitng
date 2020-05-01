@@ -27,7 +27,7 @@ export const getters = {
     //没有存放在 state 中，因为必须在 mutations 中作更改，有点麻烦，应该返回一个新值，
     //并且可以在组件中直接更改 getters 中的值，且一个组件在首次使用时就调用一次，因此需要判断 cos 是否是 COS 的实例
     let cos = {}
-    if(state.cos instanceof COS === false) {
+    if(cos instanceof COS === false) {
       cos = new COS({
         getAuthorization: function (options,callback) { 
           let authorization = COS.getAuthorization({

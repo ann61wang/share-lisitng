@@ -145,8 +145,7 @@ export default {
       margin: 0 auto
       width: 24rem
       .text_center
-        margin: 0 auto
-        width: 18rem
+        text-align: center
         .level_item
           text-decoration: none
           color: #666

@@ -49,7 +49,8 @@ export default {
       upload: 'picture',
 
       imageUrl: '',
-      imageAlt: ''
+      imageAlt: '',
+      allow: false
     }
   },
   methods: {
@@ -83,21 +84,27 @@ export default {
             self.imageUrl = el.target.result
           })
 
-          this.cos.putObject({
-            Bucket: 'sharelist-1255748781',
-            Region: 'ap-guangzhou',
-            Key: self.imageAlt,
-            Body: selectedFile,
-            onProgress: function (progressData) {
-              console.log(JSON.stringify(progressData))
-            }
-          }, function (err,data) {
-            console.log(err || data)
-            if(data) {
-              self.imageObj.imgSrc = 'https://' + data.Location
-              self.insertImg(Object.assign({},self.imageObj))
-            }
-          })
+          try {
+            this.cos.putObject({
+              Bucket: 'sharelist-1255748781',
+              Region: 'ap-guangzhou',
+              Key: self.imageAlt,
+              Body: selectedFile,
+              onProgress: function (progressData) {
+                console.log(JSON.stringify(progressData))
+              }
+            }, function (err,data) {
+              console.log(err || data)
+              if(data) {
+                self.imageObj.imgSrc = 'https://' + data.Location
+                self.insertImg(Object.assign({},self.imageObj))
+              }
+            })
+          } catch (e) {
+            console.log(e)
+          } finally {
+
+          }
 
           this.isUpload = true
           this.show = false
@@ -112,7 +119,7 @@ export default {
       this.upload = 'picture'
       // this.$refs.upload.clearFiles()
       this.$refs.file.value = ''
-      if(this.imageAlt) {
+      if(this.imageAlt && this.allow) {
         this.cos.deleteObject({
           Bucket: 'sharelist-1255748781',
           Region: 'ap-guangzhou',
@@ -125,6 +132,7 @@ export default {
           }
         })
       }
+      this.allow = true
     },
     ...mapMutations({
       insertImg: 'sessionStorage/insertImg',
@@ -149,7 +157,7 @@ export default {
       descCache: state => state.sessionStorage.title.descCache
     }),
     ...mapGetters({
-      cos: '/localStorage/initCOS'
+      cos: 'localStorage/initCOS'
     })
   },
   watch: {
