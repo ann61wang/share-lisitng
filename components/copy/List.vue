@@ -137,6 +137,9 @@ export default {
       let data = res.data
       let id = data._id
       this.yRefresh()
+      if(this.allowSession) {
+        this.allowObj(id)
+      }
       this.$router.push('/lists/' + id)
     },
     add: async function (index,name) {
@@ -177,7 +180,11 @@ export default {
           break;
         case 5:
           if(this.image.imgSrc) {
-            this.isPicName = true
+            if(this.allowSession) {
+              this.isPicName = true
+            }else{
+              this.$message.error('请先更换图片，再添加图片名称')
+            }
           }else {
             this.$message.error('请先添加图片，再添加图片名称')
           }
@@ -237,7 +244,8 @@ export default {
       clearListMessage: 'sessionStorage/clearListMessage',
       clearCacheAll: 'sessionStorage/clearCacheAll',
       updateListMessage: 'sessionStorage/updateListMessage',
-      clearListMessage: 'sessionStorage/clearListMessage'
+      clearListMessage: 'sessionStorage/clearListMessage',
+      allowObj: 'localStorage/allowObj'
     })
   },
   computed: {
@@ -261,7 +269,8 @@ export default {
       image: state => state.sessionStorage.image,
       category: state => state.sessionStorage.category,
       isNumMakerCache: state => state.sessionStorage.isNumMaker,
-      session: state => state.localStorage.session
+      session: state => state.localStorage.session,
+      allowSession: state => state.sessionStorage.allow
     }),
     listData() {
       return {

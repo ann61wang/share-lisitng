@@ -118,7 +118,7 @@ export default {
       this.upload = 'picture'
       // this.$refs.upload.clearFiles()
       this.$refs.file.value = ''
-      if(this.imageAlt && this.allow) {
+      if(this.imageAlt && this.allowSession) {
         this.cos.deleteObject({
           Bucket: 'sharelist-1255748781',
           Region: 'ap-guangzhou',
@@ -131,12 +131,14 @@ export default {
           }
         })
       }
-      this.allow = true
+      this.changeAllow()
     },
     ...mapMutations({
       insertImg: 'sessionStorage/insertImg',
       clearImage: 'sessionStorage/clearImage',
-      syncValue: 'sessionStorage/syncValue'
+      syncValue: 'sessionStorage/syncValue',
+      changeAllow: 'sessionStorage/changeAllow',
+      allowBack: 'sessionStorage/allowBack'
     })
   },
   computed: {
@@ -154,7 +156,7 @@ export default {
       imgSrc: state => state.sessionStorage.image.imgSrc,
       titleCache: state => state.sessionStorage.title.titleCache,
       descCache: state => state.sessionStorage.title.descCache,
-      allow: state => state.localStorage.allow
+      allowSession: state => state.sessionStorage.allow
     }),
     ...mapGetters({
       cos: 'localStorage/initCOS'
@@ -178,6 +180,7 @@ export default {
       this.titleValue = this.titleCache
       this.descValue = this.descCache
     }
+    this.allowBack()
   }
 }
 </script>

@@ -16,7 +16,7 @@ export const state = () => ({
   isNumMaker: false,
   category: 'other',
   listMessage: {},
-  allow: false,
+  allow2: {},
   expire: 2
 })
 
@@ -96,5 +96,8 @@ export const mutations = {
   },
   clearSession(state) {
     state.session = ''
+  },
+  allowObj(state, id) {
+    state.allow2[id] = true 
   }
 }
