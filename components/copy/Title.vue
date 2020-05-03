@@ -171,6 +171,9 @@ export default {
     },
     descValue() {
       this.syncValue(this.titleObj)
+    },
+    imgAlt() {
+      this.imageAlt = this.imgAlt
     }
   },
   mounted() {
