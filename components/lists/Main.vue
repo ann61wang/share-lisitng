@@ -69,7 +69,7 @@ export default {
       })
       this.yRefresh()
 
-      if(this.listData.imgAlt && this.allowLocal[this.$route.params.id]) {
+      if(this.listData.imgAlt) {
         this.cos.deleteObject({
           Bucket: 'sharelist-1255748781',
           Region: 'ap-guangzhou',
@@ -82,17 +82,17 @@ export default {
           }
         })
       }
-
-      this.$router.push('/user/' + this.session)
+      //使用 replace 就可以不保存当前路径到历史记录中，如此回退就不会出现 404 报错了
+      this.$router.replace('/user/' + this.session)
     },
     ...mapMutations({
-      yRefresh: 'localStorage/yRefresh'
+      yRefresh: 'localStorage/yRefresh',
+      clearProperty: 'localStorage/clearProperty'
     })
   },
   computed: {
     ...mapState({
-      session: state => state.localStorage.session,
-      allowLocal: state => state.localStorage.allow2
+      session: state => state.localStorage.session
     }),
     ...mapGetters({
       cos: 'localStorage/initCOS'

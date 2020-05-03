@@ -3,7 +3,7 @@
     <div class="wrapper" @mouseenter="handleDivMouseEnter" @mouseleave="handleDivMouseLeave">
       <div class="img_change" v-show="isUpload && isImgChange">
         <!-- <label class="iconfont icon_change" title="更换" for="file">&#xe60b;</label> -->
-        <span class="iconfont icon_clear" title="删除" @click.prevent="clearImg">&#xe612;</span>
+        <span class="iconfont icon_clear" title="删除" @click.prevent="clearImgBtn">&#xe612;</span>
       </div>
 
       <label :class="isUpload ? 'uploade_picture' : 'uploade_picture cancel_pointer'" :for="upload">
@@ -76,7 +76,7 @@ export default {
           let self = this
           let reader = new FileReader()
           let selectedFile = e.target.files[0]
-          this.imageObj.imgAlt = selectedFile.name.substring(0, selectedFile.name.length-4)
+          this.imageObj.imgAlt = selectedFile.name
           this.imageAlt = this.imageObj.imgAlt
           reader.readAsDataURL(e.target.files[0])
           reader.onload = ((el) => {
@@ -89,7 +89,7 @@ export default {
             Key: self.imageAlt,
             Body: selectedFile,
             onProgress: function (progressData) {
-              console.log(JSON.stringify(progressData))
+              // console.log(JSON.stringify(progressData))
             }
           }, function (err,data) {
             console.log(err || data)
@@ -110,7 +110,13 @@ export default {
       this.imageUrl  = this.imgSrc
       this.isUpload = false
       this.upload = 'picture'
-      // this.$refs.upload.clearFiles()
+      this.$refs.file.value = ''
+    },
+    clearImgBtn() {
+      this.clearImage()
+      this.imageUrl  = this.imgSrc
+      this.isUpload = false
+      this.upload = 'picture'
       this.$refs.file.value = ''
       if(this.imageAlt) {
         this.cos.deleteObject({

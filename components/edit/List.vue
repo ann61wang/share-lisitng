@@ -120,7 +120,11 @@ export default {
           this.$message.error('第一条的内容不能为空')
           return
         }else {
-          this.listData.imgSrc = this.image.imgSrc
+          if(this.image.imgSrc) {
+            this.listData.imgSrc = this.image.imgSrc
+          }else {
+            this.listData.imgSrc = 'https://sharelist-1255748781.cos.ap-guangzhou.myqcloud.com/pexels-photo-3496992.jpeg'
+          }
           this.listData.imgAlt = this.image.imgAlt
           this.listData.title = this.title.titleCache
           this.listData.desc = this.title.descCache
@@ -293,7 +297,7 @@ export default {
    }
   },
   mounted() {
-    if(Object.keys(this.listMessage).length && this.count < Object.keys(this.listMessage).length-1) {
+    if(Object.keys(this.listMessage).length && this.count < Object.keys(this.listMessage).length) {
       this.isNumMaker = this.isNumMakerCache
       for(var i = 0; i < Object.keys(this.listMessage).length; i++) {
         this.items.push({component: 'add-list', id: i})

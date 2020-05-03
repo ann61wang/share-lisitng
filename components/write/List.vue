@@ -119,7 +119,11 @@ export default {
           this.$message.error('第一条的内容不能为空')
           return
         }else {
-          this.listData.imgSrc = this.imgSrc
+          if(this.imgSrc) {
+            this.listData.imgSrc = this.imgSrc
+          }else {
+            this.listData.imgSrc = 'https://sharelist-1255748781.cos.ap-guangzhou.myqcloud.com/pexels-photo-3496992.jpeg'
+          }        
           this.listData.imgAlt = this.imgAlt
           this.listData.title = this.title
           this.listData.desc = this.desc
@@ -215,7 +219,7 @@ export default {
       this.count = 0
       this.syncList(this.copyItems)
       this.isClearAll = false
-      setTimeout(() => { if(this.$refs.list[0].content) this.$refs.list[0].content = '' }, 450)
+      if(this.$refs.list[0].content) this.$refs.list[0].content = ''
       if(this.isNumMaker) this.handleNumClick()
       this.clearListMessage()
       try {

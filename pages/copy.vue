@@ -2,8 +2,8 @@
   <div class="body_min_width">
     <common-header></common-header>
     <div class="container-fluid wrapper">
-      <copy-title></copy-title>
-      <copy-list></copy-list>
+      <copy-title ref="title"></copy-title>
+      <copy-list @emitArl="handleEmitArl"></copy-list>
     </div>
     <div class="margin"></div>
   </div>
@@ -63,7 +63,10 @@ export default {
       insertImg: 'sessionStorage/insertImg',
       syncValue: 'sessionStorage/syncValue',
       judgeIsNumMaker: 'sessionStorage/judgeIsNumMaker'
-    })
+    }),
+    handleEmitArl() {
+      this.$refs.title.emptyAlt()
+    }
   },
   computed: {
     listTitle() {

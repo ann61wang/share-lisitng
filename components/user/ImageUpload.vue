@@ -75,7 +75,7 @@ export default {
             Key: self.imageAlt,
             Body: selectedFile,
             onProgress: function (progressData) {
-              console.log(JSON.stringify(progressData))
+              // console.log(JSON.stringify(progressData))
             }
           }, function (err,data) {
             console.log(err || data)

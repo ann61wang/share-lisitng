@@ -3,7 +3,7 @@
     <div class="wrapper" @mouseenter="handleDivMouseEnter" @mouseleave="handleDivMouseLeave">
       <div class="img_change" v-show="isUpload && isImgChange">
         <!-- <label class="iconfont icon_change" title="更换" for="file">&#xe60b;</label> -->
-        <span class="iconfont icon_clear" title="删除" @click.prevent="clearImg">&#xe612;</span>
+        <span class="iconfont icon_clear" title="删除" @click.prevent="clearImgBtn">&#xe612;</span>
       </div>
 
       <label :class="isUpload ? 'uploade_picture' : 'uploade_picture cancel_pointer'" :for="upload">
@@ -13,7 +13,7 @@
         <input type="file" accept="image/png, image/jpeg, image/jpg" class="uploade_picture_input" id="picture" @change="getFile" ref="file">
         <div class="iconfont icon_camera" v-show="!isUpload">&#xe60b;</div>
         <transition-group name="fade">
-          <div class="img_alt" v-show="isUpload && show" key="1">{{this.imgAlt}}</div>
+          <div class="img_alt" v-show="isUpload && show" key="1">{{this.imageAlt}}</div>
           <div class="text" v-show="show && !isUpload" key="2">添加题图</div>
         </transition-group>
       </label>
@@ -76,34 +76,28 @@ export default {
           let self = this
           let reader = new FileReader()
           let selectedFile = e.target.files[0]
-          this.imageObj.imgAlt = selectedFile.name.substring(0, selectedFile.name.length-4)
+          this.imageObj.imgAlt = selectedFile.name
           this.imageAlt = this.imageObj.imgAlt
           reader.readAsDataURL(e.target.files[0])
           reader.onload = ((el) => {
             self.imageUrl = el.target.result
           })
 
-          try {
-            this.cos.putObject({
-              Bucket: 'sharelist-1255748781',
-              Region: 'ap-guangzhou',
-              Key: self.imageAlt,
-              Body: selectedFile,
-              onProgress: function (progressData) {
-                console.log(JSON.stringify(progressData))
-              }
-            }, function (err,data) {
-              console.log(err || data)
-              if(data) {
-                self.imageObj.imgSrc = 'https://' + data.Location
-                self.insertImg(Object.assign({},self.imageObj))
-              }
-            })
-          } catch (e) {
-            console.log(e)
-          } finally {
-
-          }
+          this.cos.putObject({
+            Bucket: 'sharelist-1255748781',
+            Region: 'ap-guangzhou',
+            Key: this.imageAlt,
+            Body: selectedFile,
+            onProgress: function (progressData) {
+              // console.log(JSON.stringify(progressData))
+            }
+          }, function (err,data) {
+            console.log(err || data)
+            if(data) {
+              self.imageObj.imgSrc = 'https://' + data.Location
+              self.insertImg(Object.assign({}, self.imageObj))
+            }
+          })
 
           this.isUpload = true
           this.show = false
@@ -116,9 +110,15 @@ export default {
       this.imageUrl  = this.imgSrc
       this.isUpload = false
       this.upload = 'picture'
-      // this.$refs.upload.clearFiles()
       this.$refs.file.value = ''
-      if(this.imageAlt && this.allowSession) {
+    },
+    clearImgBtn() {
+      this.clearImage()
+      this.imageUrl  = this.imgSrc
+      this.isUpload = false
+      this.upload = 'picture'
+      this.$refs.file.value = ''
+      if(this.imageAlt) {
         this.cos.deleteObject({
           Bucket: 'sharelist-1255748781',
           Region: 'ap-guangzhou',
@@ -131,14 +131,18 @@ export default {
           }
         })
       }
-      this.changeAllow()
+    },
+    emptyAlt() {
+      //如果为空的话
+      if(!this.imageAlt) {
+        this.changeImgAlt('')
+      }
     },
     ...mapMutations({
       insertImg: 'sessionStorage/insertImg',
       clearImage: 'sessionStorage/clearImage',
       syncValue: 'sessionStorage/syncValue',
-      changeAllow: 'sessionStorage/changeAllow',
-      allowBack: 'sessionStorage/allowBack'
+      changeImgAlt: 'sessionStorage/changeImgAlt'
     })
   },
   computed: {
@@ -155,8 +159,7 @@ export default {
       imgAlt: state => state.sessionStorage.image.imgAlt,
       imgSrc: state => state.sessionStorage.image.imgSrc,
       titleCache: state => state.sessionStorage.title.titleCache,
-      descCache: state => state.sessionStorage.title.descCache,
-      allowSession: state => state.sessionStorage.allow
+      descCache: state => state.sessionStorage.title.descCache
     }),
     ...mapGetters({
       cos: 'localStorage/initCOS'
@@ -174,13 +177,13 @@ export default {
     if(this.imgSrc) {
       this.isUpload = true
       this.imageUrl = this.imgSrc
-      this.imageAlt = this.imgAlt
+      //首次进入或者刷新 copy 页面时都使 this.imageAlt 为空，如此就无法删除原始图片
+      this.imageAlt = ''
     }
     if(this.titleCache || this.descCache) {
       this.titleValue = this.titleCache
       this.descValue = this.descCache
     }
-    this.allowBack()
   }
 }
 </script>

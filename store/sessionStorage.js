@@ -15,7 +15,6 @@ export const state = () => ({
   lastCategory: '',
   category: 'other',
   listMessage: {},
-  allow: false,
   expire: 2
 })
 
@@ -67,11 +66,5 @@ export const mutations = {
   },
   clearListMessage(state) {
     state.listMessage = {}
-  },
-  changeAllow(state) {
-    state.allow = true
-  },
-  allowBack(state) {
-    state.allow = false
   }
 }

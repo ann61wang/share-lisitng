@@ -119,7 +119,12 @@ export default {
           this.$message.error('第一条的内容不能为空')
           return
         }else {
-          this.listData.imgSrc = this.image.imgSrc
+          if(this.image.imgSrc) {
+            this.listData.imgSrc = this.image.imgSrc
+          }else {
+            this.listData.imgSrc = 'https://sharelist-1255748781.cos.ap-guangzhou.myqcloud.com/pexels-photo-3496992.jpeg'
+          }
+          this.$emit('emitArl')
           this.listData.imgAlt = this.image.imgAlt
           this.listData.title = this.title.titleCache
           this.listData.desc = this.title.descCache
@@ -137,9 +142,6 @@ export default {
       let data = res.data
       let id = data._id
       this.yRefresh()
-      if(this.allowSession) {
-        this.allowObj(id)
-      }
       this.$router.push('/lists/' + id)
     },
     add: async function (index,name) {
@@ -227,8 +229,14 @@ export default {
     },
     handleNameSubmit() {
       this.isPicName = false
-      this.changeImgAlt(this.inputValue)
-      this.inputValue = ''
+      //如果输入框有内容就执行
+      if(this.inputValue) {
+        this.changeImgAlt(this.inputValue)
+        this.inputValue = ''
+      }else {
+        this.$message.error('图片新名称不能为空')
+      }
+
     },
     ...mapMutations({
       changeImgAlt: 'sessionStorage/changeImgAlt',
@@ -240,8 +248,7 @@ export default {
       clearListMessage: 'sessionStorage/clearListMessage',
       clearCacheAll: 'sessionStorage/clearCacheAll',
       updateListMessage: 'sessionStorage/updateListMessage',
-      clearListMessage: 'sessionStorage/clearListMessage',
-      allowObj: 'localStorage/allowObj'
+      clearListMessage: 'sessionStorage/clearListMessage'
     })
   },
   computed: {
@@ -265,8 +272,7 @@ export default {
       image: state => state.sessionStorage.image,
       category: state => state.sessionStorage.category,
       isNumMakerCache: state => state.sessionStorage.isNumMaker,
-      session: state => state.localStorage.session,
-      allowSession: state => state.sessionStorage.allow
+      session: state => state.localStorage.session
     }),
     listData() {
       return {
@@ -294,7 +300,7 @@ export default {
    }
   },
   mounted() {
-    if(Object.keys(this.listMessage).length && this.count < Object.keys(this.listMessage).length-1) {
+    if(Object.keys(this.listMessage).length && this.count < Object.keys(this.listMessage).length) {
       this.isNumMaker = this.isNumMakerCache
       for(var i = 0; i < Object.keys(this.listMessage).length; i++) {
         this.items.push({component: 'add-list', id: i})

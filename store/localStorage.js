@@ -16,7 +16,6 @@ export const state = () => ({
   isNumMaker: false,
   category: 'other',
   listMessage: {},
-  allow2: {},
   expire: 2
 })
 
@@ -30,8 +29,8 @@ export const getters = {
     let cos = new COS({
       getAuthorization: function (options,callback) { 
         let authorization = COS.getAuthorization({
-          SecretId: 'AKIDINCh4EtmEX3S2Zerdw1rQn6NSJ5SlqdY',
-          SecretKey: 'xz6DEE3dfT2QjKjy0mY8TabOfiaOybx5',
+          SecretId: 'AKIDvc4KL77vwg9FZer4NRFjFYcV7UaRgoIX',
+          SecretKey: 'f38xFxa4KVe7KLHq9BXcoNg6AfHchW2N',
               Method: options.Method,
               Key: options.Key,
               Query: options.Query,
@@ -96,8 +95,5 @@ export const mutations = {
   },
   clearSession(state) {
     state.session = ''
-  },
-  allowObj(state, id) {
-    state.allow2[id] = true 
   }
 }
